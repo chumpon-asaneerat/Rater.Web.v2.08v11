@@ -163,7 +163,7 @@
                     "route": "/dist",
                     "path": "public/dist/reveal-3.8.0",
                     "maxAge": "5y",
-                    "enable": false
+                    "enable": true
                 },
                 {
                     "route": "/dist/js",
@@ -232,6 +232,30 @@
                     "enable": true
                 },
                 {
+                    "route": "/dist/css",
+                    "path": "public/dist/sweetalert-2-8.18.6",
+                    "maxAge": "5y",
+                    "enable": true
+                },
+                {
+                    "route": "/dist/js",
+                    "path": "public/dist/sweetalert-2-8.18.6",
+                    "maxAge": "5y",
+                    "enable": true
+                },
+                {
+                    "route": "/dist/css",
+                    "path": "public/dist/jstree-3.3.8",
+                    "maxAge": "5y",
+                    "enable": true
+                },
+                {
+                    "route": "/dist/js",
+                    "path": "public/dist/jstree-3.3.8",
+                    "maxAge": "5y",
+                    "enable": true
+                },
+                {
                     "route": "/components",
                     "path": "dist/component/riot",
                     "maxAge": "5y",
@@ -244,6 +268,19 @@
                     "enable": true
                 }
             ]
+        }
+    },
+    "mssql": {
+        "default": {
+            "server": "localhost",
+            "database": "RaterWebv2x08r9",
+            "user": "sa",
+            "password": "winnt123",
+            "pool": {
+                "max": 10,
+                "min": 0,
+                "timeout": 1000
+            }
         }
     }
 }
