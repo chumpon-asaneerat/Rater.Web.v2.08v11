@@ -1,0 +1,5 @@
+[To compile]
+.\node_modules\.bin\riot .\templates\riot .\public\lib\js\tags.js
+
+[To compile with watch]
+.\node_modules\.bin\riot -w .\templates\riot .\public\lib\js\tags.js
