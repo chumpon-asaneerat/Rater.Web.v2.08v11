@@ -67,7 +67,7 @@ gulp.task('riot3', () => {
     let task = new GulpRiot3();
     task.opts = {
         merge: true,
-        src: path.join(__dirname, 'src/server/template/riot/**/*.tag'),
+        src: path.join(__dirname, 'templates/riot/**/*.tag'),
         dest: path.join(__dirname, 'dist/component/riot'),
         bundle: 'tags.js'
     };
@@ -86,8 +86,9 @@ gulp.task('bundle-js', () => {
 
 gulp.task('merge-sql-scripts', () => {
     let task = new GulpFileMerge();
-    let sDate = '2019-04-26';
-    let rootPath = path.join(__dirname, 'src/server/db/scripts/' + sDate);
+    //let sDate = '2019-09-01';
+    let sDate = '2019-10-10';
+    let rootPath = path.join(__dirname, 'db/scripts/' + sDate);
     task.opts = {
         src: [
             /* Concat all *.sql file in subdirectories. */
@@ -98,7 +99,7 @@ gulp.task('merge-sql-scripts', () => {
             '!' + path.join(rootPath, '/*.sql')
         ],
         header: `/*********** Script Update Date: ` + sDate + `  ***********/\n`,
-        dest: path.join(__dirname, 'dist/server/db/scripts/'),
+        dest: path.join(__dirname, 'dist/db/scripts/'),
         target: 'update-' + sDate + '.sql'
     };
     return task.task();
