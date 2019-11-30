@@ -24,6 +24,34 @@ WebSocket
 
 Message Queue Server
 [ ] Research for open source Message Queue server.
+[ ] RabbitMQ with node.js
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+
+Angular
+[ ] Node angular template project (github).
+[ ] Angular components.
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+
+XXXXXXXXX
+[ ] 
+[ ] 
+[ ] 
 [ ] 
 [ ] 
 [ ] 
