@@ -4,6 +4,16 @@ CSS
 [ ] Dockable panel.
 [ ] 
 
+fabric.js
+[ ] Fullscreen canvas (auto resize to fit screen with aspect ratio).
+[ ] Toolbox drag drop to canvas.
+[ ] Hotspot customization.
+[ ] Align to grid.
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+
 JavaScript
 [ ] 
 [ ] 
