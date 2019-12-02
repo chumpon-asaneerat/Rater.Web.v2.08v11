@@ -33,6 +33,15 @@ JavaScript
 [ ] 
 [ ] 
 
+Socket.io
+[ ] Server side code.
+[ ] Client side code.
+[ ] Checks time to process per message.
+[ ] Checks work load per process.
+[ ] 
+[ ] 
+[ ] 
+
 WebSocket
 [ ] Server side code.
 [ ] Client side code.
