@@ -42,6 +42,15 @@ Socket.io
 [ ] 
 [ ] 
 
+Load Banalce Server and service manager
+[ ] Nginx
+[ ] PM2
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+
 WebSocket
 [ ] Server side code.
 [ ] Client side code.
