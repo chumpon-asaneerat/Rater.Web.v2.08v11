@@ -34,8 +34,23 @@ JavaScript
 [ ] 
 
 Socket.io
-[ ] Server side code.
-[ ] Client side code.
+[X] Server side code (basic).
+[X] Client side code (basic).
+[X] Setup JMeter for load testing.
+[ ] Server side code (2 way communication like chat app).
+[ ] Server side code (2 way communication like chat app).
+[ ] Checks time to process per message.
+[ ] Checks work load per process.
+[ ] 
+[ ] 
+[ ] 
+
+WebSocket
+[ ] Server side code (basic).
+[ ] Client side code (basic).
+[ ] Setup JMeter for load testing.
+[ ] Server side code (2 way communication like chat app).
+[ ] Server side code (2 way communication like chat app).
 [ ] Checks time to process per message.
 [ ] Checks work load per process.
 [ ] 
@@ -48,15 +63,6 @@ Load Banalce Server and service manager
 [ ] PM2 checks to set node js server as windows service.
 [ ] 
 [ ] 
-[ ] 
-[ ] 
-[ ] 
-
-WebSocket
-[ ] Server side code.
-[ ] Client side code.
-[ ] Checks time to process per message.
-[ ] Checks work load per process.
 [ ] 
 [ ] 
 [ ] 
