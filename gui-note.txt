@@ -58,7 +58,9 @@ WebSocket
 [ ] 
 
 Load Banalce Server and service manager
-[ ] Nginx install and config the backend node js server (port setting via command line).
+[X] Nginx install and Set PATH environment variable (D:\www\nginx).
+[ ] node js server update coder to change port setting via command line.
+[ ] Nginx config the backend node js server.
 [ ] Nginx health check. May required another backend node js server to share common monitor data (all processes).
 [ ] PM2 checks to set node js server as windows service.
 [ ] 
