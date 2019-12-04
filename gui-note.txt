@@ -58,8 +58,11 @@ WebSocket
 [ ] 
 
 Load Banalce Server and service manager
-[X] Nginx install and Set PATH environment variable (D:\www\nginx).
-[ ] node js server update code to change port setting via command line.
+[X] Nginx install and set run as admin (foa all users).
+[X] Nginx config port to 4000 (see D:/www/nginx/conf/nginx.conf).
+[X] Nginx test running (standalone) and see default nginx page.
+[X] Nginx test stop service (nginx -s quit).
+[X] node js server update code to change port setting via command line.
 [ ] Nginx config the backend node js server.
 [ ] Test Nginx with JMeter for load testing (#2).
 [ ] Nginx health check. May required another backend node js server to share common monitor data (all processes).
