@@ -43,8 +43,9 @@ Socket.io
 [ ] 
 
 Load Banalce Server and service manager
-[ ] Nginx
-[ ] PM2
+[ ] Nginx install and config the backend node js server (port setting via command line).
+[ ] Nginx health check. May required another backend node js server to share common monitor data (all processes).
+[ ] PM2 checks to set node js server as windows service.
 [ ] 
 [ ] 
 [ ] 
