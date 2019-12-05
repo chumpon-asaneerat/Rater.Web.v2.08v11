@@ -64,7 +64,8 @@ Load Banalce Server and service manager
 [X] Nginx test stop service (nginx -s quit).
 [X] node js server update code to change port setting via command line.
 [X] Nginx config the backend node js server.
-[ ] Test Nginx with JMeter for load testing (#2).
+[X] Test Nginx with JMeter for load testing (#2).
+[X] Nginx cannot has connection more than 1024 in windows.
 [ ] Nginx health check. May required another backend node js server to share common monitor data (all processes).
 [ ] PM2 checks to set node js server as windows service.
 [ ] 
