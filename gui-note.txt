@@ -25,8 +25,8 @@ riot.js
 [ ] 
 
 JavaScript
-[ ] 
-[ ] 
+[ ] Check Idle (client side).
+[ ] Call Rest API with timer.
 [ ] 
 [ ] 
 [ ] 
