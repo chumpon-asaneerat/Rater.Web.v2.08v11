@@ -24,6 +24,17 @@ riot.js
 [ ] 
 [ ] 
 
+MS SQL
+[ ] Save binary field.
+[ ] Load binary field.
+[ ] Binary Field Caching (in local file storage. Auto clear when start server).
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+
 JavaScript
 [ ] Check Idle (client side).
 [ ] Call Rest API with timer.
