@@ -3,6 +3,7 @@ CSS
 [ ] Resizable tool window.
 [ ] Dock able panel.
 [ ] 
+[ ] 
 
 fabric.js
 [ ] Full Screen canvas (auto resize to fit screen with aspect ratio).
@@ -19,18 +20,9 @@ riot.js
 [ ] Slide preview (Intro Slide [video, image, animation], Question Slide [all], End Slide [audio]).
 [ ] 
 [ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
 
 NLib Web Server module.
 [ ] Add supports read port from command line arguments.
-[ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
 [ ] 
 [ ] 
 
@@ -40,17 +32,10 @@ NLib MS SQL module
 [ ] Binary Field Caching (in local file storage. Auto clear when start server).
 [ ] 
 [ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
 
 JavaScript
 [ ] Check Idle (client side).
 [ ] Call Rest API with timer.
-[ ] 
-[ ] 
-[ ] 
 [ ] 
 [ ] 
 
@@ -64,7 +49,6 @@ Socket.io
 [ ] Checks work load per process.
 [ ] 
 [ ] 
-[ ] 
 
 WebSocket
 [ ] Server side code (basic).
@@ -74,7 +58,6 @@ WebSocket
 [ ] Server side code (2 way communication like chat app).
 [ ] Checks time to process per message.
 [ ] Checks work load per process.
-[ ] 
 [ ] 
 [ ] 
 
@@ -91,19 +74,10 @@ Load Banalce Server and service manager
 [ ] PM2 checks to set node js server as windows service.
 [ ] 
 [ ] 
-[ ] 
-[ ] 
-[ ] 
 
 Message Queue Server
 [ ] Research for open source Message Queue server.
 [ ] RabbitMQ with node.js
-[ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
 [ ] 
 [ ] 
 
@@ -112,25 +86,12 @@ Angular
 [ ] Angular components.
 [ ] 
 [ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
 
 Design
 [ ] EDL Customer screen.
     [ ] Small screen (show notify for customer request add new device/staff).
     [ ] Medium screen (show notify in collapse menu and on screen dashboard for customer request add new device/staff).
     [ ] Large screen (show notify in left menu and on screen dashboard for customer request add new device/staff).
-[ ] 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
 [ ] 
 [ ] 
 [ ] 
