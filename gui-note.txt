@@ -9,7 +9,7 @@ fabric.js
 [ ] Toolbox drag drop to canvas.
 [ ] Hot spot customization.
 [ ] Align to grid.
-[ ] 
+[ ] Test for question set model (multiple slides) in fabric.js
 [ ] 
 [ ] 
 [ ] 
