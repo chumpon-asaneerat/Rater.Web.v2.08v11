@@ -9,8 +9,8 @@ fabric.js
 [ ] Toolbox drag drop to canvas.
 [ ] Hot spot customization.
 [ ] Align to grid.
-[ ] Test for question set model (multiple slides) in fabric.js
-[ ] 
+[ ] Test for question set model (multiple slides) in fabric.js.
+[ ] Supports auto update preview canvas list (with debounce).
 [ ] 
 [ ] 
 
