@@ -16,6 +16,9 @@ Project:
                     Staff:
                         Home:
                             ☐ 
+                Dev:
+                    fabric.js:
+                        ☐ 
                 Customer:
                     Admin:
                         Home:
@@ -30,8 +33,8 @@ Project:
                         Home:
                             ☐ 
         API:
-                ☐ 
-                ☐ 
+            ☐ 
+            ☐ 
     CSS:
         ✔ nested absolute position. @done(19-12-10 10:29)
         ☐ Resizable tool window.
