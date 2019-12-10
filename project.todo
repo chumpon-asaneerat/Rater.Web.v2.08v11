@@ -1,4 +1,67 @@
 Project:
-    Features:
-        ☐ Feature 1.
-        ☐ Feature 2.
+    Rater Web:
+        EDL Customer screen:
+            ☐ Small screen (show notify for customer request add new device/staff).
+            ☐ Medium screen (show notify in collapse menu and on screen dashboard for customer request add new device/staff).
+            ☐ Large screen (show notify in left menu and on screen dashboard for customer request add new device/staff).
+    CSS:
+        ☐ nested absolute position..
+        ☐ Resizable tool window.
+        ☐ Dock able panel.
+    JavaScript:
+        ☐ Check Idle (client side).
+        ☐ Call Rest API with timer.
+    fabric.js:
+        ☐ Full Screen canvas (auto resize to fit screen with aspect ratio).
+        ☐ Toolbox drag drop to canvas.
+        ☐ Hot spot customization.
+        ☐ Align to grid.
+        ☐ Test for question set model (multiple slides) in fabric.js.
+        ☐ Supports auto update preview canvas list (with debounce).
+    riot.js:
+        ☐ TabControl and TagPage(s).
+        ☐ Slide preview (Intro Slide [video, image, animation], Question Slide [all], End Slide [audio]).
+    NLib Server Module:
+        Web Server:
+            ☐ Add supports read port from command line arguments.
+        MS SQL:
+            ☐ Save binary field.
+            ☐ Load binary field.
+            ☐ Binary Field Caching (in local file storage. Auto clear when start server).
+    Socket.io:
+        ✔ Server side code (basic). @done(19-12-10 10:19)
+        ✔ Client side code (basic). @done(19-12-10 10:19)
+        ✔ Setup JMeter for load testing. @done(19-12-10 10:19)
+        ☐ Server side code (2 way communication like chat app).
+        ☐ Client side code (2 way communication like chat app).
+        ☐ Checks time to process per message.
+        ☐ Checks work load per process.
+    Websocket:
+        ☐ Server side code (basic).
+        ☐ Client side code (basic).
+        ☐ Setup JMeter for load testing.
+        ☐ Server side code (2 way communication like chat app).
+        ☐ Client side code (2 way communication like chat app).
+        ☐ Checks time to process per message.
+        ☐ Checks work load per process.
+    Load Banalce Server and service manager:
+        ✔ Nginx install and set run as admin (foa all users). @done(19-12-10 10:19)
+        ✔ Nginx config port to 4000 (see D:/www/nginx/conf/nginx.conf). @done(19-12-10 10:19)
+        ✔ Nginx test running (standalone) and see default nginx page. @done(19-12-10 10:19)
+        ✔ Nginx test stop service (nginx -s quit). @done(19-12-10 10:19)
+        ✔ node js server update code to change port setting via command line. @done(19-12-10 10:20)
+        ✔ Nginx config the backend node js server. @done(19-12-10 10:20)
+        ✔ Test Nginx with JMeter for load testing (#2). @done(19-12-10 10:20)
+        ✔ Nginx cannot has connection more than 1024 in windows. @done(19-12-10 10:20)
+        ☐ Nginx health check. May required another backend node js server to share common monitor data (all processes).
+        ☐ PM2 checks to set node js server as windows service.
+    Message Queue Server:
+        ☐ Research for open source Message Queue server.
+        ☐ RabbitMQ with node.js.
+    Angular:
+        ☐ Node angular template project (github).
+        ☐ Angular components.
+    Design:
+        ☐ 
+        ☐ 
+    
