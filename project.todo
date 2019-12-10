@@ -1,11 +1,39 @@
 Project:
     Rater Web:
-        EDL Customer screen:
-            ☐ Small screen (show notify for customer request add new device/staff).
-            ☐ Medium screen (show notify in collapse menu and on screen dashboard for customer request add new device/staff).
-            ☐ Large screen (show notify in left menu and on screen dashboard for customer request add new device/staff).
+        Routes:
+            View:
+                EDL:
+                    Admin:
+                        Home:
+                            ☐ 
+                        Customer:
+                            ☐ Small screen (show notify for customer request add new device/staff).
+                            ☐ Medium screen (show notify in collapse menu and on screen dashboard for customer request add new device/staff).
+                            ☐ Large screen (show notify in left menu and on screen dashboard for customer request add new device/staff).
+                    Supervisor:
+                        Home:
+                            ☐ 
+                    Staff:
+                        Home:
+                            ☐ 
+                Customer:
+                    Admin:
+                        Home:
+                            ☐ 
+                    Exclusive:
+                        Home:
+                            ☐ 
+                    Staff:
+                        Home:
+                            ☐ 
+                    Device:
+                        Home:
+                            ☐ 
+        API:
+                ☐ 
+                ☐ 
     CSS:
-        ☐ nested absolute position..
+        ✔ nested absolute position. @done(19-12-10 10:29)
         ☐ Resizable tool window.
         ☐ Dock able panel.
     JavaScript:
