@@ -170,32 +170,24 @@
             border-radius: 5px;
         }
 
-        @media only screen and (min-width: 600px) {
-            .info-box { width: 33.3%; }
-        }
-        /* Extra small devices (phones, 600px and down) */
-        @media only screen and (max-width: 600px) {
-            .info-box { width: 100%; }
-        }
-
         /* Small devices (portrait tablets and large phones, 600px and up) */
-        @media only screen and (min-width: 600px) {
-            .info-box { width: 100%; }
+        @media only screen and (min-width: 500px) {
+            .info-box { width: 100%; background: olive; }
         }
 
         /* Medium devices (landscape tablets, 768px and up) */
-        @media only screen and (min-width: 768px) {
-            .info-box { width: 50%; }
+        @media only screen and (min-width: 700px) {
+            .info-box { width: 50%; background: hotpink; }
         }
 
         /* Large devices (laptops/desktops, 992px and up) */
-        @media only screen and (min-width: 992px) {
-            .info-box { width: 33.3%; }
+        @media only screen and (min-width: 800px) {
+            .info-box { width: 33.3%; background: fuchsia; }
         }
 
         /* Extra large devices (large laptops and desktops, 1200px and up) */
-        @media only screen and (min-width: 1200px) {
-            .info-box { width: 25%; }
+        @media only screen and (min-width: 900px) {
+            .info-box { width: 25%; background: grey; }
         }
 
         .info-box .info-data-value {
@@ -300,6 +292,21 @@
                             </div>
                             <div class="info-caption-text">
                                 Total Votes
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="info-box">
+                        <div class="info-data">
+                            <div class="info-data-value">30</div>
+                        </div>
+                        <div class="info-caption">
+                            <div class="info-caption-icon">
+                                <span class="fas fa-calendar"></span>
+                            </div>
+                            <div class="info-caption-text">
+                                Wait list
                             </div>
                         </div>
                     </div>
