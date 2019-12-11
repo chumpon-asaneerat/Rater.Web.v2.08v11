@@ -129,7 +129,7 @@
         }
         .client-area {
             grid-area: client-area;
-            display: grid;
+            display: block;
             margin: 0;
             padding: 5px;
             width: 100%;
@@ -156,9 +156,85 @@
             display: inline-block;
             margin: 0;
             padding: 5px;
-            background: indianred;
+            width: 20%;
+            height: fit-content;
+            /*
+            width: fit-content;
+            height: fit-content;
+            */
+
+            font-size: 1rem;
+
+            background: wheat;
             border: 1px dotted chocolate;
             border-radius: 5px;
+        }
+
+        @media only screen and (min-width: 600px) {
+            .info-box { width: 33.3%; }
+        }
+        /* Extra small devices (phones, 600px and down) */
+        @media only screen and (max-width: 600px) {
+            .info-box { width: 100%; }
+        }
+
+        /* Small devices (portrait tablets and large phones, 600px and up) */
+        @media only screen and (min-width: 600px) {
+            .info-box { width: 100%; }
+        }
+
+        /* Medium devices (landscape tablets, 768px and up) */
+        @media only screen and (min-width: 768px) {
+            .info-box { width: 50%; }
+        }
+
+        /* Large devices (laptops/desktops, 992px and up) */
+        @media only screen and (min-width: 992px) {
+            .info-box { width: 33.3%; }
+        }
+
+        /* Extra large devices (large laptops and desktops, 1200px and up) */
+        @media only screen and (min-width: 1200px) {
+            .info-box { width: 25%; }
+        }
+
+        .info-box .info-data-value {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+            height: auto;
+
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .info-box .info-caption {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+            height: auto;
+
+            text-align: center;
+        }
+        .info-box .info-caption-icon {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            height: auto;
+
+            font-size: 0.7em;
+            font-weight: normal;
+        }
+        .info-box .info-caption-text {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            height: auto;
+
+            font-size: 0.7em;
+            font-weight: normal;
         }
     </style>
 </head>
@@ -185,7 +261,49 @@
                     
                 </div>
                 <div class="client-area">
-                    
+                    <div class="info-box">
+                        <div class="info-data">
+                            <div class="info-data-value">3.82</div>
+                        </div>
+                        <div class="info-caption">
+                            <div class="info-caption-icon">
+                                <span class="fas fa-calendar"></span>
+                            </div>
+                            <div class="info-caption-text">
+                                Average
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="info-box">
+                        <div class="info-data">
+                            <div class="info-data-value">87%</div>
+                        </div>
+                        <div class="info-caption">
+                            <div class="info-caption-icon">
+                                <span class="fas fa-calendar"></span>
+                            </div>
+                            <div class="info-caption-text">
+                                Average %
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-data">
+                            <div class="info-data-value">200 K+</div>
+                        </div>
+                        <div class="info-caption">
+                            <div class="info-caption-icon">
+                                <span class="fas fa-calendar"></span>
+                            </div>
+                            <div class="info-caption-text">
+                                Total Votes
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
