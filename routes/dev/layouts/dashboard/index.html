@@ -16,9 +16,152 @@
     <!-- Flag and Emoji icons -->
     <link href="/dist/css/flag-icon.min.css" rel="stylesheet" type="text/css" />
     <link href="/dist/css/emojisymbol.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .my-canvas {
+            display: inline-block;
+            vertical-align: baseline;
+            margin: 0 auto;
+            padding: 0;
+            width: 300px;
+            height: 300px;
+            background: whitesmoke;
+            border: 1px solid silver;
+        }
+        .my-span {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: seashell;
+        }
+
+        .app {
+            display: grid;
+            margin: 0 auto;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            grid-template-areas: 
+                'app-area';
+            background: cornsilk;
+            overflow: hidden;
+        }
+        .app-area {
+            grid-area: app-area;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+            grid-template-areas: 
+                'navi-area'
+                'scrn-area';
+            margin: 0 auto;
+            padding: 0;
+            /* text-align: center; */
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .navi-area {
+            grid-area: navi-area;
+            /* display: block; */
+            margin: 0;
+            padding: 5px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px dotted yellowgreen;
+        }
+        .scrn-area {
+            grid-area: scrn-area;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: 
+                'side-navi client-area';
+            margin: 0;
+            padding: 5px;
+            width: 100%;
+            overflow: auto;
+            border: 1px dotted red;
+        }
+        .block {
+            display: block;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            background: navajowhite;
+        }
+        .navibar {
+            display: flex;            
+            align-items: baseline;
+            justify-content: space-between;
+            margin: 0;
+            padding: 1px 4px;
+            width: 100%;
+            color: white;
+            background: cornflowerblue;
+        }
+        .navibar .navitem {
+            display: inline-block;
+            margin: 2px;
+            padding: 2px;
+            font-size: 1.1rem;
+            vertical-align: baseline;
+            cursor: default;
+        }
+        .navibar .navitem.center {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .navibar .navitem.right {
+            justify-self: flex-end;
+        }
+        .side-navi {
+            grid-area: side-navi;
+            margin: 0;
+            padding: 5px;
+            width: 50px;
+            height: 100%;
+            border: 1px dotted orange;
+        }
+        .client-area {
+            grid-area: client-area;
+            margin: 0;
+            padding: 5px;
+            width: 100%;
+            height: 100%;
+            border: 1px dotted green;
+        }
+    </style>
 </head>
 <body>
-    <h4>Dashboard UI.</h4>
+    <div class="app">
+        <div class="app-area">
+            <div class="navi-area">
+                <div class="navibar">
+                    <div class="navitem">
+                        <span class="fas fa-home"></span>
+                        <span>Home</span>
+                    </div>
+                    <div class="navitem">menu 1</div>
+                    <div class="navitem">menu 2</div>
+                    <div class="navitem center"><!-- fill up space. -->center</div>
+                    <div class="navitem right">right 1</div>
+                    <div class="navitem right">
+                        <span class="fas fa-bars"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="scrn-area">
+                <div class="side-navi">
+                    
+                </div>
+                <div class="client-area">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- JQuery -->
     <script src="/dist/js/jquery.min.js"></script>
