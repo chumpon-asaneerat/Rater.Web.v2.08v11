@@ -65,10 +65,10 @@
             grid-area: navi-area;
             /* display: block; */
             margin: 0;
-            padding: 5px;
+            padding: 0;
             width: 100%;
             overflow: hidden;
-            border: 1px dotted yellowgreen;
+            /* border: 1px dotted yellowgreen; */
         }
         .scrn-area {
             grid-area: scrn-area;
@@ -76,12 +76,12 @@
             grid-template-columns: auto 1fr;
             grid-template-rows: 1fr;
             grid-template-areas: 
-                'side-navi client-area';
+                'sidebar client-area';
             margin: 0;
-            padding: 5px;
+            padding: 0;
             width: 100%;
             overflow: auto;
-            border: 1px dotted red;
+            /* border: 1px dotted red; */
         }
         .block {
             display: block;
@@ -101,6 +101,9 @@
             color: white;
             background: cornflowerblue;
         }
+        .navibar.hide {
+            display: none;
+        }
         .navibar .navitem {
             display: inline-block;
             margin: 2px;
@@ -116,8 +119,8 @@
         .navibar .navitem.right {
             justify-self: flex-end;
         }
-        .side-navi {
-            grid-area: side-navi;
+        .sidebar {
+            grid-area: sidebar;
             margin: 0;
             padding: 5px;
             width: 50px;
@@ -153,7 +156,7 @@
                 </div>
             </div>
             <div class="scrn-area">
-                <div class="side-navi">
+                <div class="sidebar">
                     
                 </div>
                 <div class="client-area">
