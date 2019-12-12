@@ -9,6 +9,7 @@
             font-size: 1.1rem;
             vertical-align: baseline;
             cursor: default;
+            user-select: none;
             white-space: nowrap;
             overflow: hidden;
         }
