@@ -1,14 +1,18 @@
 <app>
-    <h1 class="header1">In app header 1</h1>
-    <h1 class="header1">In app header 2</h1>
-    <div class="subitem">
+    <div class="app-area">
         <yield/>
     </div>    
     <style>
         :scope {
-            margin: 0;
+            display: grid;
+            margin: 0 auto;
             padding: 0;
-            
+            height: 100vh;
+            width: 100vw;
+            grid-template-areas: 
+                'app-area';
+            background: cornsilk;
+            overflow: hidden;
         }
         /* Selects all elements that has class 'header1' where the parent is a '':scope' element */
         :scope>.header1 {
@@ -16,9 +20,17 @@
             padding: 0;
             color: red;
         }
-        :scope>.subitem {
+        :scope>.app-area {
+            position: relative;
+            display: block;
+            grid-area: app-area;
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
     </style>
+    <script>
+    </script>
 </app>
