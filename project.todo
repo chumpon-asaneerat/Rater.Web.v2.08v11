@@ -63,7 +63,11 @@ Project:
             Sidebar:
                 ☐ sidebar tag rewrite.
                 ☐ sidebar-item tag rewrite.
+            Panel:
+                ☐ collapse-panel tag rewrite.
+                ☐ 
             ToolWindow:
+                ☐ toolwindow tag rewrite.
                 ☐ 
         Controls:
             Input:
@@ -125,5 +129,7 @@ Project:
             ✔ Init sample route. @done(19-12-11 10:30)
             ✔ Add Basic Navibar UI. @done(19-12-12 09:47)
             ✔ Add Test Counter item UI. @done(19-12-12 09:48)
+            ✔ Add Bar Chart item UI. @done(19-12-12 13:14)
+            ✔ Add Pie Chart item UI. @done(19-12-12 13:15)
         ☐ 
     
