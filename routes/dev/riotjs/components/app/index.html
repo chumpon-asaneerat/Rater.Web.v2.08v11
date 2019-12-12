@@ -20,20 +20,7 @@
     </style>
 </head>
 <body>
-    <app>
-        <navibar>
-            <navi-item>
-                <span class="fas fa-home"></span>
-                <span>Home</span>
-            </navi-item>
-            <navi-item>menu 1</navi-item>
-            <navi-item>menu 2</navi-item>
-            <navi-item class="center"></navi-item>
-            <navi-item class="right">right 1</navi-item>
-            <navi-item class="right">
-                <span class="fas fa-bars"></span>
-            </navi-item>
-        </navibar>            
+    <rater-app>
         <screen class="active">
             <h2>Screen 1</h2>
         </screen>
@@ -47,8 +34,7 @@
         <screen class="hide">
             <h2>Screen 3</h2>
         </screen>
-    </app>
-
+    </rater-app>
     <!-- JQuery -->
     <script src="/dist/js/jquery.min.js"></script>
     <!-- JQuery UI -->
@@ -67,7 +53,7 @@
     <script src="/dist/js/tags.js"></script>
 
     <script>
-        riot.mount('app');
+        riot.mount('rater-app');
     </script>
 </body>
 </html>

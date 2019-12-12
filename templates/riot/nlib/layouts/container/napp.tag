@@ -1,4 +1,4 @@
-<app>
+<napp>
     <div class="app-area">
         <yield/>
     </div>    
@@ -58,6 +58,4 @@
             display: none;
         }
     </style>
-    <script>
-    </script>
-</app>
+</napp>

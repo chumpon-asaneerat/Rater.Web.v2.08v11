@@ -1,104 +1,3 @@
-riot.tag2('ncheckedtree', '<div class="ntree-container"> <div ref="tree" class="tree"></div> </div> <label>{opts.title}</label>', 'ncheckedtree,[data-is="ncheckedtree"]{ margin: 0; margin-top: 5px; padding: 10px; font-size: 14px; display: inline-block; position: relative; height: auto; width: 100%; background: transparent; box-shadow: 0 5px 10px solid rgba(0, 0, 0, .2); } ncheckedtree .ntree-container,[data-is="ncheckedtree"] .ntree-container{ display: block; padding: 20px 0 10px 0; margin-bottom: 0px; width: calc(100% - 25px); background-color: whitesmoke; box-sizing: border-box; box-shadow: none; outline: none; border: none; font-size: 14px; box-shadow: 0 0 0px 1000px white inset; border-radius: 2px; border-bottom: 2px solid cornflowerblue; overflow: hidden; } ncheckedtree .ntree-container .tree,[data-is="ncheckedtree"] .ntree-container .tree{ width: 100%; border: 1px solid silver; border-radius: 2px; height: 100px; min-height: 100px; max-height: 100px; overflow: auto; } ncheckedtree label,[data-is="ncheckedtree"] label{ position: absolute; top: 5px; left: 10px; transition: .2s; pointer-events: none; color: cornflowerblue; font-weight: bold; }', '', function(opts) {
-
-
-        let self = this;
-        let fldmap = { valueField:'id', textField:'text', parentField: '#' }
-
-        let tree, clear;
-
-        let initCtrls = () => {
-            tree = self.refs['tree'];
-            self.setup();
-        }
-        let freeCtrls = () => {
-            tree = null;
-        }
-        let clearInputs = () => {
-            if (tree) {
-                $(tree).jstree().deselect_node(this);
-            }
-        }
-
-        let bindEvents = () => {}
-        let unbindEvents = () => {}
-
-        this.on('mount', () => {
-            initCtrls();
-            bindEvents();
-        });
-        this.on('unmount', () => {
-            unbindEvents();
-            clearInputs();
-        });
-
-        this.clear = () => { clearInputs(); }
-        this.focus = () => { if (tree) tree.focus(); }
-
-        let hasValue = (val) => {
-            return (val !== undefined && val !== null);
-        }
-        let setSelectedItems = (items) => {
-            if (tree && items && items.length > 0) {
-                let map = items.map(item => { return item.id })
-                $(tree).jstree(true).check_node(map)
-            }
-        }
-        let getSelectedItems = () => {
-            let ret = [];
-            if (tree) {
-                ret = $(tree).jstree(true).get_checked(true);
-            }
-            return ret;
-        }
-        this.selectedItems = (items) => {
-            let ret;
-            if (tree) {
-                if (hasValue(items)) {
-                    setSelectedItems(items);
-                }
-                else {
-                    ret = getSelectedItems();
-                }
-            }
-            return ret;
-        }
-        this.setup = (values, fldMap) => {
-            if (tree) {
-                fldmap = fldMap;
-                let data = [];
-                if (values) {
-                    values.forEach(val => {
-                        let item = {
-                            id: String(val[fldmap.valueField]),
-                            text: val[fldmap.textField],
-                            parent: '#'
-                        }
-                        if (fldmap.parentField && val[fldmap.parentField]) {
-
-                            item.parent = val[fldmap.parentField];
-                        }
-                        item.data = val;
-                        data.push(item);
-                    });
-                }
-
-                $(tree).jstree("destroy");
-                $(tree).jstree({
-                    'core': {
-                        data: data,
-                        "multiple" : true
-                    },
-                    "checkbox" : { "keep_selected_style" : false, two_state: true },
-                    "plugins" : [ "wholerow", "checkbox", "json_data" ]
-                }).on('ready.jstree', () => {
-                    $(tree).jstree("open_all");
-                });
-            }
-            self.update();
-        }
-
-});
-
 riot.tag2('ninput', '<input ref="input" type="{opts.type}" name="{opts.name}" riot-value="{opts.value}" required="" autocomplete="off"> <div ref="clear" class="clear">x</div> <label>{opts.title}</label>', 'ninput,[data-is="ninput"]{ margin: 0; margin-top: 5px; padding: 10px; font-size: 14px; display: inline-block; position: relative; height: auto; width: 100%; background: transparent; box-shadow: 0 5px 10px solid rgba(0, 0, 0, .2); } ninput input,[data-is="ninput"] input{ display: inline-block; padding: 20px 0 10px 0; margin-bottom: 0px; width: calc(100% - 25px); background-color: whitesmoke; box-sizing: border-box; box-shadow: none; outline: none; border: none; font-size: 14px; box-shadow: 0 0 0px 1000px white inset; border-bottom: 2px solid #999; } ninput .clear,[data-is="ninput"] .clear{ display: inline-block; margin: 0; padding: 0px 6px; font-size: 12px; font-weight: bold; width: 21px; height: 21px; color: white; cursor: pointer; user-select: none; border: 1px solid red; border-radius: 50%; background: rgba(255, 100, 100, .75); } ninput .clear:hover,[data-is="ninput"] .clear:hover{ color: yellow; background: rgba(255, 0, 0, .8); } ninput input:-webkit-autofill,[data-is="ninput"] input:-webkit-autofill,ninput input:-webkit-autofill:hover,[data-is="ninput"] input:-webkit-autofill:hover,ninput input:-webkit-autofill:focus,[data-is="ninput"] input:-webkit-autofill:focus{ font-size: 14px; transition: background-color 5000s ease-in-out 0s; } ninput label,[data-is="ninput"] label{ position: absolute; top: 30px; left: 14px; color: #555; transition: .2s; pointer-events: none; } ninput input:focus ~ label,[data-is="ninput"] input:focus ~ label{ top: 5px; left: 10px; color: #f7497d; font-weight: bold; } ninput input:-webkit-autofill ~ label,[data-is="ninput"] input:-webkit-autofill ~ label,ninput input:valid ~ label,[data-is="ninput"] input:valid ~ label{ top: 5px; left: 10px; color: cornflowerblue; font-weight: bold; } ninput input:focus,[data-is="ninput"] input:focus{ border-bottom: 2px solid #f7497d; } ninput input:valid,[data-is="ninput"] input:valid{ border-bottom: 2px solid cornflowerblue; }', '', function(opts) {
 
 
@@ -320,10 +219,180 @@ riot.tag2('nselect', '<select ref="input"> <option each="{item in items}" riot-v
 
 });
 
+riot.tag2('osd', '<div ref="osd-ctrl" class="osd error"> <label style="margin: 0 auto; padding: 0;"></label> </div>', 'osd,[data-is="osd"]{ display: inline-block; position: absolute; margin: 0 auto; padding: 0; left: 50px; right: 50px; bottom: 50px; z-index: 1000; background-color: transparent; } osd .osd,[data-is="osd"] .osd{ display: block; position: relative; margin: 0 auto; padding: 5px; height: auto; width: 200px; color: white; background-color: rgba(0, 0, 0, .7); text-align: center; border: 1; border-color: rgba(0, 0, 0, 1); border-radius: 8px; user-select: none; visibility: hidden; } osd .osd.show,[data-is="osd"] .osd.show{ visibility: visible; } osd .osd.show.info,[data-is="osd"] .osd.show.info{ color: whitesmoke; background-color: rgba(0, 0, 0, .7); border-color: rgba(0, 0, 0, 1); } osd .osd.show.warn,[data-is="osd"] .osd.show.warn{ color: black; background-color: rgba(255, 255, 0, .7); border-color: rgba(255, 255, 0, 1); } osd .osd.show.error,[data-is="osd"] .osd.show.error{ color: yellow; background-color: rgba(255, 0, 0, .7); border-color: rgba(255, 0, 0, 1); }', '', function(opts) {
+
+
+        let self = this;
+
+        let ctrl;
+        let initCtrls = () => {
+            ctrl = self.refs['osd-ctrl']
+        }
+        let freeCtrls = () => {
+            ctrl = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.ShowOsd, showOsd)
+            addEvt(events.name.UpdateOsd, updateOsd)
+            addEvt(events.name.HideOsd, hideOsd)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.HideOsd, hideOsd)
+            delEvt(events.name.UpdateOsd, updateOsd)
+            delEvt(events.name.ShowOsd, showOsd)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let showOsd = () => {
+            ctrl.classList.add('show')
+            self.update();
+        }
+        let updateOsd = (e) => {
+            let data = e.detail.data;
+            ctrl.innerHTML = data.msg;
+            if (data.type === 'warn') {
+                ctrl.classList.remove('info')
+                ctrl.classList.add('warn')
+                ctrl.classList.remove('error')
+            }
+            else if (data.type === 'error') {
+                ctrl.classList.remove('info')
+                ctrl.classList.remove('warn')
+                ctrl.classList.add('error')
+            }
+            else {
+                ctrl.classList.add('info')
+                ctrl.classList.remove('warn')
+                ctrl.classList.remove('error')
+            }
+            self.update();
+        }
+        let hideOsd = () => {
+            ctrl.innerHTML = '';
+            ctrl.classList.remove('info')
+            ctrl.classList.remove('warn')
+            ctrl.classList.remove('error')
+            ctrl.classList.remove('show')
+            self.update();
+        }
+});
 riot.tag2('ntabcontrol', '', '', '', function(opts) {
 });
 
 riot.tag2('ntabpage', '', '', '', function(opts) {
+});
+
+riot.tag2('ncheckedtree', '<div class="ntree-container"> <div ref="tree" class="tree"></div> </div> <label>{opts.title}</label>', 'ncheckedtree,[data-is="ncheckedtree"]{ margin: 0; margin-top: 5px; padding: 10px; font-size: 14px; display: inline-block; position: relative; height: auto; width: 100%; background: transparent; box-shadow: 0 5px 10px solid rgba(0, 0, 0, .2); } ncheckedtree .ntree-container,[data-is="ncheckedtree"] .ntree-container{ display: block; padding: 20px 0 10px 0; margin-bottom: 0px; width: calc(100% - 25px); background-color: whitesmoke; box-sizing: border-box; box-shadow: none; outline: none; border: none; font-size: 14px; box-shadow: 0 0 0px 1000px white inset; border-radius: 2px; border-bottom: 2px solid cornflowerblue; overflow: hidden; } ncheckedtree .ntree-container .tree,[data-is="ncheckedtree"] .ntree-container .tree{ width: 100%; border: 1px solid silver; border-radius: 2px; height: 100px; min-height: 100px; max-height: 100px; overflow: auto; } ncheckedtree label,[data-is="ncheckedtree"] label{ position: absolute; top: 5px; left: 10px; transition: .2s; pointer-events: none; color: cornflowerblue; font-weight: bold; }', '', function(opts) {
+
+
+        let self = this;
+        let fldmap = { valueField:'id', textField:'text', parentField: '#' }
+
+        let tree, clear;
+
+        let initCtrls = () => {
+            tree = self.refs['tree'];
+            self.setup();
+        }
+        let freeCtrls = () => {
+            tree = null;
+        }
+        let clearInputs = () => {
+            if (tree) {
+                $(tree).jstree().deselect_node(this);
+            }
+        }
+
+        let bindEvents = () => {}
+        let unbindEvents = () => {}
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            clearInputs();
+        });
+
+        this.clear = () => { clearInputs(); }
+        this.focus = () => { if (tree) tree.focus(); }
+
+        let hasValue = (val) => {
+            return (val !== undefined && val !== null);
+        }
+        let setSelectedItems = (items) => {
+            if (tree && items && items.length > 0) {
+                let map = items.map(item => { return item.id })
+                $(tree).jstree(true).check_node(map)
+            }
+        }
+        let getSelectedItems = () => {
+            let ret = [];
+            if (tree) {
+                ret = $(tree).jstree(true).get_checked(true);
+            }
+            return ret;
+        }
+        this.selectedItems = (items) => {
+            let ret;
+            if (tree) {
+                if (hasValue(items)) {
+                    setSelectedItems(items);
+                }
+                else {
+                    ret = getSelectedItems();
+                }
+            }
+            return ret;
+        }
+        this.setup = (values, fldMap) => {
+            if (tree) {
+                fldmap = fldMap;
+                let data = [];
+                if (values) {
+                    values.forEach(val => {
+                        let item = {
+                            id: String(val[fldmap.valueField]),
+                            text: val[fldmap.textField],
+                            parent: '#'
+                        }
+                        if (fldmap.parentField && val[fldmap.parentField]) {
+
+                            item.parent = val[fldmap.parentField];
+                        }
+                        item.data = val;
+                        data.push(item);
+                    });
+                }
+
+                $(tree).jstree("destroy");
+                $(tree).jstree({
+                    'core': {
+                        data: data,
+                        "multiple" : true
+                    },
+                    "checkbox" : { "keep_selected_style" : false, two_state: true },
+                    "plugins" : [ "wholerow", "checkbox", "json_data" ]
+                }).on('ready.jstree', () => {
+                    $(tree).jstree("open_all");
+                });
+            }
+            self.update();
+        }
+
 });
 
 riot.tag2('ntree', '<div class="ntree-container"> <div ref="tree" class="tree"></div> </div> <label>{opts.title}</label>', 'ntree,[data-is="ntree"]{ margin: 0; margin-top: 5px; padding: 10px; font-size: 14px; display: inline-block; position: relative; height: auto; width: 100%; background: transparent; box-shadow: 0 5px 10px solid rgba(0, 0, 0, .2); } ntree .ntree-container,[data-is="ntree"] .ntree-container{ display: block; padding: 20px 0 10px 0; margin-bottom: 0px; width: calc(100% - 25px); background-color: whitesmoke; box-sizing: border-box; box-shadow: none; outline: none; border: none; font-size: 14px; box-shadow: 0 0 0px 1000px white inset; border-radius: 2px; border-bottom: 2px solid cornflowerblue; overflow: hidden; } ntree .ntree-container .tree,[data-is="ntree"] .ntree-container .tree{ width: 100%; border: 1px solid silver; border-radius: 2px; height: 100px; min-height: 100px; max-height: 100px; overflow: auto; } ntree label,[data-is="ntree"] label{ position: absolute; top: 5px; left: 10px; transition: .2s; pointer-events: none; color: cornflowerblue; font-weight: bold; }', '', function(opts) {
@@ -434,84 +503,17 @@ riot.tag2('ntree', '<div class="ntree-container"> <div ref="tree" class="tree"><
 
 });
 
-riot.tag2('osd', '<div ref="osd-ctrl" class="osd error"> <label style="margin: 0 auto; padding: 0;"></label> </div>', 'osd,[data-is="osd"]{ display: inline-block; position: absolute; margin: 0 auto; padding: 0; left: 50px; right: 50px; bottom: 50px; z-index: 1000; background-color: transparent; } osd .osd,[data-is="osd"] .osd{ display: block; position: relative; margin: 0 auto; padding: 5px; height: auto; width: 200px; color: white; background-color: rgba(0, 0, 0, .7); text-align: center; border: 1; border-color: rgba(0, 0, 0, 1); border-radius: 8px; user-select: none; visibility: hidden; } osd .osd.show,[data-is="osd"] .osd.show{ visibility: visible; } osd .osd.show.info,[data-is="osd"] .osd.show.info{ color: whitesmoke; background-color: rgba(0, 0, 0, .7); border-color: rgba(0, 0, 0, 1); } osd .osd.show.warn,[data-is="osd"] .osd.show.warn{ color: black; background-color: rgba(255, 255, 0, .7); border-color: rgba(255, 255, 0, 1); } osd .osd.show.error,[data-is="osd"] .osd.show.error{ color: yellow; background-color: rgba(255, 0, 0, .7); border-color: rgba(255, 0, 0, 1); }', '', function(opts) {
-
-
-        let self = this;
-
-        let ctrl;
-        let initCtrls = () => {
-            ctrl = self.refs['osd-ctrl']
-        }
-        let freeCtrls = () => {
-            ctrl = null;
-        }
-
-        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
-        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
-
-        let bindEvents = () => {
-            addEvt(events.name.ShowOsd, showOsd)
-            addEvt(events.name.UpdateOsd, updateOsd)
-            addEvt(events.name.HideOsd, hideOsd)
-        }
-        let unbindEvents = () => {
-            delEvt(events.name.HideOsd, hideOsd)
-            delEvt(events.name.UpdateOsd, updateOsd)
-            delEvt(events.name.ShowOsd, showOsd)
-        }
-
-        this.on('mount', () => {
-            initCtrls();
-            bindEvents();
-        });
-        this.on('unmount', () => {
-            unbindEvents();
-            freeCtrls();
-        });
-
-        let showOsd = () => {
-            ctrl.classList.add('show')
-            self.update();
-        }
-        let updateOsd = (e) => {
-            let data = e.detail.data;
-            ctrl.innerHTML = data.msg;
-            if (data.type === 'warn') {
-                ctrl.classList.remove('info')
-                ctrl.classList.add('warn')
-                ctrl.classList.remove('error')
-            }
-            else if (data.type === 'error') {
-                ctrl.classList.remove('info')
-                ctrl.classList.remove('warn')
-                ctrl.classList.add('error')
-            }
-            else {
-                ctrl.classList.add('info')
-                ctrl.classList.remove('warn')
-                ctrl.classList.remove('error')
-            }
-            self.update();
-        }
-        let hideOsd = () => {
-            ctrl.innerHTML = '';
-            ctrl.classList.remove('info')
-            ctrl.classList.remove('warn')
-            ctrl.classList.remove('error')
-            ctrl.classList.remove('show')
-            self.update();
-        }
+riot.tag2('napp', '<div class="app-area"> <yield></yield> </div>', 'napp,[data-is="napp"]{ display: grid; margin: 0 auto; padding: 0; height: 100vh; width: 100vw; grid-template-areas: \'app-area\'; background: cornsilk; overflow: hidden; } napp>.app-area,[data-is="napp"]>.app-area{ grid-area: app-area; position: relative; display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: \'navi-area\' \'scrn-area\' \'stat-area\'; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } napp>.app-area>:not(navibar):not(screen):not(statusbar),[data-is="napp"]>.app-area>:not(navibar):not(screen):not(statusbar){ display: none; } napp>.app-area>navibar:first-child,[data-is="napp"]>.app-area>navibar:first-child{ grid-area: navi-area; padding: 0 5px; } napp>.app-area>navibar:not(:first-child),[data-is="napp"]>.app-area>navibar:not(:first-child){ grid-area: navi-area; display: none; } napp>.app-area>screen,[data-is="napp"]>.app-area>screen{ grid-area: scrn-area; padding: 5px; } napp>.app-area>statusbar:last-child,[data-is="napp"]>.app-area>statusbar:last-child{ grid-area: stat-area; padding: 0 5px; } napp>.app-area>statusbar:not(:last-child),[data-is="napp"]>.app-area>statusbar:not(:last-child){ grid-area: stat-area; display: none; }', '', function(opts) {
 });
-riot.tag2('app', '<div class="app-area"> <yield></yield> </div>', 'app,[data-is="app"]{ display: grid; margin: 0 auto; padding: 0; height: 100vh; width: 100vw; grid-template-areas: \'app-area\'; background: cornsilk; overflow: hidden; } app>.app-area,[data-is="app"]>.app-area{ grid-area: app-area; position: relative; display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: \'navi-area\' \'scrn-area\' \'stat-area\'; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } app>.app-area>:not(navibar):not(screen):not(statusbar),[data-is="app"]>.app-area>:not(navibar):not(screen):not(statusbar){ display: none; } app>.app-area>navibar:first-child,[data-is="app"]>.app-area>navibar:first-child{ grid-area: navi-area; padding: 0 5px; } app>.app-area>navibar:not(:first-child),[data-is="app"]>.app-area>navibar:not(:first-child){ grid-area: navi-area; display: none; } app>.app-area>screen,[data-is="app"]>.app-area>screen{ grid-area: scrn-area; padding: 5px; } app>.app-area>statusbar:last-child,[data-is="app"]>.app-area>statusbar:last-child{ grid-area: stat-area; padding: 0 5px; } app>.app-area>statusbar:not(:last-child),[data-is="app"]>.app-area>statusbar:not(:last-child){ grid-area: stat-area; display: none; }', '', function(opts) {
+riot.tag2('screen', '<yield></yield>', 'screen,[data-is="screen"]{ position: relative; display: none; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } screen.active,[data-is="screen"].active,screen.show,[data-is="screen"].show{ display: block; } screen.hide,[data-is="screen"].hide{ display: hidden; }', '', function(opts) {
 });
 riot.tag2('navi-item', '<yield></yield>', 'navi-item,[data-is="navi-item"]{ position: relative; display: inline-block; margin: 2px; padding: 2px; font-size: 1.1rem; vertical-align: baseline; cursor: default; user-select: none; white-space: nowrap; overflow: hidden; } navi-item.center,[data-is="navi-item"].center{ flex-grow: 1; text-align: center; } navi-item.right,[data-is="navi-item"].right{ justify-self: flex-end; }', '', function(opts) {
 });
 riot.tag2('navibar', '<yield></yield>', 'navibar,[data-is="navibar"]{ position: relative; display: flex; align-items: baseline; justify-content: space-between; margin: 0; padding: 1px 4px; width: 100%; color: white; background: cornflowerblue; overflow: hidden; }', '', function(opts) {
 });
-riot.tag2('screen', '<yield></yield>', 'screen,[data-is="screen"]{ position: relative; display: none; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } screen.active,[data-is="screen"].active,screen.show,[data-is="screen"].show{ display: block; } screen.hide,[data-is="screen"].hide{ display: hidden; }', '', function(opts) {
-});
 riot.tag2('statusbar', '<yield></yield>', 'statusbar,[data-is="statusbar"]{ position: relative; display: block; margin: 0; padding: 0; width: 100%; user-select: none; white-space: nowrap; overflow: hidden; }', '', function(opts) {
+});
+riot.tag2('rater-app', '<napp> <navibar> <navi-item> <span class="fas fa-home"></span> <span>Home</span> </navi-item> <navi-item>menu 1</navi-item> <navi-item>menu 2</navi-item> <navi-item class="center"></navi-item> <navi-item class="right">right 1</navi-item> <navi-item class="right"> <span class="fas fa-bars"></span> </navi-item> </navibar> <yield></yield> <statusbar></statusbar> </napp>', 'rater-app,[data-is="rater-app"]{ position: relative; display: block; margin: 0; padding: 0; width: auto; height: auto; overflow: hidden; }', '', function(opts) {
 });
 riot.tag2('rater-home', '<div class="content-area"> <div class="padtop"></div> <div class="padtop"></div> <div class="padtop"></div> <div class="padtop"></div> <div class="padtop"></div> <div class="padtop"></div> <div ref="userSignIn" class="user-signin"> <div class="group-header"> <h4><span class="fa fa-user-lock">&nbsp;</span>&nbsp;{content.title}</h4> <div class="padtop"></div> </div> <div class="group-body"> <div class="padtop"></div> <ninput ref="userName" title="{content.label.userName}" type="text" name="userName"></ninput> <ninput ref="passWord" title="{content.label.passWord}" type="password" name="pwd"></ninput> <div class="padtop"></div> <button ref="submit"> <span class="fas fa-user">&nbsp;</span> {content.label.submit} </button> <div class="padtop"></div> <div class="padtop"></div> </div> </div> <div ref="userSelection" class="user-selection hide"> <div class="group-header"> <h4>{content.label.selectAccount}</h4> <div class="padtop"></div> </div> <div class="group-body"> <div class="padtop"></div> <div class="padtop"></div> <company-selection ref="userList" companyname="{content.label.companyName}" fullname="{content.label.fullName}"> </company-selection> <div class="padtop"></div> <button ref="cancel"> <span class="fa fa-user-times">&nbsp;</span> Cancel </button> <div class="padtop"></div> <div class="padtop"></div> </div> </div> </div>', 'rater-home,[data-is="rater-home"]{ margin: 0 auto; padding: 2px; position: relative; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'content-area\'; overflow: hidden; } rater-home .content-area,[data-is="rater-home"] .content-area{ grid-area: content-area; margin: 0 auto; padding: 0px; position: relative; display: block; width: 100%; height: 100%; background-color: white; background-image: url(\'public/assets/images/backgrounds/bg-15.jpg\'); background-blend-mode: multiply, luminosity; background-position: center; background-repeat: no-repeat; background-size: cover; } rater-home .content-area .user-signin,[data-is="rater-home"] .content-area .user-signin,rater-home .content-area .user-selection,[data-is="rater-home"] .content-area .user-selection{ display: block; position: relative; margin: 0 auto; padding: 0; } rater-home .content-area .user-signin.hide,[data-is="rater-home"] .content-area .user-signin.hide,rater-home .content-area .user-selection.hide,[data-is="rater-home"] .content-area .user-selection.hide{ display: none; } rater-home .padtop,[data-is="rater-home"] .padtop,rater-home .content-area .padtop,[data-is="rater-home"] .content-area .padtop,rater-home .content-area .user-signin .group-header .padtop,[data-is="rater-home"] .content-area .user-signin .group-header .padtop,rater-home .content-area .user-signin .group-body .padtop,[data-is="rater-home"] .content-area .user-signin .group-body .padtop,rater-home .content-area .user-selection .group-header .padtop,[data-is="rater-home"] .content-area .user-selection .group-header .padtop,rater-home .content-area .user-selection .group-body .padtop,[data-is="rater-home"] .content-area .user-selection .group-body .padtop{ display: block; margin: 0 auto; width: 100%; min-height: 10px; } rater-home .content-area .user-signin .group-header,[data-is="rater-home"] .content-area .user-signin .group-header,rater-home .content-area .user-selection .group-header,[data-is="rater-home"] .content-area .user-selection .group-header{ display: block; margin: 0 auto; padding: 3px; width: 30%; min-width: 300px; max-width: 500px; opacity: 0.8; background-color: cornflowerblue; border: 1px solid dimgray; border-radius: 8px 8px 0 0; } rater-home .content-area .user-signin .group-header h4,[data-is="rater-home"] .content-area .user-signin .group-header h4,rater-home .content-area .user-selection .group-header h4,[data-is="rater-home"] .content-area .user-selection .group-header h4{ display: block; margin: 0 auto; padding: 0; padding-top: 5px; font-size: 1.1rem; text-align: center; color: whitesmoke; user-select: none; } rater-home .content-area .user-signin .group-body,[data-is="rater-home"] .content-area .user-signin .group-body,rater-home .content-area .user-selection .group-body,[data-is="rater-home"] .content-area .user-selection .group-body{ display: flex; flex-direction: column; align-items: center; margin: 0 auto; padding: 0; height: auto; width: 30%; min-width: 300px; max-width: 500px; opacity: 0.8; background-color: white; border: 1px solid dimgray; border-radius: 0 0 8px 8px; } rater-home .content-area .user-signin .group-body ninput,[data-is="rater-home"] .content-area .user-signin .group-body ninput,rater-home .content-area .user-selection .group-body ninput,[data-is="rater-home"] .content-area .user-selection .group-body ninput{ background-color: white; } rater-home .content-area .user-signin .group-body button,[data-is="rater-home"] .content-area .user-signin .group-body button,rater-home .content-area .user-selection .group-body button,[data-is="rater-home"] .content-area .user-selection .group-body button{ display: inline-block; margin: 5px auto; padding: 10px 15px; color: forestgreen; font-weight: bold; cursor: pointer; width: 45%; text-decoration: none; vertical-align: middle; }', '', function(opts) {
 
