@@ -34,7 +34,7 @@ const routes = class {
     }
 }
 
-router.get('/app', routes.home)
+router.get('/deviceapp', routes.home)
 
 const init_routes = (svr) => {
     svr.route('/dev/riot/components', router);

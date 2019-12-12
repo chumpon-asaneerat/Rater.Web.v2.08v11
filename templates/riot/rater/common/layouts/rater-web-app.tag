@@ -1,4 +1,4 @@
-<rater-app>
+<rater-web-app>
     <napp>
         <navibar>
             <navi-item>
@@ -27,4 +27,4 @@
             overflow: hidden;
         }
     </style>
-</rater-app>
+</rater-web-app>
