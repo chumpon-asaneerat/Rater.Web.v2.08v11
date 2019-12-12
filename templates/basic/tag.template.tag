@@ -1,7 +1,29 @@
 <tag>
+    <h1 class="header1">In app header 1</h1>
+    <h1 class="header1">In app header 2</h1>
+    <div class="subitem">
+        <yield/>
+    </div>    
     <style>
+        /* 
+        all css classeds that need has local scope
+        need to used :scope>.className for specificed class that used locally
+        and required to add div with yield inside to make the outside element
+        has selector not match internal css class.
+        */
         :scope {
-            margin: 0 auto;
+            margin: 0;
+            padding: 0;
+        }
+        /* Selects all elements that has class 'header1' where the parent is a '':scope' element */
+        :scope>.header1 {
+            margin: 0;
+            padding: 0;
+            color: red;
+        }
+        :scope>.subitem {
+            margin: 0;
+            padding: 0;
         }
     </style>
     <script>
