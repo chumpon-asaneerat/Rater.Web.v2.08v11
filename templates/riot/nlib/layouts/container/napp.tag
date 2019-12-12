@@ -35,25 +35,25 @@
             display: none;
         }
         /* navibar (header main menu) */
-        :scope>.app-area>navibar:first-child {
+        :scope>.app-area navibar:first-child {
             grid-area: navi-area;
             padding: 0 5px;
         }
-        :scope>.app-area>navibar:not(:first-child) {
+        :scope>.app-area navibar:not(:first-child) {
             grid-area: navi-area;
             display: none;
         }
         /* screen(s) */
-        :scope>.app-area>screen {
+        :scope>.app-area screen {
             grid-area: scrn-area;
             padding: 5px;
         }
         /* statusbar (footer) */
-        :scope>.app-area>statusbar:last-child {
+        :scope>.app-area statusbar:last-child {
             grid-area: stat-area;
             padding: 0 5px;
         }
-        :scope>.app-area>statusbar:not(:last-child) {
+        :scope>.app-area statusbar:not(:last-child) {
             grid-area: stat-area;
             display: none;
         }

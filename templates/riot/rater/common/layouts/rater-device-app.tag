@@ -1,6 +1,6 @@
 <rater-device-app>
     <napp>
-    <yield/>
+        <yield/>
     </napp>
     <style>
         :scope {
