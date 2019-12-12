@@ -37,7 +37,7 @@
         /* navibar (header main menu) */
         :scope>.app-area navibar:first-child {
             grid-area: navi-area;
-            padding: 0 5px;
+            /* padding: 0 5px; */
         }
         :scope>.app-area navibar:not(:first-child) {
             grid-area: navi-area;
@@ -46,12 +46,12 @@
         /* screen(s) */
         :scope>.app-area screen {
             grid-area: scrn-area;
-            padding: 5px;
+            /* padding: 5px; */
         }
         /* statusbar (footer) */
         :scope>.app-area statusbar:last-child {
             grid-area: stat-area;
-            padding: 0 5px;
+            /* padding: 0 5px; */
         }
         :scope>.app-area statusbar:not(:last-child) {
             grid-area: stat-area;
