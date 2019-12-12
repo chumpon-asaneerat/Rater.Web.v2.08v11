@@ -13,9 +13,11 @@
             background: cornflowerblue;
             overflow: hidden;
         }
+        /*
         :scope>.app-area>:not(navi-item):not(navi-drop-item):not(navi-input-item) {
             display: none;
         }
+        */
         /*
         :scope:not(:first-child) { color: blue; }
         :scope:first-child { color: red; }
