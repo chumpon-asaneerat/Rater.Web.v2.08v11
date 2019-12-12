@@ -50,8 +50,36 @@ Project:
         ☐ Test for question set model (multiple slides) in fabric.js.
         ☐ Supports auto update preview canvas list (with debounce).
     riot.js:
-        ☐ TabControl and TagPage(s).
-        ☐ Slide preview (Intro Slide [video, image, animation], Question Slide [all], End Slide [audio]).
+        Layout:
+            ✔ napp tag rewrite. @done(19-12-12 09:39)
+            Navibar:
+                ✔ navibar tag rewrite. @done(19-12-12 09:40)
+                ✔ navi-item tag rewrite. @done(19-12-12 09:40)
+            Statusbar:
+                ✔ statusbar tag rewrite. @done(19-12-12 09:40)
+                ☐ status-item tag.
+            Screen:
+                ✔ screen tag rewrite. @done(19-12-12 09:41)
+            Sidebar:
+                ☐ sidebar tag rewrite.
+                ☐ sidebar-item tag rewrite.
+            ToolWindow:
+                ☐ 
+        Controls:
+            Input:
+                ✔ ninput tag ported. @done(19-12-12 09:42)
+                ✔ nselect tag ported. @done(19-12-12 09:42)
+            Tree:
+                ✔ ntree tag ported. @done(19-12-12 09:42)
+                ✔ ncheckedtree tag ported. @done(19-12-12 09:43)
+            Tab:
+                ☐ ntabcontrol tag.
+                ☐ ntagpage tag.
+            Special controls:
+                ☐ Slide preview (Intro Slide [video, image, animation], Question Slide [all], End Slide [audio]).
+                Slide:
+                    ☐ slidepreview tag.
+                    ☐ 
     NLib Server Module:
         Web Server:
             ☐ Add supports read port from command line arguments.
