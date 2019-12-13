@@ -32,7 +32,6 @@ const routes = class {
     static home(req, res) {
         WebServer.sendFile(req, res, __dirname, 'index.html');
     }
-
     static getCss(req, res) {
         WebServer.sendFile(req, res, __dirname, 'style.css');
     }

@@ -32,9 +32,17 @@ const routes = class {
     static home(req, res) {
         WebServer.sendFile(req, res, __dirname, 'index.html');
     }
+    static getCss(req, res) {
+        WebServer.sendFile(req, res, __dirname, 'style.css');
+    }
+    static getJs(req, res) {
+        WebServer.sendFile(req, res, __dirname, 'script.js');
+    }
 }
 
 router.get('/tosvg', routes.home)
+router.get('/tosvg/style.css', routes.getCss)
+router.get('/tosvg/script.js', routes.getJs)
 
 const init_routes = (svr) => {
     svr.route('/dev/fabricjs', router);
