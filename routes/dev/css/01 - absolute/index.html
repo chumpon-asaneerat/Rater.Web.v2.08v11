@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home Page.</title>
+    <style>
+        .parent {
+            position: relative;
+            display: inline-block;
+            left: 300px;
+            top: 100px;
+            height: 300px;
+            width: 300px;
+            background: silver;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+        .abs-child {
+            position: absolute;
+            display: inline-block;
+            right: 5px;
+            bottom: 5px;
+            height: 100px;
+            width: 100px;
+            background: cornflowerblue;
+            border: 1px solid black;
+            border-radius: 5px;
+
+            overflow: auto;
+        }
+        .sub-child {
+            position: relative;
+            display: inline-block;
+            left: 10px;
+            top: 20px;
+            height: 50px;
+            width: 50px;            
+            background: forestgreen;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        .sub-child-2 {
+            position: relative;
+            display: inline-block;
+            left: 10px;
+            top: 120px;
+            height: 50px;
+            width: 50px;            
+            background: forestgreen;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="parent">
+        <div class="abs-child">
+            <div class="sub-child"></div>
+            <div class="sub-child-2"></div>
+        </div>
+    </div>
+
+    <script>
+    </script>
+</body>
+</html>
