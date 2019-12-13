@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dashboard sample 2.</title>
+    <!-- Font Awesome -->
+    <link href="/dist/css/fontawesome.all.min.css" rel="stylesheet" type="text/css" />
+    <!-- JQuery UI -->
+    <link href="/dist/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap 4 -->
+    <link href="/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css" />
+    <!-- Flag and Emoji icons -->
+    <link href="/dist/css/flag-icon.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/emojisymbol.min.css" rel="stylesheet" type="text/css" />
+    <!-- highcharts css -->
+    <link href="/dist/css/highcharts.css" rel="stylesheet" type="text/css" />
+    <style>
+        .app {
+            display: grid;
+            margin: 0 auto;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            grid-template-areas: 
+                'app-area';
+            background: cornsilk;
+            overflow: hidden;
+        }
+        .app-area {
+            grid-area: app-area;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+            grid-template-areas: 
+                'navi-area'
+                'scrn-area';
+            margin: 0 auto;
+            padding: 0;
+            /* text-align: center; */
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .navi-area {
+            grid-area: navi-area;
+            /* display: block; */
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow: hidden;
+            /* border: 1px dotted yellowgreen; */
+        }
+        .scrn-area {
+            grid-area: scrn-area;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: 
+                'sidebar client-area';
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow: hidden;
+            /* border: 1px dotted red; */
+        }
+        .navibar {
+            display: flex;            
+            align-items: baseline;
+            justify-content: space-between;
+            margin: 0;
+            padding: 1px 4px;
+            width: 100%;
+            color: white;
+            background: cornflowerblue;
+        }
+        .navibar.hide {
+            display: none;
+        }
+        .navibar .navitem {
+            display: inline-block;
+            margin: 2px;
+            padding: 2px;
+            font-size: 1.1rem;
+            vertical-align: baseline;
+            cursor: default;
+        }
+        .navibar .navitem.center {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .navibar .navitem.right {
+            justify-self: flex-end;
+        }
+        .sidebar {
+            grid-area: sidebar;
+            margin: 0;
+            padding: 5px;
+            width: 50px;
+            height: 100%;
+            border: 1px dotted orange;
+        }
+        .client-area {
+            grid-area: client-area;
+            display: grid;
+            grid-auto-flow: row;
+            grid-auto-rows: max-content;
+            grid-gap: 10px;
+
+            margin: 0;
+            padding: 5px;
+            width: 100%;
+            height: 100%;
+            border: 1px dotted navy;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="app-area">
+            <div class="navi-area">
+                <div class="navibar">
+                    <div class="navitem">
+                        <span class="fas fa-home"></span>
+                        <span>Home</span>
+                    </div>
+                    <div class="navitem">menu 1</div>
+                    <div class="navitem">menu 2</div>
+                    <div class="navitem center"><!-- fill up space. -->center</div>
+                    <div class="navitem right">right 1</div>
+                    <div class="navitem right">
+                        <span class="fas fa-bars"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="scrn-area">
+                <div class="sidebar">
+                    
+                </div>
+                <div class="client-area">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JQuery -->
+    <script src="/dist/js/jquery.min.js"></script>
+    <!-- JQuery UI -->
+    <script src="/dist/js/jquery-ui.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/dist/js/popper.min.js"></script>
+    <script src="/dist/js/tooltip.min.js"></script>
+    <script src="/dist/js/bootstrap.min.js">/* bootstrap required jQuery and popperjs. */</script>
+    <!-- Moment.js -->
+    <script src="/dist/js/moment.min.js"></script>
+    <!-- highcharts -->
+    <script src="/dist/js/highcharts.js"></script>
+
+    <!-- nlib -->
+    <script src="/dist/js/nlib.js"></script>
+    <script>
+        //console.log('page loaded.');
+    </script>
+</body>
+</html>
