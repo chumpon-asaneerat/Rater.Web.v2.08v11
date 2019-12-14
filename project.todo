@@ -56,6 +56,8 @@ Project:
             Navibar:
                 ✔ navibar tag rewrite. @done(19-12-12 09:40)
                 ✔ navi-item tag rewrite. @done(19-12-12 09:40)
+                ☐ Update css selector from tag to class.
+                ☐ Supports various types of navi-item (via css class) with custom event.
             Statusbar:
                 ✔ statusbar tag rewrite. @done(19-12-12 09:40)
                 ☐ status-item tag.
