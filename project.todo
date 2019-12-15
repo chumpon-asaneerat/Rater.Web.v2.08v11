@@ -1,5 +1,19 @@
 Project:
     Rater Web:
+        Database:
+            Delete:
+                ☐ Delete vote.
+                ☐ Delete member.
+                ☐ Delete org.
+                ☐ Delete branch.
+                ☐ Delete customer.
+            Reports:
+                ☐ Get Bar graph Vote Summary -> last 7 days (auto period).
+                ☐ Get Pie chart Vote Summary -> last 7 days (auto period).
+                ☐ Get Bar graph Vote Summary -> last month (auto period).
+                ☐ Get Pie chart Vote Summary -> last month (auto period).
+                ☐ Get Bar graph Vote Summary -> last year (auto period).
+                ☐ Get Pie chart Vote Summary -> last year (auto period).
         Routes:
             View:
                 EDL:
@@ -90,6 +104,14 @@ Project:
                 Slide:
                     ☐ slidepreview tag.
                     ☐ 
+        Rater:
+            Controls:
+                Dashboard Items:
+                    ☐ AVG Value.
+                    ☐ CNT Valeu.
+                    ☐ Question Slide View.
+                    ☐ Bar graph View.
+                    ☐ Pie chart View.
     NLib Server Module:
         Web Server:
             ☐ Add supports read port from command line arguments.
