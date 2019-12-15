@@ -3,6 +3,10 @@ Project:
         Database:
             Delete:
                 ☐ Delete vote.
+                ☐ Delete qslide item.
+                ☐ Delete qslide.
+                ☐ Delete qset.
+                ☐ Delete device.
                 ☐ Delete member.
                 ☐ Delete org.
                 ☐ Delete branch.
