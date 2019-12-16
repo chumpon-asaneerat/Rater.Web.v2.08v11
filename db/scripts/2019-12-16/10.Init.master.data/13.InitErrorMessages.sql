@@ -333,8 +333,11 @@ BEGIN
     EXEC SaveErrorMsg 4303, N'Cannot be remove default device.'
     -- DELETE VOTE
     EXEC SaveErrorMsg 4351, N'Customer Id cannot be null or empty string.'
-    EXEC SaveErrorMsg 4352, N'Branch Id cannot be null or empty string.'
-    EXEC SaveErrorMsg 4353, N'Cannot be remove default branch.'
+    EXEC SaveErrorMsg 4352, N'Org Id cannot be null or empty string.'
+    EXEC SaveErrorMsg 4353, N'QSet Id cannot be null or empty string.'
+    EXEC SaveErrorMsg 4354, N'QSeq cannot be null.'
+    EXEC SaveErrorMsg 4355, N'VoteSeq cannot be null.'
+    EXEC SaveErrorMsg 4356, N'VoteDate cannot be null.'
 END
 
 GO
