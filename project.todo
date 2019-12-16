@@ -3,9 +3,9 @@ Project:
         Database:
             Delete:
                 ✔ Delete vote. @done(19-12-16 08:28)
-                ☐ Delete qslide item.
-                ☐ Delete qslide.
-                ☐ Delete qset.
+                ✔ Delete qslide item. @done(19-12-16 08:54)
+                ✔ Delete qslide. @done(19-12-16 08:54)
+                ✔ Delete qset. @done(19-12-16 08:54)
                 ✔ Delete device. @done(19-12-16 08:01)
                 ✔ Delete member. @done(19-12-16 07:53)
                 ✔ Delete org. @done(19-12-16 07:53)

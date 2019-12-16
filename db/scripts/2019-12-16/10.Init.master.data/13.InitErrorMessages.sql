@@ -319,13 +319,13 @@ BEGIN
     -- DELETE QSLIDE
     EXEC SaveErrorMsg 4201, N'Customer Id cannot be null or empty string.'
     EXEC SaveErrorMsg 4202, N'Qset Id cannot be null or empty string.'
-    EXEC SaveErrorMsg 4203, N'QSeq cannot be null or empty string.'
+    EXEC SaveErrorMsg 4203, N'QSeq cannot be null.'
     EXEC SaveErrorMsg 4204, N'Cannot be remove qslide that already in used.'
     -- DELETE QSLIDEITEM
     EXEC SaveErrorMsg 4251, N'Customer Id cannot be null or empty string.'
     EXEC SaveErrorMsg 4252, N'Qset Id cannot be null or empty string.'
-    EXEC SaveErrorMsg 4253, N'QSeq cannot be null or empty string.'
-    EXEC SaveErrorMsg 4254, N'QSSeq cannot be null or empty string.'
+    EXEC SaveErrorMsg 4253, N'QSeq cannot be null.'
+    EXEC SaveErrorMsg 4254, N'QSSeq cannot be null.'
     EXEC SaveErrorMsg 4255, N'Cannot be remove qslideitem that already in used.'
     -- DELETE DEVICE
     EXEC SaveErrorMsg 4301, N'Customer Id cannot be null or empty string.'
