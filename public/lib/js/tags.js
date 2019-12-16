@@ -288,10 +288,15 @@ riot.tag2('osd', '<div ref="osd-ctrl" class="osd error"> <label style="margin: 0
             self.update();
         }
 });
-riot.tag2('ntabcontrol', '', '', '', function(opts) {
+riot.tag2('ntabbody', '', 'ntabbody,[data-is="ntabbody"]{ display: block; margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
 });
 
-riot.tag2('ntabpage', '', '', '', function(opts) {
+riot.tag2('ntabcontrol', '', 'ntabcontrol,[data-is="ntabcontrol"]{ position: relative; display: block; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: seashell; }', '', function(opts) {
+});
+
+riot.tag2('ntabheader', '', 'ntabheader,[data-is="ntabheader"]{ display: block; margin: 0; padding: 0; width: 100%; height: auto; overflow: hidden; }', '', function(opts) {
+});
+riot.tag2('ntabpage', '', 'ntabpage,[data-is="ntabpage"]{ display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr; grid-template-areas: \'tab-head-area\' \'tab-body-area\' ; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } ntabpage .tab-head-area,[data-is="ntabpage"] .tab-head-area{ display: block; margin: 0; padding: 0; width: 100%; height: auto; overflow: hidden; } ntabpage .tab-body-area,[data-is="ntabpage"] .tab-body-area{ display: block; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
 });
 
 riot.tag2('ncheckedtree', '<div class="ntree-container"> <div ref="tree" class="tree"></div> </div> <label>{opts.title}</label>', 'ncheckedtree,[data-is="ncheckedtree"]{ margin: 0; margin-top: 5px; padding: 10px; font-size: 14px; display: inline-block; position: relative; height: auto; width: 100%; background: transparent; box-shadow: 0 5px 10px solid rgba(0, 0, 0, .2); } ncheckedtree .ntree-container,[data-is="ncheckedtree"] .ntree-container{ display: block; padding: 20px 0 10px 0; margin-bottom: 0px; width: calc(100% - 25px); background-color: whitesmoke; box-sizing: border-box; box-shadow: none; outline: none; border: none; font-size: 14px; box-shadow: 0 0 0px 1000px white inset; border-radius: 2px; border-bottom: 2px solid cornflowerblue; overflow: hidden; } ncheckedtree .ntree-container .tree,[data-is="ncheckedtree"] .ntree-container .tree{ width: 100%; border: 1px solid silver; border-radius: 2px; height: 100px; min-height: 100px; max-height: 100px; overflow: auto; } ncheckedtree label,[data-is="ncheckedtree"] label{ position: absolute; top: 5px; left: 10px; transition: .2s; pointer-events: none; color: cornflowerblue; font-weight: bold; }', '', function(opts) {

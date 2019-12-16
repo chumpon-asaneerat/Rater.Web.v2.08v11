@@ -1,16 +1,14 @@
-<ntabcontrol>
+<ntabheader>
     <style>
         :scope {
-            position: relative;
             display: block;
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
+            height: auto;
             overflow: hidden;
-            background: seashell;
         }
     </style>
     <script>
     </script>
-</ntabcontrol>
+</ntabheader>
