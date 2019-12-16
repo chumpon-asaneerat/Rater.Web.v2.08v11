@@ -2270,5 +2270,265 @@
                 }
             ]
         }
+    },
+    "DeleteMemberInfo": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T07:21:56.487Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "memberId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "DeleteBranch": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T07:45:58.380Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "branchId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "DeleteOrg": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T07:49:37.263Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "orgId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "DeleteDevice": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T07:57:58.083Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "deviceId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "DeleteVote": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T08:27:52.587Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "orgId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qSetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qSeq",
+                    "type": "int"
+                },
+                {
+                    "name": "voteSeq",
+                    "type": "int"
+                },
+                {
+                    "name": "voteDate",
+                    "type": "datetime"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "DeleteQSlideItem": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T08:44:30.137Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qSetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qSeq",
+                    "type": "int"
+                },
+                {
+                    "name": "qSSeq",
+                    "type": "int"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "DeleteQSlide": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T08:49:14.453Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qSetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qSeq",
+                    "type": "int"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "DeleteQSet": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T08:54:03.977Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qSetId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "GetTopLevelOrgs": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T09:11:53.093Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "enabled",
+                    "type": "bit",
+                    "default": "NULL"
+                }
+            ],
+            "outputs": []
+        }
     }
 }

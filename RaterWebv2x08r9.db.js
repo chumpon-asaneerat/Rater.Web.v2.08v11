@@ -429,6 +429,60 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
+    async DeleteMemberInfo(pObj) {
+        let name = 'DeleteMemberInfo';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async DeleteBranch(pObj) {
+        let name = 'DeleteBranch';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async DeleteOrg(pObj) {
+        let name = 'DeleteOrg';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async DeleteDevice(pObj) {
+        let name = 'DeleteDevice';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async DeleteVote(pObj) {
+        let name = 'DeleteVote';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async DeleteQSlideItem(pObj) {
+        let name = 'DeleteQSlideItem';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async DeleteQSlide(pObj) {
+        let name = 'DeleteQSlide';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async DeleteQSet(pObj) {
+        let name = 'DeleteQSet';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async GetTopLevelOrgs(pObj) {
+        let name = 'GetTopLevelOrgs';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
 }
 
 module.exports = exports = RaterWebv2x08r9;

@@ -102,5 +102,14 @@
     "SetDeviceOrg": true,
     "SetDeviceUser": true,
     "FilterOrgs": true,
-    "FilterMembers": true
+    "FilterMembers": true,
+    "DeleteMemberInfo": true,
+    "DeleteBranch": true,
+    "DeleteOrg": true,
+    "DeleteDevice": true,
+    "DeleteVote": true,
+    "DeleteQSlideItem": true,
+    "DeleteQSlide": true,
+    "DeleteQSet": true,
+    "GetTopLevelOrgs": true
 }
