@@ -6,11 +6,11 @@ Project:
                 ☐ Delete qslide item.
                 ☐ Delete qslide.
                 ☐ Delete qset.
-                ☐ Delete device.
-                ☐ Delete member.
-                ☐ Delete org.
-                ☐ Delete branch.
-                ☐ Delete customer.
+                ✔ Delete device. @done(19-12-16 08:01)
+                ✔ Delete member. @done(19-12-16 07:53)
+                ✔ Delete org. @done(19-12-16 07:53)
+                ✔ Delete branch. @done(19-12-16 07:53)
+                ✔ Delete customer. @done(19-12-16 07:53)
             Orgs:
                 ☐ GetTopLevelOrgs.
             Reports:
