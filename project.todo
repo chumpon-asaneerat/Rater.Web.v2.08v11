@@ -103,8 +103,11 @@ Project:
                 ✔ ntree tag ported. @done(19-12-12 09:42)
                 ✔ ncheckedtree tag ported. @done(19-12-12 09:43)
             Tab:
-                ☐ ntabcontrol tag.
-                ☐ ntagpage tag.
+                ✔ tabcontrol tag. @done(19-12-16 18:03)
+                ✔ tabheaders tag. @done(19-12-16 18:04)
+                ✔ tabheader tag. @done(19-12-16 18:04)
+                ✔ tabpages tag. @done(19-12-16 18:04)
+                ✔ tabpage tag. @done(19-12-16 18:04)
             Special controls:
                 ☐ Slide preview (Intro Slide [video, image, animation], Question Slide [all], End Slide [audio]).
                 Slide:
