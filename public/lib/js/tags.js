@@ -288,17 +288,142 @@ riot.tag2('osd', '<div ref="osd-ctrl" class="osd error"> <label style="margin: 0
             self.update();
         }
 });
-riot.tag2('ntabbody', '', 'ntabbody,[data-is="ntabbody"]{ display: block; margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
+riot.tag2('tabcontrol', '', 'tabcontrol,[data-is="tabcontrol"]{ position: relative; display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr; grid-template-areas: \'tab-headers\' \'tab-pages\'; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: seashell; } tabcontrol tabheaders:first-child,[data-is="tabcontrol"] tabheaders:first-child{ grid-area: tab-headers; display: block; } tabcontrol :not(tabheaders:first-child),[data-is="tabcontrol"] :not(tabheaders:first-child){ display: none; } tabcontrol tabpages:last-child,[data-is="tabcontrol"] tabpages:last-child{ grid-area: tab-pages; display: block; } tabcontrol :not(tabpages:last-child),[data-is="tabcontrol"] :not(tabpages:last-child){ display: none; }', '', function(opts) {
+        let self = this;
+        let headers = null;
+        let panels = null;
+
+        let initCtrls = () => {
+            headers = self.tags['tabheaders']
+            panels = self.tags['tabpages']
+        }
+        let freeCtrls = () => {
+            panels = null;
+            headers = null;
+        }
+
+        this.on('mount', () => { initCtrls(); });
+        this.on('unmount', () => { freeCtrls(); });
+
+        updateHeaders = (tabName) => {
+
+            if (headers) {
+                headers.show(tabName)
+            }
+        }
+
+        updatePanels = (tabName) => {
+
+            if (panels) {
+                panels.show(tabName)
+            }
+        }
+
+        this.setActiveTab = (tabName) => {
+            updateHeaders(tabName);
+            updatePanels(tabName);
+        }
 });
 
-riot.tag2('ntabcontrol', '', 'ntabcontrol,[data-is="ntabcontrol"]{ position: relative; display: block; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: seashell; }', '', function(opts) {
+riot.tag2('tabheader', '<yield></yield>', 'tabheader,[data-is="tabheader"]{ float: left; margin: 0 auto; padding: 4px 16px; margin-top: 2px; vertical-align: baseline; border: 0px solid silver; border-bottom: 0px; border-radius: 6px 6px 0 0; color: navy; background: silver; cursor: pointer; transition: 0.3s; user-select: none; white-space: nowrap; overflow: hidden; } tabheader:hover,[data-is="tabheader"]:hover{ color: whitesmoke; background: forestgreen; border-color: green; } tabheader.active,[data-is="tabheader"].active{ color: whitesmoke; background: cornflowerblue; border-color: royalblue; }', '', function(opts) {
+        let self = this;
+
+        let bindEvents = () => {
+            self.root.addEventListener('click', headerClick)
+        }
+        let unbindEvents = () => {
+            self.root.removeEventListener('click', headerClick)
+        }
+
+        this.on('mount', () => { bindEvents(); });
+        this.on('unmount', () => { unbindEvents(); });
+
+        let headerClick = (evt) => {
+            let tabName = self.getTabName();
+            self.parent.setActiveTab(tabName)
+        }
+
+        this.getTabName = () => {
+            let ret = self.root.getAttribute('for').toLowerCase().trim()
+            return ret
+        }
+        this.show = () => {
+            self.root.classList.add('active')
+        }
+        this.hide = () => {
+            self.root.classList.remove('active')
+        }
+});
+riot.tag2('tabheaders', '<yield></yield>', 'tabheaders,[data-is="tabheaders"]{ position: relative; display: flex; align-items: baseline; justify-content: space-between; margin: 0; padding: 0; width: 100%; height: auto; border: none; background-color: whitesmoke; overflow: hidden; } tabheaders>:not(tabheader),[data-is="tabheaders"]>:not(tabheader){ display: none; }', '', function(opts) {
+        let self = this;
+        let headers = null;
+
+        let initCtrls = () => {
+            headers = self.tags['tabheader']
+            if (headers && headers.length > 0) headers[0].show();
+        }
+        let freeCtrls = () => { headers = null; }
+
+        this.on('mount', () => { initCtrls(); });
+        this.on('unmount', () => { freeCtrls(); });
+
+        this.show = (tabName) => {
+            let activeHeader = null;
+            let activeName = tabName.toLowerCase().trim();
+
+            for (i = 0; i < headers.length; i++) {
+                let headerName = headers[i].getTabName()
+                if (headerName === activeName) {
+                    headers[i].show();
+                }
+                else {
+                    headers[i].hide();
+                }
+            }
+        }
+
+        this.setActiveTab = (tabName) => {
+            self.parent.setActiveTab(tabName)
+        }
+});
+riot.tag2('tabpage', '<yield></yield>', 'tabpage,[data-is="tabpage"]{ display: none; margin: 0; padding: 0; width: 100%; height: 100%; border: 1px solid silver; overflow: hidden; animation: fadeEffect 2s; } @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } } tabpage.active,[data-is="tabpage"].active{ display: block; }', '', function(opts) {
+        let self = this;
+
+        this.getTabName = () => {
+            let ret = self.root.getAttribute('name').toLowerCase().trim()
+            return ret
+        }
+        this.show = () => { self.root.classList.add('active') }
+        this.hide = () => { self.root.classList.remove('active') }
 });
 
-riot.tag2('ntabheader', '', 'ntabheader,[data-is="ntabheader"]{ display: block; margin: 0; padding: 0; width: 100%; height: auto; overflow: hidden; }', '', function(opts) {
-});
-riot.tag2('ntabpage', '', 'ntabpage,[data-is="ntabpage"]{ display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr; grid-template-areas: \'tab-head-area\' \'tab-body-area\' ; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } ntabpage .tab-head-area,[data-is="ntabpage"] .tab-head-area{ display: block; margin: 0; padding: 0; width: 100%; height: auto; overflow: hidden; } ntabpage .tab-body-area,[data-is="ntabpage"] .tab-body-area{ display: block; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
-});
+riot.tag2('tabpages', '<yield></yield>', 'tabpages,[data-is="tabpages"]{ display: none; margin: 0; padding: 0; width: 100%; height: 100%; border: 1px solid silver; overflow: hidden; } tabpages.active,[data-is="tabpages"].active{ display: block; } tabpages>:not(tabpage),[data-is="tabpages"]>:not(tabpage){ display: none; }', '', function(opts) {
+        let self = this;
+        let panels = null;
 
+        let initCtrls = () => {
+            panels = self.tags['tabpage']
+            if (panels && panels.length > 0) panels[0].show();
+        }
+        let freeCtrls = () => { panels = null; }
+
+        this.on('mount', () => { initCtrls(); });
+        this.on('unmount', () => { freeCtrls(); });
+
+        this.show = (tabName) => {
+            let activeName = tabName.toLowerCase().trim();
+
+            for (i = 0; i < panels.length; i++) {
+                let panelName = panels[i].getTabName()
+                if (panelName === activeName) {
+                    panels[i].show();
+                }
+                else {
+                    panels[i].hide();
+                }
+            }
+        }
+});
 riot.tag2('ncheckedtree', '<div class="ntree-container"> <div ref="tree" class="tree"></div> </div> <label>{opts.title}</label>', 'ncheckedtree,[data-is="ncheckedtree"]{ margin: 0; margin-top: 5px; padding: 10px; font-size: 14px; display: inline-block; position: relative; height: auto; width: 100%; background: transparent; box-shadow: 0 5px 10px solid rgba(0, 0, 0, .2); } ncheckedtree .ntree-container,[data-is="ncheckedtree"] .ntree-container{ display: block; padding: 20px 0 10px 0; margin-bottom: 0px; width: calc(100% - 25px); background-color: whitesmoke; box-sizing: border-box; box-shadow: none; outline: none; border: none; font-size: 14px; box-shadow: 0 0 0px 1000px white inset; border-radius: 2px; border-bottom: 2px solid cornflowerblue; overflow: hidden; } ncheckedtree .ntree-container .tree,[data-is="ncheckedtree"] .ntree-container .tree{ width: 100%; border: 1px solid silver; border-radius: 2px; height: 100px; min-height: 100px; max-height: 100px; overflow: auto; } ncheckedtree label,[data-is="ncheckedtree"] label{ position: absolute; top: 5px; left: 10px; transition: .2s; pointer-events: none; color: cornflowerblue; font-weight: bold; }', '', function(opts) {
 
 
