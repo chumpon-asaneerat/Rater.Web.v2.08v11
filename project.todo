@@ -12,7 +12,7 @@ Project:
                 ✔ Delete branch. @done(19-12-16 07:53)
                 ✔ Delete customer. @done(19-12-16 07:53)
             Orgs:
-                ☐ GetTopLevelOrgs.
+                ✔ GetTopLevelOrgs. @done(19-12-16 09:12)
             Reports:
                 ☐ Get Bar graph Vote Summary -> last 7 days (auto period).
                 ☐ Get Pie chart Vote Summary -> last 7 days (auto period).
