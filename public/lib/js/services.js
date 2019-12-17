@@ -489,3 +489,19 @@ window.secure = window.secure || new SecureService();
 
 //#endregion
 
+/*
+let localLangs = {
+    data: [
+        { langId: 'EN', flagId: 'US', Description: 'English', SortOrder: 1, Enabled: true },
+        { langId: 'TH', flagId: 'TH', Description: 'ไทย', SortOrder: 2, Enabled: true },
+        { langId: 'ZH', flagId: 'CN', Description: '中文', SortOrder: 3, Enabled: true },
+        { langId: 'JA', flagId: 'JP', Description: '中文', SortOrder: 4, Enabled: true },
+        { langId: 'KO', flagId: 'KR', Description: '한국어', SortOrder: 7, Enabled: true },
+        { langId: 'ES', flagId: 'ES', Description: 'Spanish', SortOrder: 9, Enabled: true }
+    ],
+    errors: { hasError: false, errNum: 0, errMsg: '' },
+    multiple: false,
+    datasets: null,
+    out: {}
+}
+*/
