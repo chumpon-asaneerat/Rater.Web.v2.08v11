@@ -47,6 +47,20 @@
                 visibility: hidden;
             }
         }
+        language-menu {
+            display: flex;
+            margin: 0 auto;
+            padding: 0;
+            align-items: center;
+            justify-content: stretch;
+        }
+        links-menu {
+            display: flex;
+            margin: 0 auto;
+            padding: 0;
+            align-items: center;
+            justify-content: stretch;
+        }
     </style>
     <script>
         //#region Internal Variables
