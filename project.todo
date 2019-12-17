@@ -60,7 +60,6 @@ Project:
                 ☐ 
     CSS:
         ✔ nested absolute position. @done(19-12-10 10:29)
-        ☐ Resizable tool window.
         ☐ Dock able panel.
     JavaScript:
         ☐ Check Idle (client side).
@@ -90,11 +89,9 @@ Project:
                 ☐ sidebar tag rewrite.
                 ☐ sidebar-item tag rewrite.
             Panel:
-                ☐ collapse-panel tag rewrite.
-                ☐ 
+                ✔ collapse-panel tag rewrite. @done(19-12-17 17:02)
             ToolWindow:
-                ☐ toolwindow tag rewrite.
-                ☐ 
+                ✔ toolwindow tag rewrite. @done(19-12-17 17:02)
         Controls:
             Input:
                 ✔ ninput tag ported. @done(19-12-12 09:42)
