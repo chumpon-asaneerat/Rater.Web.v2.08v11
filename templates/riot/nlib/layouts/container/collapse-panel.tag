@@ -3,10 +3,10 @@
         <div class="panel-header">
             <div class="collapse-button" onclick="{collapseClick}">
                 <virtual if={!collapsed}>
-                    <span class="fas fa-sort-down" style="padding-left: 2px; transform: translate(0px, -5px);"></span>
+                    <span class="fas fa-sort-down" style="padding-left: 2px; transform: translate(0px, -3px);"></span>
                 </virtual>
                 <virtual if={collapsed}>
-                    <span class="fas fa-caret-right" style="padding-left: 4px; transform: translate(0px, -2px);"></span>
+                    <span class="fas fa-caret-right" style="padding-left: 4px;"></span>
                 </virtual>                    
             </div>
             <div class="header-block">
@@ -14,7 +14,7 @@
             </div>
             <virtual if={ 'removable' in opts }>
                 <div class="close-button" onclick="{closeClick}">
-                    <span class="far fa-times-circle" style="transform: translate(0, -1px);"></span>
+                    <span class="far fa-times-circle" style="transform: translate(5px, 0);"></span>
                 </div>
             </virtual>
         </div>
@@ -27,10 +27,11 @@
             margin: 0 auto;
             padding: 0;
             width: 100%;
+            font-size: smaller;
         }
         :scope .panel-container {
             margin: 0;
-            padding: 3px;
+            padding: 2px;
             width: 100%;
             display: grid;
             grid-template-columns: 1fr;
@@ -47,12 +48,14 @@
             padding-left: 3px;
             padding-right: 3px;
             width: 100%;
-            height: 100%;
-            grid-template-columns: 22px 1fr 22px;
+            /* height: 100%; */
+            grid-template-columns: 22px 1fr 20px;
             grid-template-rows: 1fr;
             grid-template-areas: 
                 'collapse-button header-block close-button';
             color: white;
+            /* font-size: inherit; */
+            align-self: center;
             border-radius: 5px 5px 0 0;
             background-color: cornflowerblue;
         }
@@ -71,7 +74,6 @@
             grid-area: header-block;
             align-self: center;
             align-content: center;
-
             margin: 0;
             padding: 0;
             width: 100%;
@@ -82,10 +84,13 @@
         }
         :scope .panel-header .header-block label {
             /* display: block; */
-            margin-top: 3px;
+            /* font-size: inherit; */
+            margin: 0;
+            /* margin-top: 1px; */
+            margin-bottom: 1px;
             padding: 0;
             width: 100%;
-            height: 100%;
+            /* height: 100%; */
             user-select: none;
         }
         :scope .panel-header .close-button {
@@ -104,8 +109,8 @@
             display: inline-block;
             margin: 0;
             padding: 3px;
-            padding-top: 5px;
-            padding-bottom: 5px;
+            padding-top: 3px;
+            padding-bottom: 3px;
             width: 100%;
             background-color: white;
             border: 1px solid cornflowerblue;
