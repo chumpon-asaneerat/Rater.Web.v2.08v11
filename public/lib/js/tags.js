@@ -659,7 +659,76 @@ riot.tag2('napp', '<div class="app-area"> <yield></yield> </div>', 'napp,[data-i
 });
 riot.tag2('screen', '<yield></yield>', 'screen,[data-is="screen"]{ position: relative; display: none; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } screen.active,[data-is="screen"].active,screen.show,[data-is="screen"].show{ display: block; } screen.hide,[data-is="screen"].hide{ display: hidden; }', '', function(opts) {
 });
-riot.tag2('tool-window', '', '', '', function(opts) {
+riot.tag2('tool-window', '<div class="window-container"> <div class="window-header"> <div ref="dragger" class="header-block"> <label>{opts.caption}</label> </div> </div> <div ref="content" class="window-body"> <yield></yield> </div> </div>', 'tool-window,[data-is="tool-window"]{ display: block; position: absolute; z-index: 9; margin: 0; width: 25%; min-width: 100px; height: 90%; overflow: none; } tool-window .window-container,[data-is="tool-window"] .window-container{ grid-area: panel-container; width: 100%; height: 100%; padding: 5px; display: grid; grid-template-columns: 1fr; grid-template-rows: 30px auto; grid-template-areas: \'panel-header\' \'panel-body\'; overflow: none; } tool-window .window-container .window-header,[data-is="tool-window"] .window-container .window-header{ grid-area: panel-header; display: grid; margin: 0; padding: 0; padding-left: 3px; padding-right: 3px; width: 100%; height: 100%; grid-template-columns: auto 1fr; grid-template-rows: 1fr; grid-template-areas: \'collapse-button header-block\'; color: white; border-radius: 5px 5px 0 0; background-color: cornflowerblue; overflow: none; } tool-window .window-header .collapse-button,[data-is="tool-window"] .window-header .collapse-button{ grid-area: collapse-button; align-self: center; margin: 0; padding: 0; width: 100%; cursor: pointer; } tool-window .window-header .collapse-button:hover,[data-is="tool-window"] .window-header .collapse-button:hover{ color: yellow; } tool-window .window-header .header-block,[data-is="tool-window"] .window-header .header-block{ grid-area: header-block; align-self: center; align-content: center; margin: 0; padding: 0; padding-left: 3px; width: 100%; cursor: none; } tool-window .window-header .header-block:hover,[data-is="tool-window"] .window-header .header-block:hover{ color: yellow; } tool-window .window-header .header-block label,[data-is="tool-window"] .window-header .header-block label{ margin-top: 3px; padding: 0; width: 100%; height: 100%; user-select: none; } tool-window .window-container .window-body,[data-is="tool-window"] .window-container .window-body{ grid-area: panel-body; margin: 0; padding: 3px; padding-top: 5px; padding-bottom: 5px; width: 100%; height: 100%; background-color: white; border: 1px solid cornflowerblue; overflow: auto; } tool-window .window-container .window-body.collapsed,[data-is="tool-window"] .window-container .window-body.collapsed{ display: none; }', '', function(opts) {
+
+
+        let self = this;
+        let collapsed = false;
+
+        let selfEl;
+
+        let contentPanel, dragger;
+
+        this.on('mount', () => {
+            contentPanel = self.refs['content'];
+            dragger = self.refs['dragger'];
+            selfEl = self.root;
+            dragElement();
+        });
+        this.on('unmount', () => {
+            selfEl = null;
+            contentPanel = null;
+            dragger = null;
+        });
+
+        this.collapseClick = (e) => {
+
+            if (contentPanel) {
+                contentPanel.classList.toggle('collapsed')
+                if (contentPanel.classList.contains('collapsed'))
+                    self.collapsed = true;
+                else self.collapsed = false;
+            }
+        };
+
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        let dragElement = () => {
+            if (dragger) {
+                dragger.onmousedown = dragMouseDown;
+            }
+        }
+
+        let dragMouseDown = (e) => {
+            e = e || window.event;
+            e.preventDefault();
+
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+
+            document.onmousemove = elementDrag;
+        }
+
+        let elementDrag = (e) => {
+            e = e || window.event;
+            e.preventDefault();
+
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+
+            selfEl.style.top = (selfEl.offsetTop - pos2) + "px";
+            selfEl.style.left = (selfEl.offsetLeft - pos1) + "px";
+        }
+
+        let closeDragElement = () => {
+
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+
 });
 riot.tag2('navi-item', '<yield></yield>', 'navi-item,[data-is="navi-item"]{ position: relative; display: inline-block; margin: 2px; padding: 2px; font-size: 1.1rem; vertical-align: baseline; cursor: default; user-select: none; white-space: nowrap; overflow: hidden; } navi-item.center,[data-is="navi-item"].center{ flex-grow: 1; text-align: center; } navi-item.right,[data-is="navi-item"].right{ justify-self: flex-end; }', '', function(opts) {
 });
