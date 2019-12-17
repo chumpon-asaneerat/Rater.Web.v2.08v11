@@ -659,6 +659,8 @@ riot.tag2('napp', '<div class="app-area"> <yield></yield> </div>', 'napp,[data-i
 });
 riot.tag2('screen', '<yield></yield>', 'screen,[data-is="screen"]{ position: relative; display: none; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } screen.active,[data-is="screen"].active,screen.show,[data-is="screen"].show{ display: block; } screen.hide,[data-is="screen"].hide{ display: hidden; }', '', function(opts) {
 });
+riot.tag2('tool-window', '', '', '', function(opts) {
+});
 riot.tag2('navi-item', '<yield></yield>', 'navi-item,[data-is="navi-item"]{ position: relative; display: inline-block; margin: 2px; padding: 2px; font-size: 1.1rem; vertical-align: baseline; cursor: default; user-select: none; white-space: nowrap; overflow: hidden; } navi-item.center,[data-is="navi-item"].center{ flex-grow: 1; text-align: center; } navi-item.right,[data-is="navi-item"].right{ justify-self: flex-end; }', '', function(opts) {
 });
 riot.tag2('navibar', '<yield></yield>', 'navibar,[data-is="navibar"]{ position: relative; display: flex; align-items: baseline; justify-content: space-between; margin: 0; padding: 1px 4px; width: 100%; color: white; background: cornflowerblue; overflow: hidden; }', '', function(opts) {
