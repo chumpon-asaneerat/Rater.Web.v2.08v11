@@ -1,40 +1,46 @@
-//#region common requires
+//#region requires
 
 const path = require('path');
 const rootPath = process.env['ROOT_PATHS'];
+const nlib = require(path.join(rootPath, 'nlib', 'nlib'));
 
-// for production
-const nlibPath = path.join(rootPath, 'nlib');
-// for nlib-server dev project
-//const nlibPath = path.join(rootPath, 'src', 'server', 'js', 'nlib');
-const nlibjs = path.join(nlibPath, 'nlib');
-const nlib = require(nlibjs);
+const sfs = require(path.join(rootPath, 'edl', 'server-fs'));
+const secure = require(path.join(rootPath, 'edl', 'rater-secure')).RaterSecure;
 
-const nlibExprjs = path.join(nlibPath, 'nlib-express');
-
-const WebServer = require(nlibExprjs);
-
-//#endregion
-
-//#region router type and variables
-
+const WebServer = require(path.join(rootPath, 'nlib', 'nlib-express'));
 const WebRouter = WebServer.WebRouter;
 const router = new WebRouter();
 
 //#endregion
 
+//#region api
+
 const routes = class {
-    /**
-     * home
-     * @param {Request} req The Request.
-     * @param {Response} res The Response.
-     */
     static home(req, res) {
-        WebServer.sendFile(req, res, __dirname, 'index.html');
+        WebServer.sendFile(req, res, __dirname, 'html', 'index.html');
+    }
+    static getjsfile(req, res) {
+        let file = req.params.file.toLowerCase();
+        let files = ['app.js']
+        let idx = files.indexOf(file);
+        if (idx !== -1) {
+            let fname = path.join(__dirname, 'js', files[idx]);
+            WebServer.sendFile(req, res, fname);
+        }
+    }
+    static getContents(req, res) {
+        let data = sfs.getContents(path.join(__dirname, 'contents'));
+        let result = nlib.NResult.data(data);
+        WebServer.sendJson(req, res, result);
     }
 }
 
-router.get('/', routes.home)
+//#endregion
+
+//router.get('/', routes.home)
+router.get('/', secure.checkAccess, secure.checkRedirect, routes.home)
+router.get('/contents', routes.getContents)
+router.get('/js/:file', routes.getjsfile)
 
 const init_routes = (svr) => {
     svr.route('/', router);

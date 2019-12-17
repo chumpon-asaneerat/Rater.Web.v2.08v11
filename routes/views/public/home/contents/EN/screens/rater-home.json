@@ -1,0 +1,12 @@
+{
+    "title": "Sign In",
+    "label": {
+        "selectAccount": "Please Select Account",
+        "userName": "User Name",
+        "passWord": "Password",
+        "submit": "Sign In",
+        "cancel": "Cancel",
+        "companyName": "Company Name",
+        "fullName": "Account Name"
+    }
+}

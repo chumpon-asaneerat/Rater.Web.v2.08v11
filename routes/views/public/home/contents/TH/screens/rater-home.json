@@ -1,0 +1,12 @@
+{
+    "title": "หน้าหลัก",
+    "label": {
+        "selectAccount": "กรุณาเลือกบัญชี",
+        "userName": "ชื่อบัญชี",
+        "passWord": "รหัสผ่าน",
+        "submit": "เข้าใช้งาน",
+        "cancel": "ยกเลิก",
+        "companyName": "ชื่อบริษัท",
+        "fullName": "ชื่อบัญชี"
+    }
+}

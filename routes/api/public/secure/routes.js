@@ -49,7 +49,89 @@ const checkForError = (data) => {
 
 //#endregion
 
-const routes = class {}
+const routes = class {
+    static register(req, res) {
+        let db = new sqldb();
+        let params = WebServer.parseReq(req).data;
+        let fn = async () => {
+            return db.Register(params);
+        }
+        exec(db, fn).then(data => {
+            let result = validate(db, data);
+            WebServer.sendJson(req, res, result);
+        })
+    }
+    static validateAcccounts(req, res) {
+        let db = new sqldb();
+        let params = WebServer.parseReq(req).data;
+        // force langId to null;
+        params.langId = null;
+        
+        let fn = async () => {
+            return db.CheckUsers(params);
+        }
+        exec(db, fn).then(data => {
+            let dbResult = validate(db, data);
+            let result = {
+                data : null,
+                //src: dbResult.data,
+                errors: dbResult.errors,
+                //multiple: dbResult.multiple,
+                //datasets: dbResult.datasets,
+                out: dbResult.out
+            }
+
+            let records = dbResult.data;
+            let ret = {};
+
+            records.forEach(rec => {
+                if (!ret[rec.langId]) {
+                    ret[rec.langId] = []
+                }
+                let map = ret[rec.langId].map(c => c.customerId);
+                let idx = map.indexOf(rec.customerId);
+                let nobj;
+                if (idx === -1) {
+                    // set id
+                    nobj = { customerId: rec.customerId }
+                    // init lang properties list.
+                    ret[rec.langId].push(nobj)
+                }
+                else {
+                    nobj = ret[rec.langId][idx];
+                }
+                nobj.FullName = rec.FullName;
+                nobj.CustomerName = rec.CustomerName;
+            })
+            // set to result.
+            result.data = ret;
+
+            WebServer.sendJson(req, res, result);
+        })
+    }
+    static signin(req, res, next) {
+        let db = new sqldb();
+        let params = WebServer.parseReq(req).data;
+        let fn = async () => {
+            return db.SignIn(params);
+        }
+        exec(db, fn).then(data => {
+            let result = validate(db, data);
+            if (result && !result.errors.hasError && result.out.errNum === 0) {
+                let obj = {
+                    accessId: result.out.accessId
+                }
+                WebServer.signedCookie.writeObject(req, res, obj, WebServer.expires.in(5).years);
+            }
+            WebServer.sendJson(req, res, result);
+        })
+    }
+}
+
+router.post('/register', routes.register)
+router.post('/validate-accounts', routes.validateAcccounts)
+router.post('/signin', routes.signin)
+router.post('/signout', secure.signout)
 
 const init_routes = (svr) => {
     svr.route('/api/customer', router);
