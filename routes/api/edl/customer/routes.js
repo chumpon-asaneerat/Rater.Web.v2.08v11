@@ -265,11 +265,11 @@ api.Delete = class {
 router.use(secure.checkAccess);
 // routes for 
 //router.all('/branch/search', api.Get.entry);
-//router.all('/branch/search', api.Save.entry);
-//router.all('/branch/search', api.Delete.entry);
+//router.all('/branch/save', api.Save.entry);
+//router.all('/branch/delete', api.Delete.entry);
 
 const init_routes = (svr) => {
-    svr.route('/customer/api/', router);
+    svr.route('/edl/api/', router);
 };
 
 module.exports.init_routes = exports.init_routes = init_routes;

@@ -109,7 +109,7 @@ const routes = class {
             WebServer.sendJson(req, res, result);
         })
     }
-    static signin(req, res, next) {
+    static signin(req, res) {
         let db = new sqldb();
         let params = WebServer.parseReq(req).data;
         let fn = async () => {

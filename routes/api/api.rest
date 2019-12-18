@@ -1,3 +1,12 @@
+### GetLanguage
+
+GET http://localhost:3000/api/languages/search
+content-type: application/json
+
+{
+    "enabled": null
+}
+
 ### GetBranch
 
 POST http://localhost:3000/customer/api/branch/search

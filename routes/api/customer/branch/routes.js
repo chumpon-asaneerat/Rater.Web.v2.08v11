@@ -124,55 +124,65 @@ api.Get = class {
 api.Save = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
-        /*
         let customerId = secure.getCustomerId(req, res);
         if (customerId) params.customerId = customerId;
-        params.langId = null; // force null.
         params.branchId = null;
         params.enabled = true;
-        */
+
         return params;
     }
     static async call(db, params) { 
-        //return db.GetBranchs(params);
-        return null;
+        let ret;
+        let rets = [];
+        let customerId = params.customerId;
+        if (params && params.items) {
+            let items = params.items;
+            let branchId;
+            // loop to save EN item as default and 
+            // keep branch id when create new.
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
+                item.customerId = customerId;
+                if (item.langId === 'EN') {
+                    ret = await db.SaveBranch(item);
+                    branchId = ret.out.branchId;
+                    rets.push(ret);
+                }
+            }
+            // loop to save non EN items and 
+            // assign parent branc id when save in child table.
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
+                item.customerId = params.customerId;
+                if (!item.branchId || item.branchId === '') {
+                    item.branchId = branchId;
+                }
+                if (item.langId !== 'EN') {
+                    ret = await db.SaveBranchML(item);
+                    rets.push(ret);
+                }                
+            }
+        }
+        return rets;
     }
     static parse(db, data, callback) {
-        let dbResult = validate(db, data);
-        let result = {}        
-        result.data = null
-        //result.src = dbResult.data
-        result.errors = dbResult.errors
-        //result.multiple = dbResult.multiple
-        //result.datasets = dbResult.datasets
-        result.out = dbResult.out
+        let results = [];
+        let result;
+        let dbResult;
 
-        let records = dbResult.data;
-        let ret = {};
-        /*
-        records.forEach(rec => {
-            if (!ret[rec.langId]) {
-                ret[rec.langId] = []
+        for (let i = 0; i < data.length; i++) {
+            dbResult = validate(db, data[i]);
+            result = {
+                data : dbResult.data,
+                //src: dbResult.data,
+                errors: dbResult.errors,
+                //multiple: dbResult.multiple,
+                //datasets: dbResult.datasets,
+                out: dbResult.out
             }
-            let map = ret[rec.langId].map(c => c.branchId);
-            let idx = map.indexOf(rec.branchId);
-            let nobj;
-            if (idx === -1) {
-                // set id
-                nobj = {}
-                nobj.branchId = rec.branchId
-                // init lang properties list.
-                ret[rec.langId].push(nobj)
-            }
-            else {
-                nobj = ret[rec.langId][idx];
-            }
-            nobj.branchName = rec.BranchName;
-        })
-        */
-        // set to result.
-        result.data = ret;
-        callback(result);
+            results.push(result);
+        }
+        callback(results);
     }
     static entry(req, res) {
         let db = new sqldb();
