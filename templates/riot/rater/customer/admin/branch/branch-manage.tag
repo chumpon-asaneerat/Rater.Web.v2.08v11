@@ -58,7 +58,6 @@
 
         let flipper, view, entry;
         let initCtrls = () => {
-            //console.log('branch manage refs:', self.refs)
             flipper = self.refs['flipper'];
             entry = (flipper) ? flipper.refs['entry'] : undefined;
         }

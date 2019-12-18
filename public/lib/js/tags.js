@@ -1276,7 +1276,6 @@ riot.tag2('branch-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <bra
 
         let flipper, view, entry;
         let initCtrls = () => {
-
             flipper = self.refs['flipper'];
             entry = (flipper) ? flipper.refs['entry'] : undefined;
         }
