@@ -1,0 +1,25 @@
+### Get languages
+GET http://localhost:3000/api/languages/search
+content-type: application/json
+
+{
+    "enabled": null
+}
+
+### Get devicetypes
+GET http://localhost:3000/api/devicetypes
+
+### Get membertypes
+GET http://localhost:3000/api/membertypes
+
+### Get periodunits
+GET http://localhost:3000/api/periodunits
+
+### Get limitunits
+GET http://localhost:3000/api/limitunits
+
+### Get licensetypes
+GET http://localhost:3000/api/licensetypes
+
+### Get licensefeatures
+GET http://localhost:3000/api/licensefeatures
