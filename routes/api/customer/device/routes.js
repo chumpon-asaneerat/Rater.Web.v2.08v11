@@ -57,67 +57,8 @@ const api = class { }
 
 //#region Implement - Get
 
-api.Get = class {
-    static prepare(req, res) {
-        let params = WebServer.parseReq(req).data;
-        let customerId = secure.getCustomerId(req, res);
-        if (customerId) params.customerId = customerId;
-        params.langId = null; // force null.
-        params.branchId = null;
-        params.enabled = true;
-        return params;
-    }
-    static async call(db, params) { 
-        return db.GetBranchs(params);
-    }
-    static parse(db, data, callback) {
-        let dbResult = validate(db, data);
-        let result = {}        
-        result.data = null
-        //result.src = dbResult.data
-        result.errors = dbResult.errors
-        //result.multiple = dbResult.multiple
-        //result.datasets = dbResult.datasets
-        result.out = dbResult.out
-
-        let records = dbResult.data;
-        let ret = {};
-        records.forEach(rec => {
-            if (!ret[rec.langId]) {
-                ret[rec.langId] = []
-            }
-            let map = ret[rec.langId].map(c => c.branchId);
-            let idx = map.indexOf(rec.branchId);
-            let nobj;
-            if (idx === -1) {
-                // set id
-                nobj = {}
-                nobj.branchId = rec.branchId
-                // init lang properties list.
-                ret[rec.langId].push(nobj)
-            }
-            else {
-                nobj = ret[rec.langId][idx];
-            }
-            nobj.branchName = rec.BranchName;
-        })
-        // set to result.
-        result.data = ret;
-        callback(result);
-    }
-    static entry(req, res) {
-        let db = new sqldb();
-        let params = api.Get.prepare(req, res);
-        let fn = async () => { return api.Get.call(db, params); }
-        exec(db, fn).then(data => {
-            api.Get.parse(db, data, (result) => {
-                WebServer.sendJson(req, res, result);
-            });
-        })
-    }
-}
-
 //#endregion
+
 
 //#region Implement - Save
 
@@ -258,10 +199,10 @@ api.Delete = class {
 //#endregion
 
 router.use(secure.checkAccess);
-// branch
-router.all('/branch/search', api.Get.entry);
-router.all('/branch/save', api.Save.entry);
-router.all('/branch/delete', api.Delete.entry);
+// routes for 
+//router.all('/branch/search', api.Get.entry);
+//router.all('/branch/search', api.Save.entry);
+//router.all('/branch/search', api.Delete.entry);
 
 const init_routes = (svr) => {
     svr.route('/customer/api/', router);
