@@ -288,7 +288,7 @@ riot.tag2('osd', '<div ref="osd-ctrl" class="osd error"> <label style="margin: 0
             self.update();
         }
 });
-riot.tag2('tabcontrol', '', 'tabcontrol,[data-is="tabcontrol"]{ position: relative; display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr; grid-template-areas: \'tab-headers\' \'tab-pages\'; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: seashell; } tabcontrol tabheaders:first-child,[data-is="tabcontrol"] tabheaders:first-child{ grid-area: tab-headers; display: block; } tabcontrol :not(tabheaders:first-child),[data-is="tabcontrol"] :not(tabheaders:first-child){ display: none; } tabcontrol tabpages:last-child,[data-is="tabcontrol"] tabpages:last-child{ grid-area: tab-pages; display: block; } tabcontrol :not(tabpages:last-child),[data-is="tabcontrol"] :not(tabpages:last-child){ display: none; }', '', function(opts) {
+riot.tag2('tabcontrol', '', 'tabcontrol,[data-is="tabcontrol"]{ position: relative; display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr; grid-template-areas: \'tab-headers\' \'tab-pages\'; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; } tabcontrol tabheaders:first-child,[data-is="tabcontrol"] tabheaders:first-child{ grid-area: tab-headers; display: block; } tabcontrol :not(tabheaders:first-child),[data-is="tabcontrol"] :not(tabheaders:first-child){ display: none; } tabcontrol tabpages:last-child,[data-is="tabcontrol"] tabpages:last-child{ grid-area: tab-pages; display: block; } tabcontrol :not(tabpages:last-child),[data-is="tabcontrol"] :not(tabpages:last-child){ display: none; }', '', function(opts) {
         let self = this;
         let headers = null;
         let panels = null;
@@ -354,7 +354,7 @@ riot.tag2('tabheader', '<yield></yield>', 'tabheader,[data-is="tabheader"]{ floa
             self.root.classList.remove('active')
         }
 });
-riot.tag2('tabheaders', '<yield></yield>', 'tabheaders,[data-is="tabheaders"]{ position: relative; display: flex; align-items: baseline; justify-content: space-between; margin: 0; padding: 0; width: 100%; height: auto; border: none; background-color: whitesmoke; overflow: hidden; } tabheaders>:not(tabheader),[data-is="tabheaders"]>:not(tabheader){ display: none; }', '', function(opts) {
+riot.tag2('tabheaders', '<yield></yield>', 'tabheaders,[data-is="tabheaders"]{ position: relative; display: flex; align-items: baseline; justify-content: space-between; margin: 0; padding: 0; width: 100%; height: auto; border: none; background-color: transparent; overflow: hidden; } tabheaders>:not(tabheader),[data-is="tabheaders"]>:not(tabheader){ display: none; }', '', function(opts) {
         let self = this;
         let headers = null;
 
@@ -386,7 +386,7 @@ riot.tag2('tabheaders', '<yield></yield>', 'tabheaders,[data-is="tabheaders"]{ p
             self.parent.setActiveTab(tabName)
         }
 });
-riot.tag2('tabpage', '<yield></yield>', 'tabpage,[data-is="tabpage"]{ display: none; margin: 0; padding: 0; width: 100%; height: 100%; border: 1px solid silver; overflow: hidden; animation: fadeEffect 2s; } @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } } tabpage.active,[data-is="tabpage"].active{ display: block; }', '', function(opts) {
+riot.tag2('tabpage', '<yield></yield>', 'tabpage,[data-is="tabpage"]{ display: none; margin: 0; padding: 0; width: 100%; height: 100%; border: 0 solid silver; overflow: auto; animation: fadeEffect 2s; } @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } } tabpage.active,[data-is="tabpage"].active{ display: block; }', '', function(opts) {
         let self = this;
 
         this.getTabName = () => {
@@ -397,7 +397,7 @@ riot.tag2('tabpage', '<yield></yield>', 'tabpage,[data-is="tabpage"]{ display: n
         this.hide = () => { self.root.classList.remove('active') }
 });
 
-riot.tag2('tabpages', '<yield></yield>', 'tabpages,[data-is="tabpages"]{ display: none; margin: 0; padding: 0; width: 100%; height: 100%; border: 1px solid silver; overflow: hidden; } tabpages.active,[data-is="tabpages"].active{ display: block; } tabpages>:not(tabpage),[data-is="tabpages"]>:not(tabpage){ display: none; }', '', function(opts) {
+riot.tag2('tabpages', '<yield></yield>', 'tabpages,[data-is="tabpages"]{ display: none; margin: 0; padding: 0; padding-top: 2px; width: 100%; height: 100%; border: 1px solid silver; overflow: hidden; } tabpages.active,[data-is="tabpages"].active{ display: block; } tabpages>:not(tabpage),[data-is="tabpages"]>:not(tabpage){ display: none; }', '', function(opts) {
         let self = this;
         let panels = null;
 
@@ -655,7 +655,7 @@ riot.tag2('collapse-panel', '<div class="panel-container"> <div class="panel-hea
             }
         };
 });
-riot.tag2('napp', '<div class="app-area"> <yield></yield> </div>', 'napp,[data-is="napp"]{ display: grid; margin: 0 auto; padding: 0; height: 100vh; width: 100vw; grid-template-areas: \'app-area\'; background: cornsilk; overflow: hidden; } napp>.app-area,[data-is="napp"]>.app-area{ grid-area: app-area; position: relative; display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: \'navi-area\' \'scrn-area\' \'stat-area\'; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } napp>.app-area>:not(navibar):not(screen):not(statusbar),[data-is="napp"]>.app-area>:not(navibar):not(screen):not(statusbar){ display: none; } napp>.app-area navibar:first-child,[data-is="napp"]>.app-area navibar:first-child{ grid-area: navi-area; } napp>.app-area navibar:not(:first-child),[data-is="napp"]>.app-area navibar:not(:first-child){ grid-area: navi-area; display: none; } napp>.app-area screen,[data-is="napp"]>.app-area screen{ grid-area: scrn-area; } napp>.app-area statusbar:last-child,[data-is="napp"]>.app-area statusbar:last-child{ grid-area: stat-area; } napp>.app-area statusbar:not(:last-child),[data-is="napp"]>.app-area statusbar:not(:last-child){ grid-area: stat-area; display: none; }', '', function(opts) {
+riot.tag2('napp', '<div class="app-area"> <yield></yield> </div>', 'napp,[data-is="napp"]{ display: grid; margin: 0 auto; padding: 0; height: 100vh; width: 100vw; grid-template-areas: \'app-area\'; background: inherit; overflow: hidden; } napp>.app-area,[data-is="napp"]>.app-area{ grid-area: app-area; position: relative; display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: \'navi-area\' \'scrn-area\' \'stat-area\'; margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } napp>.app-area>:not(navibar):not(screen):not(statusbar),[data-is="napp"]>.app-area>:not(navibar):not(screen):not(statusbar){ display: none; } napp>.app-area navibar:first-child,[data-is="napp"]>.app-area navibar:first-child{ grid-area: navi-area; } napp>.app-area navibar:not(:first-child),[data-is="napp"]>.app-area navibar:not(:first-child){ grid-area: navi-area; display: none; } napp>.app-area screen,[data-is="napp"]>.app-area screen{ grid-area: scrn-area; } napp>.app-area statusbar:last-child,[data-is="napp"]>.app-area statusbar:last-child{ grid-area: stat-area; } napp>.app-area statusbar:not(:last-child),[data-is="napp"]>.app-area statusbar:not(:last-child){ grid-area: stat-area; display: none; }', '', function(opts) {
 });
 riot.tag2('screen', '<div class="content-area"> <yield></yield> </div>', 'screen,[data-is="screen"]{ margin: 0 auto; padding: 0; display: none; width: 100%; height: 100%; } screen.active,[data-is="screen"].active,screen.show,[data-is="screen"].show{ display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'content-area\'; } screen .content-area,[data-is="screen"] .content-area{ width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
 
@@ -965,6 +965,38 @@ riot.tag2('links-menu', '<div class="menu"> <a ref="links" class="link-combo" hr
         }
 
 });
+riot.tag2('flip-screen', '<div class="auto-container"> <div ref="flipper" class="flipper"> <div class="viewer-block"> <div class="content"> <yield from="viewer"></yield> </div> </div> <div class="entry-block"> <div class="content"> <yield from="entry"></yield> </div> </div> </div> </div>', 'flip-screen,[data-is="flip-screen"]{ margin: 0; padding: 0; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'auto-container\'; overflow: hidden; } flip-screen .auto-container,[data-is="flip-screen"] .auto-container{ margin: 0; padding: 0; grid-area: auto-container; border: 1px solid #f1f1f1; } flip-screen .flipper,[data-is="flip-screen"] .flipper{ margin: 0; padding: 0; position: relative; width: 100%; height: 100%; transition: transform 0.5s; transform-style: preserve-3d; } flip-screen .auto-container .flipper.toggle,[data-is="flip-screen"] .auto-container .flipper.toggle{ transform: rotateY(180deg); } flip-screen .viewer-block,[data-is="flip-screen"] .viewer-block{ position: absolute; margin: 0; padding: 0; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(0deg); } flip-screen .entry-block,[data-is="flip-screen"] .entry-block{ position: absolute; width: 100%; height: 100%; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg); } flip-screen .content,[data-is="flip-screen"] .content{ position: relative; display: block; width: 100%; height: 100%; }', '', function(opts) {
+
+
+        let self = this;
+
+        let flipper;
+
+        let initCtrls = () => {
+            flipper = self.refs['flipper'];
+        }
+        let freeCtrls = () => {
+            flipper = null;
+        }
+        let clearInputs = () => {}
+
+        let bindEvents = () => {}
+        let unbindEvents = () => {}
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        this.toggle = () => {
+            flipper.classList.toggle('toggle');
+        }
+
+});
 riot.tag2('rater-device-app', '<napp> <yield></yield> </napp>', 'rater-device-app,[data-is="rater-device-app"]{ position: relative; display: block; margin: 0; padding: 0; width: auto; height: auto; overflow: hidden; }', '', function(opts) {
 });
 riot.tag2('rater-web-app', '<napp> <navibar> <navi-item> <div class="banner"> <div class="caption">My Choice Rater Web{(content && content.title) ? \'&nbsp;-&nbsp;\' : \'&nbsp;\'}</div> <div class="title ">{(content && content.title) ? content.title : \'\'}</div> </div> </navi-item> <navi-item class="center"></navi-item> <navi-item class="right"><language-menu></language-menu></navi-item> <navi-item class="right"><links-menu></links-menu></navi-item> </navibar> <yield></yield> <statusbar></statusbar> </napp>', 'rater-web-app,[data-is="rater-web-app"]{ position: relative; display: block; margin: 0; padding: 0; width: auto; height: auto; overflow: hidden; } rater-web-app .banner .title,[data-is="rater-web-app"] .banner .title{ margin: 0; padding: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.2rem; } rater-web-app .banner .caption,[data-is="rater-web-app"] .banner .caption{ margin: 0; padding: 0; width: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.2rem; } @media only screen and (max-width: 700px) { rater-web-app .banner .caption,[data-is="rater-web-app"] .banner .caption{ width: 0; visibility: hidden; } } rater-web-app language-menu,[data-is="rater-web-app"] language-menu{ display: flex; margin: 0 auto; padding: 0; align-items: center; justify-content: stretch; } rater-web-app links-menu,[data-is="rater-web-app"] links-menu{ display: flex; margin: 0 auto; padding: 0; align-items: center; justify-content: stretch; }', '', function(opts) {
@@ -1003,6 +1035,442 @@ riot.tag2('rater-web-app', '<napp> <navibar> <navi-item> <div class="banner"> <d
         let onContentChanged = (e) => { updatecontent(); }
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
+
+});
+riot.tag2('branch-editor', '<div class="entry"> <tabcontrol class="tabs" content="{opts.content}"> <tabheaders content="{opts.content}"> <tabheader for="default" content="{opts.content}"> <span class="fas fa-cog"></span> {opts.content.entry.tabDefault} </tabheader> <tabheader for="miltilang" content="{opts.content}"> <span class="fas fa-globe-americas"></span> {opts.content.entry.tabMultiLang} </tabheader> </tabheaders> <tabpages> <tabpage name="default"> <branch-entry ref="EN" langid=""></branch-entry> </tabpage> <tabpage name="miltilang"> <virtual if="{lang.languages}"> <virtual each="{item in lang.languages}"> <virtual if="{item.langId !== \'EN\'}"> <div class="panel-header" langid="{item.langId}"> &nbsp;&nbsp; <span class="flag-css flag-icon flag-icon-{item.flagId.toLowerCase()}"></span> &nbsp;{item.Description}&nbsp; </div> <div class="panel-body" langid="{item.langId}"> <branch-entry ref="{item.langId}" langid="{item.langId}"></branch-entry> </div> </virtual> </virtual> </virtual> </tabpage> </tabpages> </tabcontrol> <div class="tool"> <button class="float-button save" onclick="{save}"><span class="fas fa-save"></span></button> <button class="float-button cancel" onclick="{cancel}"><span class="fas fa-times"></span></button> </div> </div>', 'branch-editor,[data-is="branch-editor"]{ margin: 0 auto; padding: 0; width: 100%; max-width: 800px; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'entry\'; background-color: white; overflow: hidden; } branch-editor>.entry,[data-is="branch-editor"]>.entry{ grid-area: entry; display: grid; grid-template-columns: 1fr auto 5px; grid-template-rows: 1fr; grid-template-areas: \'tabs tool .\'; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } branch-editor>.entry .tabs,[data-is="branch-editor"]>.entry .tabs{ grid-area: tabs; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } branch-editor>.entry .tool,[data-is="branch-editor"]>.entry .tool{ grid-area: tool; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; grid-template-areas: \'. .\' \'btn-cancel .\' \'btn-save .\'; margin: 0 auto; margin-left: 3px; padding: 0; width: 100%; height: 100%; overflow: hidden; } branch-editor>.entry .tool .float-button,[data-is="branch-editor"]>.entry .tool .float-button{ margin: 0 auto; padding: 0; border: none; outline: none; border-radius: 50%; height: 40px; width: 40px; color: whitesmoke; background: silver; cursor: pointer; } branch-editor>.entry .tool .float-button:hover,[data-is="branch-editor"]>.entry .tool .float-button:hover{ color: whitesmoke; background: forestgreen; } branch-editor>.entry .tool .float-button.save,[data-is="branch-editor"]>.entry .tool .float-button.save{ grid-area: btn-save; } branch-editor>.entry .tool .float-button.cancel,[data-is="branch-editor"]>.entry .tool .float-button.cancel{ grid-area: btn-cancel; } branch-editor .panel-header,[data-is="branch-editor"] .panel-header{ margin: 0 auto; padding: 0; padding-top: 3px; width: 100%; height: 30px; color: white; background: cornflowerblue; border-radius: 5px 5px 0 0; } branch-editor .panel-body,[data-is="branch-editor"] .panel-body{ margin: 0 auto; margin-bottom: 5px; padding: 2px; width: 100%; border: 1px solid cornflowerblue; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'branch-manage';
+
+        let branchId = '';
+        let ctrls = [];
+
+        let defaultContent = {
+            entry: {
+                tabDefault: 'Default',
+                tabMultiLang: 'Languages'
+            }
+        }
+        this.content = defaultContent;
+        opts.content = this.content;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                opts.content = self.content;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => { }
+        let freeCtrls = () => { }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        let clone = (src) => { return JSON.parse(JSON.stringify(src)); }
+        let equals = (src, dst) => {
+            let o1 = JSON.stringify(src);
+            let o2 = JSON.stringify(dst);
+            return (o1 === o2);
+        }
+
+        this.save = (e) => {
+            let item;
+            let items = [];
+            ctrls.forEach(oRef => {
+                item = (oRef.entry) ? oRef.entry.getItem() : null;
+                if (item) {
+                    item.langId = oRef.langId;
+                    items.push(item)
+                }
+            });
+            branchmanager.save(items);
+            events.raise(events.name.EndEditBranch)
+        }
+        this.cancel = (e) => {
+            events.raise(events.name.EndEditBranch)
+        }
+
+        findCtrl = (langId) => {
+            let ctrl;
+            let tabpages = self.tags['tabcontrol'].tags['tabpages'].tags['tabpage'];
+            for (let i = 0; i < tabpages.length; i++) {
+                let tp = tabpages[i];
+                ctrl = tp.refs[langId];
+                if (ctrl) break;
+            }
+            return ctrl;
+        }
+
+        this.setup = (item) => {
+            let isNew = false;
+            branchId = item.branchId;
+            if (branchId === undefined || branchId === null || branchId.trim() === '') {
+                isNew = true;
+            }
+            ctrls = [];
+
+            let loader = window.branchmanager;
+
+            lang.languages.forEach(lg => {
+                let ctrl = findCtrl(lg.langId)
+                let original = (isNew) ? clone(item) : loader.find(lg.langId, branchId);
+
+                if (ctrl) {
+                    let obj = {
+                        langId: lg.langId,
+                        entry: ctrl,
+                        scrObj: original
+                    }
+                    ctrl.setup(original);
+                    ctrls.push(obj)
+                }
+            });
+        }
+
+});
+riot.tag2('branch-entry', '<ninput ref="branchName" title="{content.entry.branchName}" type="text" name="branchName"></ninput> <div class="padtop"></div>', 'branch-entry,[data-is="branch-entry"]{ margin: 0; padding: 0; width: 100%; height: 100%; } branch-entry .padtop,[data-is="branch-entry"] .padtop{ display: block; margin: 0 auto; width: 100%; min-height: 10px; }', '', function(opts) {
+        let self = this;
+        let screenId = 'branch-manage';
+        this.isDefault = () => { return (opts.langid === '' || opts.langid === 'EN') }
+
+        let defaultContent = {
+            entry: {
+                branchName: 'Branch Name'
+            }
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                self.update();
+            }
+        }
+
+        let branchName;
+
+        let initCtrls = () => {
+            branchName = self.refs['branchName'];
+        }
+        let freeCtrls = () => {
+            branchName = null;
+        }
+        let clearInputs = () => {
+            branchName.clear();
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        let origObj;
+        let editObj;
+
+        let clone = (src) => { return JSON.parse(JSON.stringify(src)); }
+        let equals = (src, dst) => {
+            let o1 = JSON.stringify(src);
+            let o2 = JSON.stringify(dst);
+            return (o1 === o2);
+        }
+
+        let ctrlToObj = () => {
+            if (editObj) {
+
+                if (branchName) editObj.branchName = branchName.value();
+            }
+        }
+        let objToCtrl = () => {
+            if (editObj) {
+
+                if (branchName) branchName.value(editObj.branchName);
+            }
+        }
+
+        this.setup = (item) => {
+            origObj = clone(item);
+            editObj = clone(item);
+
+            objToCtrl();
+        }
+        this.getItem = () => {
+            ctrlToObj();
+
+            let hasId = (editObj.branchId !== undefined && editObj.branchId != null)
+            let isDirty = !hasId || !equals(origObj, editObj);
+
+            return (isDirty) ? editObj : null;
+        }
+
+});
+
+riot.tag2('branch-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <branch-view ref="viewer" class="view"></branch-view> </yield> <yield to="entry"> <branch-editor ref="entry" class="entry"></branch-editor> </yield> </flip-screen>', 'branch-manage,[data-is="branch-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } branch-manage .view,[data-is="branch-manage"] .view,branch-manage .entry,[data-is="branch-manage"] .entry{ margin: 0; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; overflow: hidden; } branch-manage .entry,[data-is="branch-manage"] .entry{ margin: 0 auto; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Title'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.BeginEditBranch, onBeginEdit)
+            addEvt(events.name.EndEditBranch, onEndEdit)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.EndEditBranch, onEndEdit)
+            delEvt(events.name.BeginEditBranch, onBeginEdit)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onBeginEdit = (e) => {
+            if (flipper) {
+                flipper.toggle();
+                let item = e.detail.data.item;
+                if (entry) entry.setup(item);
+            }
+
+        }
+        let onEndEdit = (e) => {
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+riot.tag2('branch-view', '<div ref="container" class="scrarea"> <div ref="tool" class="toolarea"> <button class="float-button" onclick="{addnew}"> <span class="fas fa-plus">&nbsp;</span> </button> <button class="float-button" onclick="{refresh}"> <span class="fas fa-sync">&nbsp;</span> </button> </div> <div ref="grid" class="gridarea"></div> </div>', 'branch-view,[data-is="branch-view"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 20px 1fr 20px; grid-template-areas: \'.\' \'scrarea\' \'.\' } branch-view>.scrarea,[data-is="branch-view"]>.scrarea{ grid-area: scrarea; display: grid; grid-template-columns: 5px auto 1fr; grid-template-rows: 1fr; grid-template-areas: \'. toolarea gridarea\'; margin: 0 auto; padding: 0; margin-top: 3px; width: 100%; max-width: 800px; height: 100%; } branch-view>.scrarea>.toolarea,[data-is="branch-view"]>.scrarea>.toolarea{ grid-area: toolarea; margin: 0 auto; margin-right: 5px; padding: 0; height: 100%; overflow: hidden; background-color: transparent; color: whitesmoke; } branch-view>.scrarea>.toolarea .float-button,[data-is="branch-view"]>.scrarea>.toolarea .float-button{ display: block; margin: 0 auto; margin-bottom: 5px; padding: 3px; padding-right: 1px; height: 40px; width: 40px; color: whitesmoke; background: silver; border: none; outline: none; border-radius: 50%; cursor: pointer; } branch-view>.scrarea>.toolarea .float-button:hover,[data-is="branch-view"]>.scrarea>.toolarea .float-button:hover{ color: whitesmoke; background: forestgreen; } branch-view>.scrarea>.gridarea,[data-is="branch-view"]>.scrarea>.gridarea{ grid-area: gridarea; margin: 0 auto; padding: 0; height: 100%; width: 100%; } branch-view .tabulator-row button,[data-is="branch-view"] .tabulator-row button{ margin: 0 auto; padding: 0px; width: 100%; font-size: small; color: inherit; background: transparent; border: none; outline: none; cursor: pointer; } branch-view .tabulator-row button:hover,[data-is="branch-view"] .tabulator-row button:hover{ color: forestgreen; } branch-view .tabulator-row button>span,[data-is="branch-view"] .tabulator-row button>span{ margin: 0 auto; padding: 0; }', '', function(opts) {
+
+
+        let self = this;
+        let table;
+        let screenId = 'branch-manage';
+
+        let defaultContent = {
+            title: 'Branch Management',
+            columns: []
+        }
+        this.content = defaultContent;
+
+        let editIcon = (cell, formatterParams) => {
+            return "<button><span class='fas fa-edit'></span></button>";
+        };
+        let deleteIcon = (cell, formatterParams) => {
+            return "<button><span class='fas fa-trash-alt'></span></button>";
+        };
+
+        let initGrid = (data) => {
+            let opts = {
+                height: "100%",
+                layout: "fitDataFill",
+                data: (data) ? data : []
+            }
+            setupColumns(opts);
+            table = new Tabulator(self.refs['grid'], opts);
+        }
+        let setupColumns = (opts) => {
+            let = columns = [
+                { formatter: editIcon, align:"center", width:44,
+                    resizable: false, frozen: true, headerSort: false,
+                    cellClick: editRow
+                },
+                { formatter: deleteIcon, align:"center", width: 44,
+                    resizable: false, frozen: true, headerSort: false,
+                    cellClick: deleteRow
+                }
+            ]
+            if (self.content && self.content.columns) {
+                let cols = self.content.columns;
+                columns.push(...cols)
+            }
+            opts.columns = columns;
+        }
+        let syncData = () => {
+            if (table) table = null;
+            let data = branchmanager.current;
+            initGrid(data)
+        }
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                self.update();
+                if (table) table.redraw(true);
+            }
+        }
+
+        let initCtrls = () => { initGrid(); }
+        let freeCtrls = () => { table = null; }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.BranchListChanged, onBranchListChanged)
+            addEvt(events.name.EndEditBranch, onEndEdit)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.EndEditBranch, onEndEdit)
+            delEvt(events.name.BranchListChanged, onBranchListChanged)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                syncData();
+            }
+        }
+        let onScreenChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                branchmanager.load();
+            }
+        }
+        let onBranchListChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                syncData();
+            }
+        }
+
+        let editRow = (e, cell) => {
+            let data = cell.getRow().getData();
+            events.raise(events.name.BeginEditBranch, { item: data })
+        }
+        let deleteRow = (e, cell) => {
+            let data = cell.getRow().getData();
+            console.log('delete:', data, ', langId:', lang.langId);
+            syncData();
+
+        }
+        let onEndEdit = (e) => {
+            syncData();
+            table.redraw(true);
+        }
+
+        this.addnew = (e) => {
+            let data = {
+                branchId: null,
+                branchName: 'New Branch'
+            };
+            events.raise(events.name.BeginEditBranch, { item: data })
+        }
+
+        this.refresh = (e) => {
+            branchmanager.load();
+            updatecontent();
+        }
 
 });
 riot.tag2('admin-home', '<h3>{content.title}</h3>', 'admin-home,[data-is="admin-home"]{ margin: 0; padding: 0; width: 100%; height: 100%; }', '', function(opts) {

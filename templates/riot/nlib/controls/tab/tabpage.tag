@@ -7,8 +7,8 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            border: 1px solid silver;
-            overflow: hidden;
+            border: 0 solid silver;
+            overflow: auto;
             /* Fading effect takes 2 second */
             animation: fadeEffect 2s;
         }

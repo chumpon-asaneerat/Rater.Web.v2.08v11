@@ -13,7 +13,7 @@
             width: 100%;
             height: auto;
             border: none;
-            background-color: whitesmoke;
+            background-color: transparent;
             overflow: hidden;
         }
         :scope>:not(tabheader) { display: none; }        

@@ -11,7 +11,7 @@
             width: 100vw;
             grid-template-areas: 
                 'app-area';
-            background: cornsilk;
+            background: inherit;
             overflow: hidden;
         }
         :scope>.app-area {

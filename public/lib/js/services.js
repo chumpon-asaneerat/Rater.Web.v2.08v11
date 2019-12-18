@@ -326,6 +326,7 @@ class ContentService {
         let self = this;
         let fn = (r) => {
             let data = api.parse(r);
+            //console.log(data.records)
             self.content = data.records;
             self.current = self.getCurrent();
             // Raise event.

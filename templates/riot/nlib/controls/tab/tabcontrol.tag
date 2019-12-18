@@ -13,7 +13,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: seashell;
+            background: transparent;
         }
         :scope tabheaders:first-child {
             grid-area: tab-headers;
