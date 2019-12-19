@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js org chart.</title>
+    <!-- Font Awesome -->
+    <link href="/dist/css/fontawesome.all.min.css" rel="stylesheet" type="text/css" />
+    <!-- JQuery UI -->
+    <link href="/dist/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap 4 -->
+    <link href="/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css" />
+    <!-- Flag and Emoji icons -->
+    <link href="/dist/css/flag-icon.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/emojisymbol.min.css" rel="stylesheet" type="text/css" />
+    <!-- jQuery Org Chart css -->
+    <link href="/dist/css/jquery.orgchart.min.css" rel="stylesheet" type="text/css" />
+    <style> 
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial;
+            font-size: 14px;
+            line-height: 1.428571429;
+            color: #333333;
+        }
+
+        #chart-container {
+            position: relative;
+            display: inline-block;
+            top: 10px;
+            left: 10px;
+            height: 420px;
+            width: calc(100% - 24px);
+            border: 2px dashed #aaa;
+            border-radius: 5px;
+            overflow: auto;
+            text-align: center;
+        }       
+    </style>
+</head>
+<body>
+    <div id="chart-container"></div>
+
+    <!-- JQuery -->
+    <script src="/dist/js/jquery.min.js"></script>
+    <!-- JQuery UI -->
+    <script src="/dist/js/jquery-ui.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/dist/js/popper.min.js"></script>
+    <script src="/dist/js/tooltip.min.js"></script>
+    <script src="/dist/js/bootstrap.min.js">/* bootstrap required jQuery and popperjs. */</script>
+    <!-- Moment.js -->
+    <script src="/dist/js/moment.min.js"></script>
+    <!-- Tabulator -->
+    <script src="/dist/js/tabulator.min.js"></script>
+    <!-- jQuery Org Chart -->
+    <script src="/dist/js/jquery.orgchart.min.js"></script>
+    <script>
+    $(function () {
+        var datascource = {
+            'name': 'Lao Lao',
+            'title': 'general manager',
+            'children': [
+                {
+                    'name': 'Bo Miao', 'title': 'department manager', 'collapsed': true,
+                    'children': [
+                        { 'name': 'Li Jing', 'title': 'senior engineer', 'className': 'slide-up' },
+                        {
+                            'name': 'Li Xin', 'title': 'senior engineer', 'collapsed': true, 'className': 'slide-up',
+                            'children': [
+                                { 'name': 'To To', 'title': 'engineer', 'className': 'slide-up' },
+                                { 'name': 'Fei Fei', 'title': 'engineer', 'className': 'slide-up' },
+                                { 'name': 'Xuan Xuan', 'title': 'engineer', 'className': 'slide-up' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    'name': 'Su Miao', 'title': 'department manager',
+                    'children': [
+                        { 'name': 'Pang Pang', 'title': 'senior engineer' },
+                        {
+                            'name': 'Hei Hei', 'title': 'senior engineer', 'collapsed': true,
+                            'children': [
+                                { 'name': 'Xiang Xiang', 'title': 'UE engineer', 'className': 'slide-up' },
+                                { 'name': 'Dan Dan', 'title': 'engineer', 'className': 'slide-up' },
+                                { 'name': 'Zai Zai', 'title': 'engineer', 'className': 'slide-up' }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+        $('#chart-container').orgchart({
+            'data': datascource,
+            'nodeContent': 'title'
+        });
+    });
+    </script>
+</body>
+</html>
