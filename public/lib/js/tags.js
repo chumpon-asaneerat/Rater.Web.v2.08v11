@@ -1559,6 +1559,17 @@ riot.tag2('device-editor', '<div class="entry"> <tabcontrol class="tabs" content
             events.raise(events.name.EndEditDevice)
         }
 
+        findCtrl = (langId) => {
+            let ctrl;
+            let tabpages = self.tags['tabcontrol'].tags['tabpages'].tags['tabpage'];
+            for (let i = 0; i < tabpages.length; i++) {
+                let tp = tabpages[i];
+                ctrl = tp.refs[langId];
+                if (ctrl) break;
+            }
+            return ctrl;
+        }
+
         this.setup = (item) => {
             let isNew = false;
 
@@ -1571,7 +1582,7 @@ riot.tag2('device-editor', '<div class="entry"> <tabcontrol class="tabs" content
             let loader = window.devicemanager;
 
             lang.languages.forEach(lg => {
-                let ctrl = self.refs[lg.langId];
+                let ctrl = findCtrl(lg.langId);
                 let original = (isNew) ? clone(item) : loader.find(lg.langId, deviceId);
 
                 if (ctrl) {
@@ -1611,25 +1622,21 @@ riot.tag2('device-entry', '<div class="padtop"></div> <div class="padtop"></div>
         }
 
         let deviceName, location;
-
         let deviceTypes;
 
         let initCtrls = () => {
             deviceName = self.refs['deviceName'];
-
             deviceTypes = self.refs['deviceTypes'];
             location = self.refs['location'];
         }
         let freeCtrls = () => {
             location = null;
             deviceTypes = null;
-
             deviceName = null;
         }
         let clearInputs = () => {
             location.clear();
             deviceTypes.clear();
-            deviceTypeId.clear();
             deviceName.clear();
         }
 
@@ -1683,7 +1690,6 @@ riot.tag2('device-entry', '<div class="padtop"></div> <div class="padtop"></div>
 
                 if (deviceName) editObj.DeviceName = deviceName.value();
                 if (location) editObj.Location = location.value();
-
                 if (deviceTypes) editObj.deviceTypeId = deviceTypes.value();
             }
         }
@@ -1693,7 +1699,6 @@ riot.tag2('device-entry', '<div class="padtop"></div> <div class="padtop"></div>
                 if (deviceName) deviceName.value(editObj.DeviceName);
                 if (location) location.value(editObj.Location);
                 if (deviceTypes) deviceTypes.value(editObj.deviceTypeId.toString());
-
             }
         }
 

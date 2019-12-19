@@ -4,9 +4,6 @@
     <ninput ref="deviceName" title="{ content.entry.deviceName }" type="text" name="deviceName"></ninput>
     <ninput ref="location" title="{ content.entry.location }" type="text" name="location"></ninput>
     <virtual if={ isDefault() }>
-        <!--
-        <ninput ref="deviceTypeId" title="{ content.entry.deviceTypeId }" type="text" name="deciveTypeId"></ninput>
-        -->
         <nselect ref="deviceTypes" title="{ content.entry.deviceTypeId }"></nselect>
     </virtual>
     <style>
@@ -54,25 +51,21 @@
         //#region controls variables and methods
 
         let deviceName, location;
-        //let deviceTypeId;
         let deviceTypes;
 
         let initCtrls = () => {
             deviceName = self.refs['deviceName'];
-            //deviceTypeId = self.refs['deviceTypeId'];
             deviceTypes = self.refs['deviceTypes'];
             location = self.refs['location'];
         }
         let freeCtrls = () => {
             location = null;
             deviceTypes = null;
-            //deviceTypeId = null;
             deviceName = null;
         }
         let clearInputs = () => {
             location.clear();
             deviceTypes.clear();
-            deviceTypeId.clear();
             deviceName.clear();
         }
 
@@ -146,7 +139,6 @@
                 //console.log('ctrlToObj:', editObj)
                 if (deviceName) editObj.DeviceName = deviceName.value();
                 if (location) editObj.Location = location.value();
-                //if (deviceTypeId) editObj.deviceTypeId = deviceTypeId.value();
                 if (deviceTypes) editObj.deviceTypeId = deviceTypes.value();
             }
         }
@@ -156,7 +148,6 @@
                 if (deviceName) deviceName.value(editObj.DeviceName);
                 if (location) location.value(editObj.Location);
                 if (deviceTypes) deviceTypes.value(editObj.deviceTypeId.toString());
-                //if (deviceTypeId) deviceTypeId.value(editObj.deviceTypeId);
             }
         }
 
