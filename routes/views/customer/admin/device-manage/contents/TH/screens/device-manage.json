@@ -1,0 +1,29 @@
+{
+    "title": "บัญชีอุปกรณ์",
+    "entry": {
+        "tabDefault": "ค่าตั้งต้น",
+        "tabMultiLang": "ภาษาอื่น",
+        "deviceName": "ชื่ออุปกรณ์",
+        "deviceTypeId": "ประเภทอุปกรณ์",
+        "location": "จุดติดตั้ง",
+        "orgId": "หน่วยงาน",
+        "memberId": "ผู้ใช้ปัจจุบัน"
+    },
+    "columns": [
+        {
+            "title": "ชื่ออุปกรณ์",
+            "field": "DeviceName",
+            "resizable": false
+        },
+        {
+            "title": "ประเภท",
+            "field": "Type",
+            "resizable": false
+        },
+        {
+            "title": "จุดติดตั้ง",
+            "field": "Location",
+            "resizable": false
+        }
+    ]
+}
