@@ -150,7 +150,7 @@ api.Save = class {
                 }
             }
             // loop to save non EN items and 
-            // assign parent branc id when save in child table.
+            // assign parent branch id when save in child table.
             for (let i = 0; i < items.length; i++) {
                 let item = items[i];
                 item.customerId = params.customerId;
@@ -270,8 +270,8 @@ api.Delete = class {
 router.use(secure.checkAccess);
 // branch
 router.all('/branch/search', api.Get.entry);
-router.all('/branch/save', api.Save.entry);
-router.all('/branch/delete', api.Delete.entry);
+router.post('/branch/save', api.Save.entry);
+//router.post('/branch/delete', api.Delete.entry);
 
 const init_routes = (svr) => {
     svr.route('/customer/api/', router);

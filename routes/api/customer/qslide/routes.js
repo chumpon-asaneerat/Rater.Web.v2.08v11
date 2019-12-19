@@ -60,54 +60,68 @@ const api = class { }
 api.Get = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
-        /*
+        // force langId to null;
+        params.langId = null;
         let customerId = secure.getCustomerId(req, res);
         if (customerId) params.customerId = customerId;
-        params.langId = null; // force null.
-        params.branchId = null;
+        params.qSeq = null;
         params.enabled = true;
-        */
+
         return params;
     }
     static async call(db, params) { 
-        //return db.GetBranchs(params);
-        return null;
+        return db.GetQSlides(params);
     }
     static parse(db, data, callback) {
         let dbResult = validate(db, data);
-        let result = {}        
-        result.data = null
-        //result.src = dbResult.data
-        result.errors = dbResult.errors
-        //result.multiple = dbResult.multiple
-        //result.datasets = dbResult.datasets
-        result.out = dbResult.out
 
+        let result = {
+            data : null,
+            //src: dbResult.data,
+            errors: dbResult.errors,
+            //multiple: dbResult.multiple,
+            //datasets: dbResult.datasets,
+            out: dbResult.out
+        }
         let records = dbResult.data;
         let ret = {};
-        /*
+
         records.forEach(rec => {
             if (!ret[rec.langId]) {
                 ret[rec.langId] = []
             }
-            let map = ret[rec.langId].map(c => c.branchId);
-            let idx = map.indexOf(rec.branchId);
+            let map = ret[rec.langId].map(c => c.qSetId);
+            let idx = map.indexOf(rec.qSetId);
             let nobj;
             if (idx === -1) {
                 // set id
-                nobj = {}
-                nobj.branchId = rec.branchId
+                nobj = { 
+                    qSetId: rec.qSetId,
+                    slides: []
+                }
                 // init lang properties list.
                 ret[rec.langId].push(nobj)
             }
             else {
                 nobj = ret[rec.langId][idx];
             }
-            nobj.branchName = rec.BranchName;
+            let map2 = nobj.slides.map(c => c.qSeq);
+            let idx2 = map2.indexOf(rec.qSeq);
+            let nobj2;
+            if (idx2 === -1) {
+                nobj2 = {
+                    qSeq: rec.qSeq
+                }
+                nobj.slides.push(nobj2)
+            }
+            else {
+                nobj2 = nobj.slides[idx2]
+            }
+            nobj2.text = rec.QSlideText
         })
-        */
         // set to result.
         result.data = ret;
+
         callback(result);
     }
     static entry(req, res) {
@@ -263,10 +277,10 @@ api.Delete = class {
 //#endregion
 
 router.use(secure.checkAccess);
-// routes for 
-//router.all('/branch/search', api.Get.entry);
-//router.all('/branch/save', api.Save.entry);
-//router.all('/branch/delete', api.Delete.entry);
+// routes for question slide
+router.all('/question/slide/search', api.Get.entry);
+//router.post('/question/slide/save', api.Save.entry);
+//router.post('/question/slide/delete', api.Delete.entry);
 
 const init_routes = (svr) => {
     svr.route('/customer/api/', router);

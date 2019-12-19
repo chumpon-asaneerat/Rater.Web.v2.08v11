@@ -1,4 +1,4 @@
-### GetBranch
+### Get branch
 POST http://localhost:3000/customer/api/branch/search
 content-type: application/json
 

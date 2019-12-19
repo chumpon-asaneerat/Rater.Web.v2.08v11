@@ -263,10 +263,10 @@ api.Delete = class {
 //#endregion
 
 router.use(secure.checkAccess);
-// routes for 
-//router.all('/branch/search', api.Get.entry);
-//router.all('/branch/save', api.Save.entry);
-//router.all('/branch/delete', api.Delete.entry);
+// routes for question slide item
+//router.all('/question/slide/item/search', api.Get.entry);
+//router.post('/question/slide/item/save', api.Save.entry);
+//router.post('/question/slide/item/delete', api.Delete.entry);
 
 const init_routes = (svr) => {
     svr.route('/customer/api/', router);

@@ -1,0 +1,2 @@
+### Get customer
+POST http://localhost:3000/edl/api/customer/search

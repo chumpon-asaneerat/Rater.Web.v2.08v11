@@ -60,54 +60,62 @@ const api = class { }
 api.Get = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
-        /*
-        let customerId = secure.getCustomerId(req, res);
-        if (customerId) params.customerId = customerId;
-        params.langId = null; // force null.
-        params.branchId = null;
+        // force langId to null;
+        params.langId = null;
+        params.customerId = null;
         params.enabled = true;
-        */
+
         return params;
     }
     static async call(db, params) { 
-        //return db.GetBranchs(params);
-        return null;
+        return db.GetCustomers(params);
     }
     static parse(db, data, callback) {
         let dbResult = validate(db, data);
-        let result = {}        
-        result.data = null
-        //result.src = dbResult.data
-        result.errors = dbResult.errors
-        //result.multiple = dbResult.multiple
-        //result.datasets = dbResult.datasets
-        result.out = dbResult.out
 
+        let result = {
+            data : null,
+            //src: dbResult.data,
+            errors: dbResult.errors,
+            //multiple: dbResult.multiple,
+            //datasets: dbResult.datasets,
+            out: dbResult.out
+        }
         let records = dbResult.data;
         let ret = {};
-        /*
+
         records.forEach(rec => {
             if (!ret[rec.langId]) {
                 ret[rec.langId] = []
             }
-            let map = ret[rec.langId].map(c => c.branchId);
-            let idx = map.indexOf(rec.branchId);
+            let map = ret[rec.langId].map(c => c.customerId);
+            let idx = map.indexOf(rec.customerId);
             let nobj;
             if (idx === -1) {
                 // set id
-                nobj = {}
-                nobj.branchId = rec.branchId
+                nobj = { customerId: rec.customerId }
                 // init lang properties list.
                 ret[rec.langId].push(nobj)
             }
             else {
                 nobj = ret[rec.langId][idx];
             }
-            nobj.branchName = rec.BranchName;
+            nobj.CustomerName = rec.CustomerName;
+            nobj.TaxCode = rec.TaxCode;
+            nobj.CustomerName = rec.CustomerName;
+            nobj.Address1 = rec.Address1;
+            nobj.Address2 = rec.Address2;
+            nobj.City = rec.City;
+            nobj.Province = rec.Province;
+            nobj.PostalCode = rec.PostalCode;
+            nobj.Phone = rec.Phone;
+            nobj.Mobile = rec.Mobile;
+            nobj.Fax = rec.Fax;
+            nobj.Email = rec.Email;
         })
-        */
         // set to result.
         result.data = ret;
+
         callback(result);
     }
     static entry(req, res) {
@@ -263,10 +271,10 @@ api.Delete = class {
 //#endregion
 
 router.use(secure.checkAccess);
-// routes for 
-//router.all('/branch/search', api.Get.entry);
-//router.all('/branch/save', api.Save.entry);
-//router.all('/branch/delete', api.Delete.entry);
+// routes for customer
+router.all('/customer/search', api.Get.entry);
+//router.post('/customer/save', api.Save.entry);
+//router.post('/customer/delete', api.Delete.entry);
 
 const init_routes = (svr) => {
     svr.route('/edl/api/', router);

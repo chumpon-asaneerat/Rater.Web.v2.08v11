@@ -1,0 +1,7 @@
+### Get org
+POST http://localhost:3000/customer/api/org/search
+content-type: application/json
+
+{
+    "customerId": "EDL-C2019100003"
+}
