@@ -1,0 +1,3 @@
+[
+    { "type": "cmd", "id":"signout", "ref": "signout", "text":"Sign Out", "icon": "fas fa-user-times", "icontype": "fontcss" }
+]

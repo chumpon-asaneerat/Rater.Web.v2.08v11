@@ -1,0 +1,15 @@
+{
+    "title": "การจัดการข้อมูลลูกค้า",
+    "entry":  {
+        "tabDefault": "ค่าตั้งต้น",
+        "tabMultiLang": "ภาษาอื่น",
+        "customerName": "ชื่อลูกค้า"
+    },
+    "columns": [
+        { "title": "ชื่อลูกค้า", "field": "CustomerName", "resizable": false },
+        { "title": "ที่อยู่ 1", "field": "Address1", "resizable": false },
+        { "title": "ที่อยู่ 2", "field": "Address2", "resizable": false },
+        { "title": "เขต/แขวง", "field": "City", "resizable": false },
+        { "title": "จังหวัด", "field": "Province", "resizable": false }
+    ]
+}

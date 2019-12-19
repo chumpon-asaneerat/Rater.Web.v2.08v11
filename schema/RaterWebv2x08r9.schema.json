@@ -1883,54 +1883,6 @@
             ]
         }
     },
-    "CheckAccess": {
-        "type": "PROCEDURE",
-        "updated": "2019-10-10T16:23:28.023Z",
-        "parameter": {
-            "inputs": [
-                {
-                    "name": "accessId",
-                    "type": "nvarchar(30)"
-                }
-            ],
-            "outputs": [
-                {
-                    "name": "errNum",
-                    "type": "int"
-                },
-                {
-                    "name": "errMsg",
-                    "type": "nvarchar(max)"
-                }
-            ]
-        }
-    },
-    "GetAccessUser": {
-        "type": "PROCEDURE",
-        "updated": "2019-10-10T16:23:28.027Z",
-        "parameter": {
-            "inputs": [
-                {
-                    "name": "langId",
-                    "type": "nvarchar(3)"
-                },
-                {
-                    "name": "accessId",
-                    "type": "nvarchar(30)"
-                }
-            ],
-            "outputs": [
-                {
-                    "name": "errNum",
-                    "type": "int"
-                },
-                {
-                    "name": "errMsg",
-                    "type": "nvarchar(max)"
-                }
-            ]
-        }
-    },
     "SignOut": {
         "type": "PROCEDURE",
         "updated": "2019-10-10T16:23:28.030Z",
@@ -2451,9 +2403,33 @@
             ]
         }
     },
+    "GetTopLevelOrgs": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-16T09:11:53.093Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "enabled",
+                    "type": "bit",
+                    "default": "NULL"
+                }
+            ],
+            "outputs": []
+        }
+    },
     "DeleteQSlide": {
         "type": "PROCEDURE",
-        "updated": "2019-12-16T08:49:14.453Z",
+        "updated": "2019-12-16T09:39:23.477Z",
         "parameter": {
             "inputs": [
                 {
@@ -2483,7 +2459,7 @@
     },
     "DeleteQSet": {
         "type": "PROCEDURE",
-        "updated": "2019-12-16T08:54:03.977Z",
+        "updated": "2019-12-16T09:40:47.297Z",
         "parameter": {
             "inputs": [
                 {
@@ -2507,28 +2483,79 @@
             ]
         }
     },
-    "GetTopLevelOrgs": {
+    "CheckAccess": {
         "type": "PROCEDURE",
-        "updated": "2019-12-16T09:11:53.093Z",
+        "updated": "2019-12-19T08:42:31.340Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "accessId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "GetAccessUser": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-19T08:45:52.953Z",
         "parameter": {
             "inputs": [
                 {
                     "name": "langId",
-                    "type": "nvarchar(3)",
-                    "default": "NULL"
+                    "type": "nvarchar(3)"
+                },
+                {
+                    "name": "accessId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "ChangeCustomer": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-19T08:59:42.850Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "accessId",
+                    "type": "nvarchar(30)"
                 },
                 {
                     "name": "customerId",
                     "type": "nvarchar(30)",
                     "default": "NULL"
-                },
-                {
-                    "name": "enabled",
-                    "type": "bit",
-                    "default": "NULL"
                 }
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
         }
     }
 }

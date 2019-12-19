@@ -93,6 +93,7 @@ const isStaff = (url) => { return isStartsWith(url, 'customer/staff'); }
 const isEDLAdmin = (url) => { return isStartsWith(url, 'edl/admin'); }
 const isEDLSupervisor = (url) => { return isStartsWith(url, 'edl/supervisor'); }
 const isEDLStaff = (url) => { return isStartsWith(url, 'edl/staff'); }
+const isEDLCustomer = (url) => { return isStartsWith(url, 'edl/customer'); }
 /*
 const isAdminAPI = (url) => { return isStartsWith(url, 'customer/api/admin'); }
 const isExclusiveAPI = (url) => { return isStartsWith(url, 'customer/api/exclusive'); }
@@ -155,6 +156,16 @@ const gotoEDLStaff = (req, res, next, url) => {
         if (next) next()
     }
 }
+
+const gotoEDLCustomer = (req, res, next, url) => {
+    if (!isEDLCustomer(url)) {
+        res.redirect('/edl/customer')
+    }
+    else {
+        if (next) next()
+    }
+}
+
 // for redirect and permission for routes
 const homeurls = [
     { code:   0, redirect: gotoHome },
@@ -164,7 +175,8 @@ const homeurls = [
     //{ code: 290, redirect: gotoDevice }, // not implements.
     { code: 100, redirect: gotoEDLAdmin },
     { code: 110, redirect: gotoEDLSupervisor },
-    { code: 180, redirect: gotoEDLStaff }
+    { code: 180, redirect: gotoEDLStaff },
+    { code: 900, redirect: gotoEDLCustomer }
 ]
 const goHome = (memberType) => {
     let map = homeurls.map(urlObj => urlObj.code )
@@ -179,12 +191,23 @@ const checkRedirect = (req, res, next) => {
     let url = getRoutePath(req);
     let secure = (res.locals.rater) ? res.locals.rater.secure : null;
     let mtype = 0;
-    if (secure && 
-        secure.memberType !== undefined && secure.memberType !== null) {
-        mtype = secure.memberType;            
+    let edlCustomerId;
+    if (secure) {
+        if (secure.memberType !== undefined && secure.memberType !== null) {
+            mtype = secure.memberType;
+        }
+        if (secure.EDLCustomerId !== undefined && secure.EDLCustomerId !== null) {
+            edlCustomerId = secure.EDLCustomerId;
+        }
     }
     // auto redirct if not match home url.
-    let fn = goHome(mtype);
+    let fn;
+    if (edlCustomerId) {
+        fn = goHome(900);
+    }
+    else {
+        fn = goHome(mtype);
+    }
     fn(req, res, next, url);
 }
 // for api permission
@@ -293,6 +316,11 @@ const getMemberType = (req, res) => {
     let ret = (secure) ? secure.memberType : 0;
     return ret;
 }
+const getEDLCustomerId = (req, res) => {
+    let secure = getSecure(req, res);
+    let ret = (secure) ? secure.EDLCustomerId : null;
+    return ret;
+}
 const updateSecureObj = (req, res, obj) => {
     if (!res.locals.rater) {
         // setup value for access in all routes.        
@@ -303,7 +331,8 @@ const updateSecureObj = (req, res, obj) => {
                 customerId: '',
                 memberId: '',
                 memberType: 0,
-                IsEdlUser: false
+                IsEdlUser: false,
+                EDLCustomerId: null
             }
         }
     }
@@ -314,7 +343,8 @@ const updateSecureObj = (req, res, obj) => {
         rater.secure.customerId = obj.CustomerId;
         rater.secure.memberId = obj.MemberId;
         rater.secure.memberType = obj.MemberType;
-        rater.secure.IsEdlUser = obj.IsEDLUser
+        rater.secure.IsEdlUser = obj.IsEDLUser,
+        rater.secure.EDLCustomerId = obj.EDLCustomerId
     }
 }
 
@@ -347,7 +377,6 @@ class RaterSecure {
         // check redirect.
         checkRedirect(req, res, next);
     }
-
     static checkAdminPermission(req, res, next) {
         checkAdminPermission(req, res ,next);
     }
@@ -371,6 +400,7 @@ class RaterSecure {
     static getDeviceId(req, res) { return getDeviceId(req, res) }
     static getMemberId(req, res) { return getMemberId(req, res) }
     static getMemberType(req, res) { return getMemberType(req, res) }
+    static getEDLCustomerId(req, res) { return getEDLCustomerId(req, res) }
     static signout(req, res) {
         let obj = WebServer.signedCookie.readObject(req, res);
         //rater.secure.deviceId = getValue(obj, secureNames.deviceId)
@@ -383,6 +413,24 @@ class RaterSecure {
         }
         exec(db, fn).then(result => {
             obj.accessId = ''; // cannot assigned null;
+            WebServer.signedCookie.writeObject(req, res, obj, WebServer.expires.in(5).years);
+            WebServer.sendJson(req, res, result);
+        });
+    }
+    static changeCustomer(req, res) {
+        let reqData = WebServer.parseReq(req).data;
+        let obj = WebServer.signedCookie.readObject(req, res);
+        //rater.secure.deviceId = getValue(obj, secureNames.deviceId)
+        let db = new sqldb();
+        let params = { 
+            accessId: (reqData.accessId) ? reqData.accessId : obj.accessId,
+            customerId: reqData.customerId
+        };
+        let fn = async () => {
+            return db.ChangeCustomer(params);
+        }
+        exec(db, fn).then(result => {
+            obj.EDLCustomerId = (obj.EDLCustomerId) ? obj.EDLCustomerId : ''; // cannot assign null
             WebServer.signedCookie.writeObject(req, res, obj, WebServer.expires.in(5).years);
             WebServer.sendJson(req, res, result);
         });

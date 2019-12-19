@@ -132,6 +132,7 @@ router.post('/register', routes.register)
 router.post('/validate-accounts', routes.validateAcccounts)
 router.post('/signin', routes.signin)
 router.post('/signout', secure.signout)
+router.post('/change-customer', secure.changeCustomer)
 
 const init_routes = (svr) => {
     svr.route('/api/customer', router);

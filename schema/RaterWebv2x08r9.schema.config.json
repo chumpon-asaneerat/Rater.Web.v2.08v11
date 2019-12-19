@@ -111,5 +111,6 @@
     "DeleteQSlideItem": true,
     "DeleteQSlide": true,
     "DeleteQSet": true,
-    "GetTopLevelOrgs": true
+    "GetTopLevelOrgs": true,
+    "ChangeCustomer": true
 }

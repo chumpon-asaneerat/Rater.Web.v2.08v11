@@ -1,0 +1,15 @@
+{
+    "title": "Customer Management",
+    "entry":  {
+        "tabDefault": "Default",
+        "tabMultiLang": "Languages",
+        "customerName": "Customer Name"
+    },
+    "columns": [
+        { "title": "Customer Name", "field": "CustomerName", "resizable": false },
+        { "title": "Address 1", "field": "Address1", "resizable": false },
+        { "title": "Address 2", "field": "Address2", "resizable": false },
+        { "title": "City", "field": "City", "resizable": false },
+        { "title": "Province", "field": "Province", "resizable": false }
+    ]
+}
