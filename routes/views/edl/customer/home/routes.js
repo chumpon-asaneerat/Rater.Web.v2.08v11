@@ -32,12 +32,12 @@ const routes = class {
     }
 }
 
-router.get('/customer/home', secure.checkAccess, secure.checkRedirect, routes.home)
-router.get('/customer/home/contents', routes.getContents)
-router.get('/customer/home/js/:file', routes.getjsfile)
+router.get('/', secure.checkAccess, secure.checkRedirect, routes.home)
+router.get('/contents', routes.getContents)
+router.get('/js/:file', routes.getjsfile)
 
 const init_routes = (svr) => {
-    svr.route('/edl/admin', router);
+    svr.route('/edl/customer', router);
 };
 
 module.exports.init_routes = exports.init_routes = init_routes;

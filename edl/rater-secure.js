@@ -187,29 +187,6 @@ const goHome = (memberType) => {
     }
     return ret;
 }
-const checkRedirect = (req, res, next) => {
-    let url = getRoutePath(req);
-    let secure = (res.locals.rater) ? res.locals.rater.secure : null;
-    let mtype = 0;
-    let edlCustomerId;
-    if (secure) {
-        if (secure.memberType !== undefined && secure.memberType !== null) {
-            mtype = secure.memberType;
-        }
-        if (secure.EDLCustomerId !== undefined && secure.EDLCustomerId !== null) {
-            edlCustomerId = secure.EDLCustomerId;
-        }
-    }
-    // auto redirct if not match home url.
-    let fn;
-    if (edlCustomerId) {
-        fn = goHome(900);
-    }
-    else {
-        fn = goHome(mtype);
-    }
-    fn(req, res, next, url);
-}
 // for api permission
 const sendNoPermission = (req, res) => {
     let ret = nlib.NResult.error(-800, 'No Permission to access api(s).');
@@ -223,66 +200,6 @@ const processPermission = (req, res, next, allow) => {
         sendNoPermission(req, res);
     }
 }
-const checkAdminPermission = (req, res, next) => {
-    let url = getRoutePath(req);
-    let ret = isAdminAPI(url)
-    if (ret) {
-        // route valid.
-        let memberType = getMemberType(req, res);
-        ret = (memberType === 200);
-    }
-    processPermission(req, res, next, ret);
-}
-const checkExclusivePermission = (req, res, next) => {
-    let url = getRoutePath(req);
-    let ret = isExclusiveAPI(url)
-    if (ret) {
-        // route valid.
-        let memberType = getMemberType(req, res);
-        ret = (memberType === 210);
-    }
-    processPermission(req, res, next, ret);
-}
-const checkStaffPermission = (req, res, next) => {
-    let url = getRoutePath(req);
-    let ret = isStaffAPI(url)
-    if (ret) {
-        // route valid.
-        let memberType = getMemberType(req, res);
-        ret = (memberType === 280);
-    }
-    processPermission(req, res, next, ret);
-}
-const checkEDLAdminPermission = (req, res, next) => {
-    let url = getRoutePath(req);
-    let ret = isEDLAdminAPI(url)
-    if (ret) {
-        // route valid.
-        let memberType = getMemberType(req, res);
-        ret = (memberType === 100);
-    }
-    processPermission(req, res, next, ret);
-}
-const checkEDLSupervisorPermission = (req, res, next) => {
-    let url = getRoutePath(req);
-    let ret = isEDLSupervisorAPI(url)
-    if (ret) {
-        // route valid.
-        let memberType = getMemberType(req, res);
-        ret = (memberType === 110);
-    }
-    processPermission(req, res, next, ret);
-}
-const checkEDLStaffPermission = (req, res, next) => {
-    let url = getRoutePath(req);
-    let ret = isEDLStaffAPI(url)
-    if (ret) {
-        // route valid.
-        let memberType = getMemberType(req, res);
-        ret = (memberType === 180);
-    }
-    processPermission(req, res, next, ret);
-}
 // cookie/db sync
 const getRater = (req, res) => {
     return (res.locals.rater) ? res.locals.rater : null;
@@ -290,36 +207,6 @@ const getRater = (req, res) => {
 const getSecure = (req, res) => {
     let rater = getRater(req, res)
     return (rater) ? rater.secure : null;
-}
-const getAccessId = (req, res) => {
-    let secure = getSecure(req, res);
-    let ret = (secure) ? secure.accessId : null;
-    return ret;
-}
-const getCustomerId = (req, res) => {
-    let secure = getSecure(req, res);
-    let ret = (secure) ? secure.customerId : null;
-    return ret;
-}
-const getMemberId = (req, res) => {
-    let secure = getSecure(req, res);
-    let ret = (secure) ? secure.memberId : null;
-    return ret;
-}
-const getDeviceId = (req, res) => {
-    let secure = getSecure(req, res);
-    let ret = (secure) ? secure.deviceId : null;
-    return ret;
-}
-const getMemberType = (req, res) => {
-    let secure = getSecure(req, res);
-    let ret = (secure) ? secure.memberType : 0;
-    return ret;
-}
-const getEDLCustomerId = (req, res) => {
-    let secure = getSecure(req, res);
-    let ret = (secure) ? secure.EDLCustomerId : null;
-    return ret;
 }
 const updateSecureObj = (req, res, obj) => {
     if (!res.locals.rater) {
@@ -375,32 +262,118 @@ class RaterSecure {
     }
     static checkRedirect(req, res, next) {
         // check redirect.
-        checkRedirect(req, res, next);
+        let url = getRoutePath(req);
+        let secure = (res.locals.rater) ? res.locals.rater.secure : null;
+        let mtype = 0;
+        let edlCustomerId;
+        if (secure) {
+            if (secure.memberType !== undefined && secure.memberType !== null) {
+                mtype = secure.memberType;
+            }
+            if (secure.EDLCustomerId !== undefined && secure.EDLCustomerId !== null) {
+                edlCustomerId = secure.EDLCustomerId;
+            }
+        }
+        // auto redirct if not match home url.
+        let fn;
+        if (edlCustomerId) {
+            fn = goHome(900);
+        }
+        else {
+            fn = goHome(mtype);
+        }
+        fn(req, res, next, url);
     }
     static checkAdminPermission(req, res, next) {
-        checkAdminPermission(req, res ,next);
+        let url = getRoutePath(req);
+        let ret = isAdminAPI(url)
+        if (ret) {
+            // route valid.
+            let memberType = getMemberType(req, res);
+            ret = (memberType === 200);
+        }
+        processPermission(req, res, next, ret);
     }
     static checkExclusivePermission(req, res, next) {
-        checkExclusivePermission(req, res ,next);
+        let url = getRoutePath(req);
+        let ret = isExclusiveAPI(url)
+        if (ret) {
+            // route valid.
+            let memberType = getMemberType(req, res);
+            ret = (memberType === 210);
+        }
+        processPermission(req, res, next, ret);
     }
     static checkStaffPermission(req, res, next) {
-        checkStaffPermission(req, res ,next);
+        let url = getRoutePath(req);
+        let ret = isStaffAPI(url)
+        if (ret) {
+            // route valid.
+            let memberType = getMemberType(req, res);
+            ret = (memberType === 280);
+        }
+        processPermission(req, res, next, ret);
     }
     static checkEDLAdminPermission(req, res, next) {
-        checkEDLAdminPermission(req, res ,next);
+        let url = getRoutePath(req);
+        let ret = isEDLAdminAPI(url)
+        if (ret) {
+            // route valid.
+            let memberType = getMemberType(req, res);
+            ret = (memberType === 100);
+        }
+        processPermission(req, res, next, ret);
     }
     static checkEDLSupervisorPermission(req, res, next) {
-        checkEDLSupervisorPermission(req, res ,next);
+        let url = getRoutePath(req);
+        let ret = isEDLSupervisorAPI(url)
+        if (ret) {
+            // route valid.
+            let memberType = getMemberType(req, res);
+            ret = (memberType === 110);
+        }
+        processPermission(req, res, next, ret);
     }
     static checkEDLStaffPermission(req, res, next) {
-        checkEDLStaffPermission(req, res ,next);
+        let url = getRoutePath(req);
+        let ret = isEDLStaffAPI(url)
+        if (ret) {
+            // route valid.
+            let memberType = getMemberType(req, res);
+            ret = (memberType === 180);
+        }
+        processPermission(req, res, next, ret);
     }
-    static getAccessId(req, res) { return getAccessId(req, res) }
-    static getCustomerId(req, res) { return getCustomerId(req, res) }
-    static getDeviceId(req, res) { return getDeviceId(req, res) }
-    static getMemberId(req, res) { return getMemberId(req, res) }
-    static getMemberType(req, res) { return getMemberType(req, res) }
-    static getEDLCustomerId(req, res) { return getEDLCustomerId(req, res) }
+    static getAccessId(req, res) {
+        let secure = getSecure(req, res);
+        let ret = (secure) ? secure.accessId : null;
+        return ret;
+    }
+    static getCustomerId(req, res) {
+        let secure = getSecure(req, res);
+        let ret = (secure) ? secure.customerId : null;
+        return ret;
+    }
+    static getDeviceId(req, res) {
+        let secure = getSecure(req, res);
+        let ret = (secure) ? secure.deviceId : null;
+        return ret;
+    }
+    static getMemberId(req, res) {
+        let secure = getSecure(req, res);
+        let ret = (secure) ? secure.memberId : null;
+        return ret;
+    }
+    static getMemberType(req, res) {
+        let secure = getSecure(req, res);
+        let ret = (secure) ? secure.memberType : 0;
+        return ret;
+    }
+    static getEDLCustomerId(req, res) {
+        let secure = getSecure(req, res);
+        let ret = (secure) ? secure.EDLCustomerId : null;
+        return ret;
+    }
     static signout(req, res) {
         let obj = WebServer.signedCookie.readObject(req, res);
         //rater.secure.deviceId = getValue(obj, secureNames.deviceId)

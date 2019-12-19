@@ -1,17 +1,14 @@
 <edl-customer-view>
-    <div ref="title" class="titlearea">
-        <button class="addnew" onclick="{ addnew }">
-            <span class="fas fa-plus-circle">&nbsp;</span>
-        </button>
-        <button class="refresh" onclick="{ refresh }">
-            <span class="fas fa-sync">&nbsp;</span>
-        </button>
-    </div>
     <div ref="container" class="scrarea">
-        <div ref="grid"></div>
-        <!--
-        <div ref="grid" id="gridbranch"></div>
-        -->
+        <div ref="tool" class="toolarea">
+            <button class="float-button" onclick="{ addnew }">
+                <span class="fas fa-plus">&nbsp;</span>
+            </button>
+            <button class="float-button" onclick="{ refresh }">
+                <span class="fas fa-sync">&nbsp;</span>
+            </button>
+        </div>
+        <div ref="grid" class="gridarea"></div>
     </div>
     <style>
         :scope {
@@ -21,46 +18,79 @@
             height: 100%;
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: 30px 1fr;
+            grid-template-rows: 20px 1fr 20px;
             grid-template-areas: 
-                'titlearea'
-                'scrarea';
+                '.'
+                'scrarea'
+                '.'
         }
-        :scope .titlearea {
-            grid-area: titlearea;
-            margin: 0 auto;
-            padding: 0;
-            width: 100%;
-            max-width: 800px;
-            height: 100%;
-            overflow: hidden;
-            border-radius: 3px;
-            background-color: transparent;
-            color: whitesmoke;
-        }
-        :scope .titlearea .addnew {
-            margin: 0 auto;
-            padding: 2px;
-            height: 100%;
-            width: 50px;
-            color: darkgreen;
-        }
-        :scope .titlearea .refresh {
-            margin: 0 auto;
-            padding: 2px;
-            height: 100%;
-            width: 50px;
-            color: darkgreen;
-        }
-        :scope .scrarea {
+        :scope>.scrarea {
             grid-area: scrarea;
+            display: grid;
+            grid-template-columns: 5px auto 1fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: 
+                '. toolarea gridarea';
             margin: 0 auto;
             padding: 0;
             margin-top: 3px;
             width: 100%;
             max-width: 800px;
-            /* height: calc(100% - 50px); */
             height: 100%;
+        }
+        :scope>.scrarea>.toolarea {
+            grid-area: toolarea;
+            margin: 0 auto;
+            margin-right: 5px;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: transparent;
+            color: whitesmoke;
+        }
+        :scope>.scrarea>.toolarea .float-button {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 5px;
+            padding: 3px;
+            padding-right: 1px;
+            height: 40px;
+            width: 40px;
+            color: whitesmoke;
+            background: silver;
+            border: none;
+            outline: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        :scope>.scrarea>.toolarea .float-button:hover {
+            color: whitesmoke;
+            background: forestgreen;
+        }
+        :scope>.scrarea>.gridarea {
+            grid-area: gridarea;
+            margin: 0 auto;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        :scope .tabulator-row button {
+            margin: 0 auto;
+            padding: 0px;
+            width: 100%;
+            font-size: small;
+            color: inherit;
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+        :scope .tabulator-row button:hover {
+            color: forestgreen;
+        }
+        :scope .tabulator-row button>span {
+            margin: 0 auto;
+            padding: 0;
         }
     </style>
     <script>
@@ -156,10 +186,8 @@
             addEvt(events.name.ContentChanged, onContentChanged)
             addEvt(events.name.ScreenChanged, onScreenChanged)
             addEvt(events.name.CustomerListChanged, onCustomerListChanged)
-            addEvt(events.name.EndEditCustomer, onEndEdit)
         }
         let unbindEvents = () => {
-            delEvt(events.name.EndEditCustomer, onEndEdit)
             delEvt(events.name.CustomerListChanged, onCustomerListChanged)
             delEvt(events.name.ScreenChanged, onScreenChanged)
             delEvt(events.name.ContentChanged, onContentChanged)
@@ -212,7 +240,8 @@
 
         let editRow = (e, cell) => {
             let data = cell.getRow().getData();
-            events.raise(events.name.BeginEditCustomer, { item: data })
+            //console.log(data)
+            secure.changeCustomer(data.customerId)
         }
         let deleteRow = (e, cell) => {
             let data = cell.getRow().getData();
@@ -224,21 +253,20 @@
             document.dispatchEvent(evt);
             */
         }
-        let onEndEdit = (e) => {
-            syncData();        
-            table.redraw(true);
-        }
 
         //#endregion
 
         //#region public methods
 
         this.addnew = (e) => {
+            // Show Modal Form Here.
+            /*
             let data = { 
                 customerId: null, 
                 CustomerName: 'Customer Name'
             };
             events.raise(events.name.BeginEditCustomer, { item: data })
+            */
         }
         this.refresh = (e) => { 
             customermanager.load();

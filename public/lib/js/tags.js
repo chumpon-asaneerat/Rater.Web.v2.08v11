@@ -927,8 +927,13 @@ riot.tag2('links-menu', '<div class="menu"> <a ref="links" class="link-combo" hr
                 secure.nav(selLink.ref)
             }
             else if (linkType === 'cmd') {
-                if (selLink.ref.toLowerCase() === 'signout')
-                secure.signout();
+                if (selLink.ref.toLowerCase() === 'signout') {
+                    secure.signout();
+                }
+                else if (selLink.ref.toLowerCase() === 'exit') {
+                    if (selLink.ref.toLowerCase() === 'exit')
+                    secure.changeCustomer();
+                }
             }
             else {
                 console.log('Not implements type, data:', selLink);
@@ -2337,84 +2342,11 @@ riot.tag2('edl-customer-entry', '<div class="padtop"></div> <div class="padtop">
 
 });
 
-riot.tag2('edl-customer-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <edl-customer-view ref="viewer" class="view"></edl-customer-view> </yield> <yield to="entry"> <edl-customer-editor ref="entry" class="entry"></edl-customer-editor> </yield> </flip-screen>', 'edl-customer-manage,[data-is="edl-customer-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } edl-customer-manage .view,[data-is="edl-customer-manage"] .view,edl-customer-manage .entry,[data-is="edl-customer-manage"] .entry{ margin: 0; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; overflow: hidden; } edl-customer-manage .entry,[data-is="edl-customer-manage"] .entry{ margin: 0 auto; overflow: auto; }', '', function(opts) {
-
-
-        let self = this;
-
-        let defaultContent = {
-            title: 'Title'
-        }
-        this.content = defaultContent;
-
-        let updatecontent = () => {
-            let scrId = screens.current.screenId;
-            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
-            self.content = scrContent ? scrContent : defaultContent;
-            self.update();
-        }
-
-        let flipper, view, entry;
-        let initCtrls = () => {
-
-            flipper = self.refs['flipper'];
-            entry = (flipper) ? flipper.refs['entry'] : undefined;
-        }
-        let freeCtrls = () => {
-            entry = null;
-            flipper = null;
-        }
-
-        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
-        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
-
-        let bindEvents = () => {
-            addEvt(events.name.LanguageChanged, onLanguageChanged)
-            addEvt(events.name.ContentChanged, onContentChanged)
-            addEvt(events.name.ScreenChanged, onScreenChanged)
-            addEvt(events.name.BeginEditCustomer, onBeginEdit)
-            addEvt(events.name.EndEditCustomer, onEndEdit)
-        }
-        let unbindEvents = () => {
-            delEvt(events.name.EndEditCustomer, onEndEdit)
-            delEvt(events.name.BeginEditCustomer, onBeginEdit)
-            delEvt(events.name.ScreenChanged, onScreenChanged)
-            delEvt(events.name.ContentChanged, onContentChanged)
-            delEvt(events.name.LanguageChanged, onLanguageChanged)
-        }
-
-        this.on('mount', () => {
-            initCtrls();
-            bindEvents();
-        });
-        this.on('unmount', () => {
-            unbindEvents();
-            freeCtrls();
-        });
-
-        let onContentChanged = (e) => { updatecontent(); }
-        let onLanguageChanged = (e) => { updatecontent(); }
-        let onScreenChanged = (e) => { updatecontent(); }
-        let onBeginEdit = (e) => {
-
-            if (flipper) {
-                flipper.toggle();
-                let item = e.detail.data.item;
-
-                if (entry) entry.setup(item);
-            }
-
-        }
-        let onEndEdit = (e) => {
-
-            if (flipper) {
-                flipper.toggle();
-            }
-        }
-
+riot.tag2('edl-customer-manage', '<edl-customer-view ref="viewer" class="view"></edl-customer-view>', 'edl-customer-manage,[data-is="edl-customer-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } edl-customer-manage .view,[data-is="edl-customer-manage"] .view{ margin: 0; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
 });
 
-riot.tag2('edl-customer-view', '<div ref="title" class="titlearea"> <button class="addnew" onclick="{addnew}"> <span class="fas fa-plus-circle">&nbsp;</span> </button> <button class="refresh" onclick="{refresh}"> <span class="fas fa-sync">&nbsp;</span> </button> </div> <div ref="container" class="scrarea"> <div ref="grid"></div> </div>', 'edl-customer-view,[data-is="edl-customer-view"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 30px 1fr; grid-template-areas: \'titlearea\' \'scrarea\'; } edl-customer-view .titlearea,[data-is="edl-customer-view"] .titlearea{ grid-area: titlearea; margin: 0 auto; padding: 0; width: 100%; max-width: 800px; height: 100%; overflow: hidden; border-radius: 3px; background-color: transparent; color: whitesmoke; } edl-customer-view .titlearea .addnew,[data-is="edl-customer-view"] .titlearea .addnew{ margin: 0 auto; padding: 2px; height: 100%; width: 50px; color: darkgreen; } edl-customer-view .titlearea .refresh,[data-is="edl-customer-view"] .titlearea .refresh{ margin: 0 auto; padding: 2px; height: 100%; width: 50px; color: darkgreen; } edl-customer-view .scrarea,[data-is="edl-customer-view"] .scrarea{ grid-area: scrarea; margin: 0 auto; padding: 0; margin-top: 3px; width: 100%; max-width: 800px; height: 100%; }', '', function(opts) {
+
+riot.tag2('edl-customer-view', '<div ref="container" class="scrarea"> <div ref="tool" class="toolarea"> <button class="float-button" onclick="{addnew}"> <span class="fas fa-plus">&nbsp;</span> </button> <button class="float-button" onclick="{refresh}"> <span class="fas fa-sync">&nbsp;</span> </button> </div> <div ref="grid" class="gridarea"></div> </div>', 'edl-customer-view,[data-is="edl-customer-view"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 20px 1fr 20px; grid-template-areas: \'.\' \'scrarea\' \'.\' } edl-customer-view>.scrarea,[data-is="edl-customer-view"]>.scrarea{ grid-area: scrarea; display: grid; grid-template-columns: 5px auto 1fr; grid-template-rows: 1fr; grid-template-areas: \'. toolarea gridarea\'; margin: 0 auto; padding: 0; margin-top: 3px; width: 100%; max-width: 800px; height: 100%; } edl-customer-view>.scrarea>.toolarea,[data-is="edl-customer-view"]>.scrarea>.toolarea{ grid-area: toolarea; margin: 0 auto; margin-right: 5px; padding: 0; height: 100%; overflow: hidden; background-color: transparent; color: whitesmoke; } edl-customer-view>.scrarea>.toolarea .float-button,[data-is="edl-customer-view"]>.scrarea>.toolarea .float-button{ display: block; margin: 0 auto; margin-bottom: 5px; padding: 3px; padding-right: 1px; height: 40px; width: 40px; color: whitesmoke; background: silver; border: none; outline: none; border-radius: 50%; cursor: pointer; } edl-customer-view>.scrarea>.toolarea .float-button:hover,[data-is="edl-customer-view"]>.scrarea>.toolarea .float-button:hover{ color: whitesmoke; background: forestgreen; } edl-customer-view>.scrarea>.gridarea,[data-is="edl-customer-view"]>.scrarea>.gridarea{ grid-area: gridarea; margin: 0 auto; padding: 0; height: 100%; width: 100%; } edl-customer-view .tabulator-row button,[data-is="edl-customer-view"] .tabulator-row button{ margin: 0 auto; padding: 0px; width: 100%; font-size: small; color: inherit; background: transparent; border: none; outline: none; cursor: pointer; } edl-customer-view .tabulator-row button:hover,[data-is="edl-customer-view"] .tabulator-row button:hover{ color: forestgreen; } edl-customer-view .tabulator-row button>span,[data-is="edl-customer-view"] .tabulator-row button>span{ margin: 0 auto; padding: 0; }', '', function(opts) {
 
 
         let self = this;
@@ -2491,10 +2423,8 @@ riot.tag2('edl-customer-view', '<div ref="title" class="titlearea"> <button clas
             addEvt(events.name.ContentChanged, onContentChanged)
             addEvt(events.name.ScreenChanged, onScreenChanged)
             addEvt(events.name.CustomerListChanged, onCustomerListChanged)
-            addEvt(events.name.EndEditCustomer, onEndEdit)
         }
         let unbindEvents = () => {
-            delEvt(events.name.EndEditCustomer, onEndEdit)
             delEvt(events.name.CustomerListChanged, onCustomerListChanged)
             delEvt(events.name.ScreenChanged, onScreenChanged)
             delEvt(events.name.ContentChanged, onContentChanged)
@@ -2535,7 +2465,8 @@ riot.tag2('edl-customer-view', '<div ref="title" class="titlearea"> <button clas
 
         let editRow = (e, cell) => {
             let data = cell.getRow().getData();
-            events.raise(events.name.BeginEditCustomer, { item: data })
+
+            secure.changeCustomer(data.customerId)
         }
         let deleteRow = (e, cell) => {
             let data = cell.getRow().getData();
@@ -2543,17 +2474,9 @@ riot.tag2('edl-customer-view', '<div ref="title" class="titlearea"> <button clas
             syncData();
 
         }
-        let onEndEdit = (e) => {
-            syncData();
-            table.redraw(true);
-        }
 
         this.addnew = (e) => {
-            let data = {
-                customerId: null,
-                CustomerName: 'Customer Name'
-            };
-            events.raise(events.name.BeginEditCustomer, { item: data })
+
         }
         this.refresh = (e) => {
             customermanager.load();

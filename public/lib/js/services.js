@@ -462,6 +462,26 @@ class SecureService {
         }
         XHR.postJson(url, this.account, fn);
     }
+    changeCustomer(customerId) {
+        let url = '/api/customer/change-customer'
+        let paramObj = {
+            customerId: customerId
+        }
+        //console.log('Sign In:', paramObj);
+        let fn = (r) => {
+            let data = api.parse(r);
+            let err = data.errors;
+            if (err && err.hasError) {
+                // change customer failed.
+                //console.log('Change customer failed:', err)
+            }
+            else {
+                //console.log('Change customer Success.');
+                nlib.nav.gotoUrl('/', true);
+            }            
+        }
+        XHR.postJson(url, paramObj, fn);
+    }
     nav(url) {
         nlib.nav.gotoUrl(url);
     }
@@ -489,20 +509,3 @@ class SecureService {
 window.secure = window.secure || new SecureService();
 
 //#endregion
-
-/*
-let localLangs = {
-    data: [
-        { langId: 'EN', flagId: 'US', Description: 'English', SortOrder: 1, Enabled: true },
-        { langId: 'TH', flagId: 'TH', Description: 'ไทย', SortOrder: 2, Enabled: true },
-        { langId: 'ZH', flagId: 'CN', Description: '中文', SortOrder: 3, Enabled: true },
-        { langId: 'JA', flagId: 'JP', Description: '中文', SortOrder: 4, Enabled: true },
-        { langId: 'KO', flagId: 'KR', Description: '한국어', SortOrder: 7, Enabled: true },
-        { langId: 'ES', flagId: 'ES', Description: 'Spanish', SortOrder: 9, Enabled: true }
-    ],
-    errors: { hasError: false, errNum: 0, errMsg: '' },
-    multiple: false,
-    datasets: null,
-    out: {}
-}
-*/

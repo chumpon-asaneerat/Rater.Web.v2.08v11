@@ -1,3 +1,0 @@
-[
-    { "type": "cmd", "id":"signout", "ref": "signout", "text":"ออกจากระบบ", "icon": "fas fa-user-times", "icontype": "fontcss" }
-]

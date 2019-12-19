@@ -194,8 +194,13 @@
                 secure.nav(selLink.ref)
             }
             else if (linkType === 'cmd') {
-                if (selLink.ref.toLowerCase() === 'signout')
-                secure.signout();
+                if (selLink.ref.toLowerCase() === 'signout') {
+                    secure.signout();
+                } 
+                else if (selLink.ref.toLowerCase() === 'exit') {
+                    if (selLink.ref.toLowerCase() === 'exit')
+                    secure.changeCustomer();
+                }
             }
             else {
                 console.log('Not implements type, data:', selLink);
