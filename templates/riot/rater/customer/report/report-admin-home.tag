@@ -1,4 +1,4 @@
-<report-home>
+<report-admin-home>
     <div class="report-home-main">
         <div class="report-item">
             <button onclick="{ showvotesummary }">
@@ -176,4 +176,4 @@
             //screens.show('staff-perf-manage') 
         }
     </script>
-</report-home>
+</report-admin-home>

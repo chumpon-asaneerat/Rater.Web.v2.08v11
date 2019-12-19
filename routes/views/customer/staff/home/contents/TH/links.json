@@ -1,0 +1,4 @@
+[
+    { "type": "url", "id":"report-home", "ref": "/customer/staff/report", "text":"รายงานสรุป", "icon": "fas fa-chart-pie", "icontype": "fontcss" },
+    { "type": "cmd", "id":"signout", "ref": "signout", "text":"ออกจากระบบ", "icon": "fas fa-user-times", "icontype": "fontcss" }
+]

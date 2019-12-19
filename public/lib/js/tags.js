@@ -2004,6 +2004,129 @@ riot.tag2('admin-home', '<h3>{content.title}</h3>', 'admin-home,[data-is="admin-
         }
 
 });
+riot.tag2('exclusive-home', '<h3>{content.title}</h3>', 'exclusive-home,[data-is="exclusive-home"]{ margin: 0; padding: 0; width: 100%; height: 100%; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'exclusive-home';
+
+        let defaultContent = {
+            title: 'Exclusive Home Page.'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+            }
+        }
+        let onScreenChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+            }
+        }
+
+});
+
+riot.tag2('staff-home', '<h3>{content.title}</h3>', 'staff-home,[data-is="staff-home"]{ margin: 0; padding: 0; width: 100%; height: 100%; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'staff-home';
+
+        let defaultContent = {
+            title: 'Staff Home Page.'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+            }
+        }
+        let onScreenChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+            }
+        }
+
+});
 riot.tag2('member-editor', '<div class="entry"> <tabcontrol class="tabs" content="{opts.content}"> <tabheaders content="{opts.content}"> <tabheader for="default" content="{opts.content}"> <span class="fas fa-cog"></span> {opts.content.entry.tabDefault} </tabheader> <tabheader for="miltilang" content="{opts.content}"> <span class="fas fa-globe-americas"></span> {opts.content.entry.tabMultiLang} </tabheader> </tabheaders> <tabpages> <tabpage name="default"> <member-entry ref="EN" langid=""></member-entry> </tabpage> <tabpage name="miltilang"> <virtual if="{lang.languages}"> <virtual each="{item in lang.languages}"> <virtual if="{item.langId !==\'EN\'}"> <div class="panel-header" langid="{item.langId}"> &nbsp;&nbsp; <span class="flag-css flag-icon flag-icon-{item.flagId.toLowerCase()}"></span> &nbsp;{item.Description}&nbsp; </div> <div class="panel-body" langid="{item.langId}"> <member-entry ref="{item.langId}" langid="{item.langId}"></member-entry> </div> </virtual> </virtual> </virtual> </tabpage> </tabpages> </tabcontrol> <div class="tool"> <button class="float-button save" onclick="{save}"><span class="fas fa-save"></span></button> <button class="float-button cancel" onclick="{cancel}"><span class="fas fa-times"></span></button> </div> </div>', 'member-editor,[data-is="member-editor"]{ margin: 0 auto; padding: 0; width: 100%; max-width: 800px; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'entry\'; background-color: white; overflow: hidden; } member-editor>.entry,[data-is="member-editor"]>.entry{ grid-area: entry; display: grid; grid-template-columns: 1fr auto 5px; grid-template-rows: 1fr; grid-template-areas: \'tabs tool .\'; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tabs,[data-is="member-editor"]>.entry .tabs{ grid-area: tabs; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tool,[data-is="member-editor"]>.entry .tool{ grid-area: tool; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; grid-template-areas: \'. .\' \'btn-cancel .\' \'btn-save .\'; margin: 0 auto; margin-left: 3px; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tool .float-button,[data-is="member-editor"]>.entry .tool .float-button{ margin: 0 auto; padding: 0; border: none; outline: none; border-radius: 50%; height: 40px; width: 40px; color: whitesmoke; background: silver; cursor: pointer; } member-editor>.entry .tool .float-button:hover,[data-is="member-editor"]>.entry .tool .float-button:hover{ color: whitesmoke; background: forestgreen; } member-editor>.entry .tool .float-button.save,[data-is="member-editor"]>.entry .tool .float-button.save{ grid-area: btn-save; } member-editor>.entry .tool .float-button.cancel,[data-is="member-editor"]>.entry .tool .float-button.cancel{ grid-area: btn-cancel; } member-editor .panel-header,[data-is="member-editor"] .panel-header{ margin: 0 auto; padding: 0; padding-top: 3px; width: 100%; height: 30px; color: white; background: cornflowerblue; border-radius: 5px 5px 0 0; } member-editor .panel-body,[data-is="member-editor"] .panel-body{ margin: 0 auto; margin-bottom: 5px; padding: 2px; width: 100%; border: 1px solid cornflowerblue; }', '', function(opts) {
 
 
@@ -2970,7 +3093,7 @@ riot.tag2('org-view', '<div ref="container" class="scrarea"> <div ref="tool" cla
         }
 
 });
-riot.tag2('report-home', '<div class="report-home-main"> <div class="report-item"> <button onclick="{showvotesummary}"> <span class="icon fa-3x fas fa-table cr1"></span> <span class="text">Vote Summary</span> </button> </div> <div class="report-item"> <button onclick="{showpiesummary}"> <span class="icon fa-3x fas fa-chart-pie cr2"></span> <span class="text">Pie Chart</span> </button> </div> <div class="report-item"> <button onclick="{showbarsummary}"> <span class="icon fa-3x fas fa-chart-bar cr3"></span> <span class="text">Bar Chart</span> </button> </div> <div class="report-item"> <button onclick="{showstaffcompare}"> <span class="icon fa-3x fas fa-chalkboard-teacher cr6"></span> <span class="text">Staff Compare</span> </button> </div> <div class="report-item"> <button onclick="{showrawvote}"> <span class="icon fa-3x fas fa-table cr4"></span> <span class="text">Raw Vote</span> </button> </div> <div class="report-item"> <button onclick="{showstaffperf}"> <span class="icon fa-3x far fa-id-card cr5"></span> <span class="text">Staff Performance</span> </button> </div> </div>', 'report-home,[data-is="report-home"]{ margin: 0 auto; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; display: block; overflow: auto; } @media (min-width: 620px) { report-home .report-home-main,[data-is="report-home"] .report-home-main{ column-count: 2; column-gap: 20px; } } @media (min-width: 960px) { report-home .report-home-main,[data-is="report-home"] .report-home-main{ column-count: 3; column-gap: 20px; } } report-home .report-home-main,[data-is="report-home"] .report-home-main{ margin: 0 auto; padding: 20px; max-width: 1000px; } report-home .report-home-main,[data-is="report-home"] .report-home-main{ display: block; margin: 0 auto; padding: 10px; } report-home .report-home-main .report-item,[data-is="report-home"] .report-home-main .report-item{ margin: 2px auto; padding: 0; margin-bottom: 20px; height: 100px; break-inside: avoid; } report-home .report-home-main .report-item button,[data-is="report-home"] .report-home-main .report-item button{ margin: 0 auto; padding: 0; display: grid; width: 100%; height: 100%; } report-home .report-home-main .report-item button .icon,[data-is="report-home"] .report-home-main .report-item button .icon{ justify-self: center; align-self: center; } report-home .report-home-main .report-item button .text,[data-is="report-home"] .report-home-main .report-item button .text{ justify-self: center; align-self: center; font-size: 1rem; font-weight: bold; } report-home .report-home-main .report-item button .icon.cr1,[data-is="report-home"] .report-home-main .report-item button .icon.cr1{ color: chocolate; } report-home .report-home-main .report-item button .icon.cr2,[data-is="report-home"] .report-home-main .report-item button .icon.cr2{ color: cornflowerblue; } report-home .report-home-main .report-item button .icon.cr3,[data-is="report-home"] .report-home-main .report-item button .icon.cr3{ color: olivedrab; } report-home .report-home-main .report-item button .icon.cr4,[data-is="report-home"] .report-home-main .report-item button .icon.cr4{ color: darkorchid; } report-home .report-home-main .report-item button .icon.cr5,[data-is="report-home"] .report-home-main .report-item button .icon.cr5{ color: sandybrown; } report-home .report-home-main .report-item button .icon.cr6,[data-is="report-home"] .report-home-main .report-item button .icon.cr6{ color: navy; }', '', function(opts) {
+riot.tag2('report-admin-home', '<div class="report-home-main"> <div class="report-item"> <button onclick="{showvotesummary}"> <span class="icon fa-3x fas fa-table cr1"></span> <span class="text">Vote Summary</span> </button> </div> <div class="report-item"> <button onclick="{showpiesummary}"> <span class="icon fa-3x fas fa-chart-pie cr2"></span> <span class="text">Pie Chart</span> </button> </div> <div class="report-item"> <button onclick="{showbarsummary}"> <span class="icon fa-3x fas fa-chart-bar cr3"></span> <span class="text">Bar Chart</span> </button> </div> <div class="report-item"> <button onclick="{showstaffcompare}"> <span class="icon fa-3x fas fa-chalkboard-teacher cr6"></span> <span class="text">Staff Compare</span> </button> </div> <div class="report-item"> <button onclick="{showrawvote}"> <span class="icon fa-3x fas fa-table cr4"></span> <span class="text">Raw Vote</span> </button> </div> <div class="report-item"> <button onclick="{showstaffperf}"> <span class="icon fa-3x far fa-id-card cr5"></span> <span class="text">Staff Performance</span> </button> </div> </div>', 'report-admin-home,[data-is="report-admin-home"]{ margin: 0 auto; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; display: block; overflow: auto; } @media (min-width: 620px) { report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ column-count: 2; column-gap: 20px; } } @media (min-width: 960px) { report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ column-count: 3; column-gap: 20px; } } report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ margin: 0 auto; padding: 20px; max-width: 1000px; } report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ display: block; margin: 0 auto; padding: 10px; } report-admin-home .report-home-main .report-item,[data-is="report-admin-home"] .report-home-main .report-item{ margin: 2px auto; padding: 0; margin-bottom: 20px; height: 100px; break-inside: avoid; } report-admin-home .report-home-main .report-item button,[data-is="report-admin-home"] .report-home-main .report-item button{ margin: 0 auto; padding: 0; display: grid; width: 100%; height: 100%; } report-admin-home .report-home-main .report-item button .icon,[data-is="report-admin-home"] .report-home-main .report-item button .icon{ justify-self: center; align-self: center; } report-admin-home .report-home-main .report-item button .text,[data-is="report-admin-home"] .report-home-main .report-item button .text{ justify-self: center; align-self: center; font-size: 1rem; font-weight: bold; } report-admin-home .report-home-main .report-item button .icon.cr1,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr1{ color: chocolate; } report-admin-home .report-home-main .report-item button .icon.cr2,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr2{ color: cornflowerblue; } report-admin-home .report-home-main .report-item button .icon.cr3,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr3{ color: olivedrab; } report-admin-home .report-home-main .report-item button .icon.cr4,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr4{ color: darkorchid; } report-admin-home .report-home-main .report-item button .icon.cr5,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr5{ color: sandybrown; } report-admin-home .report-home-main .report-item button .icon.cr6,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr6{ color: navy; }', '', function(opts) {
 
 
         let self = this;
@@ -3024,7 +3147,115 @@ riot.tag2('report-home', '<div class="report-home-main"> <div class="report-item
 
         }
 });
-riot.tag2('edl-customer-home', '<h2>Customer Home.</h2>', '', '', function(opts) {
+riot.tag2('report-exclusive-home', '<div class="report-home-main"> <div class="report-item"> <button onclick="{showvotesummary}"> <span class="icon fa-3x fas fa-table cr1"></span> <span class="text">Vote Summary</span> </button> </div> <div class="report-item"> <button onclick="{showpiesummary}"> <span class="icon fa-3x fas fa-chart-pie cr2"></span> <span class="text">Pie Chart</span> </button> </div> <div class="report-item"> <button onclick="{showbarsummary}"> <span class="icon fa-3x fas fa-chart-bar cr3"></span> <span class="text">Bar Chart</span> </button> </div> <div class="report-item"> <button onclick="{showstaffcompare}"> <span class="icon fa-3x fas fa-chalkboard-teacher cr6"></span> <span class="text">Staff Compare</span> </button> </div> <div class="report-item"> <button onclick="{showrawvote}"> <span class="icon fa-3x fas fa-table cr4"></span> <span class="text">Raw Vote</span> </button> </div> <div class="report-item"> <button onclick="{showstaffperf}"> <span class="icon fa-3x far fa-id-card cr5"></span> <span class="text">Staff Performance</span> </button> </div> </div>', 'report-exclusive-home,[data-is="report-exclusive-home"]{ margin: 0 auto; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; display: block; overflow: auto; background-color: skyblue; } @media (min-width: 620px) { report-exclusive-home .report-home-main,[data-is="report-exclusive-home"] .report-home-main{ column-count: 2; column-gap: 20px; } } @media (min-width: 960px) { report-exclusive-home .report-home-main,[data-is="report-exclusive-home"] .report-home-main{ column-count: 3; column-gap: 20px; } } report-exclusive-home .report-home-main,[data-is="report-exclusive-home"] .report-home-main{ margin: 0 auto; padding: 20px; max-width: 1000px; } report-exclusive-home .report-home-main,[data-is="report-exclusive-home"] .report-home-main{ display: block; margin: 0 auto; padding: 10px; } report-exclusive-home .report-home-main .report-item,[data-is="report-exclusive-home"] .report-home-main .report-item{ margin: 2px auto; padding: 0; margin-bottom: 20px; height: 100px; break-inside: avoid; } report-exclusive-home .report-home-main .report-item button,[data-is="report-exclusive-home"] .report-home-main .report-item button{ margin: 0 auto; padding: 0; display: grid; width: 100%; height: 100%; } report-exclusive-home .report-home-main .report-item button .icon,[data-is="report-exclusive-home"] .report-home-main .report-item button .icon{ justify-self: center; align-self: center; } report-exclusive-home .report-home-main .report-item button .text,[data-is="report-exclusive-home"] .report-home-main .report-item button .text{ justify-self: center; align-self: center; font-size: 1rem; font-weight: bold; } report-exclusive-home .report-home-main .report-item button .icon.cr1,[data-is="report-exclusive-home"] .report-home-main .report-item button .icon.cr1{ color: chocolate; } report-exclusive-home .report-home-main .report-item button .icon.cr2,[data-is="report-exclusive-home"] .report-home-main .report-item button .icon.cr2{ color: cornflowerblue; } report-exclusive-home .report-home-main .report-item button .icon.cr3,[data-is="report-exclusive-home"] .report-home-main .report-item button .icon.cr3{ color: olivedrab; } report-exclusive-home .report-home-main .report-item button .icon.cr4,[data-is="report-exclusive-home"] .report-home-main .report-item button .icon.cr4{ color: darkorchid; } report-exclusive-home .report-home-main .report-item button .icon.cr5,[data-is="report-exclusive-home"] .report-home-main .report-item button .icon.cr5{ color: sandybrown; } report-exclusive-home .report-home-main .report-item button .icon.cr6,[data-is="report-exclusive-home"] .report-home-main .report-item button .icon.cr6{ color: navy; }', '', function(opts) {
+
+
+        let self = this;
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {}
+        let unbindEvents = () => {}
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        this.showpiesummary = () => {
+            let url = 'http://localhost:3000/customer/exclusive/report/pie-votesummary';
+            secure.nav(url)
+
+        }
+        this.showbarsummary = () => {
+            let url = 'http://localhost:3000/customer/exclusive/report/bar-votesummary';
+            secure.nav(url)
+
+        }
+        this.showvotesummary = () => {
+            let url = 'http://localhost:3000/customer/exclusive/report/votesummary';
+            secure.nav(url)
+
+        }
+        this.showrawvote = () => {
+            let url = 'http://localhost:3000/customer/exclusive/report/raw-vote';
+            secure.nav(url)
+
+        }
+        this.showstaffcompare = () => {
+            let url = 'http://localhost:3000/customer/exclusive/report/staff-compare';
+            secure.nav(url)
+
+        }
+        this.showstaffperf = () => {
+            let url = 'http://localhost:3000/customer/exclusive/report/staff-perf';
+            secure.nav(url)
+
+        }
+});
+riot.tag2('report-staff-home', '<div class="report-home-main"> <div class="report-item"> <button onclick="{showvotesummary}"> <span class="icon fa-3x fas fa-table cr1"></span> <span class="text">Vote Summary</span> </button> </div> <div class="report-item"> <button onclick="{showpiesummary}"> <span class="icon fa-3x fas fa-chart-pie cr2"></span> <span class="text">Pie Chart</span> </button> </div> <div class="report-item"> <button onclick="{showbarsummary}"> <span class="icon fa-3x fas fa-chart-bar cr3"></span> <span class="text">Bar Chart</span> </button> </div> <div class="report-item"> <button onclick="{showstaffcompare}"> <span class="icon fa-3x fas fa-chalkboard-teacher cr6"></span> <span class="text">Staff Compare</span> </button> </div> <div class="report-item"> <button onclick="{showrawvote}"> <span class="icon fa-3x fas fa-table cr4"></span> <span class="text">Raw Vote</span> </button> </div> <div class="report-item"> <button onclick="{showstaffperf}"> <span class="icon fa-3x far fa-id-card cr5"></span> <span class="text">Staff Performance</span> </button> </div> </div>', 'report-staff-home,[data-is="report-staff-home"]{ margin: 0 auto; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; display: block; overflow: auto; background-color: bisque; } @media (min-width: 620px) { report-staff-home .report-home-main,[data-is="report-staff-home"] .report-home-main{ column-count: 2; column-gap: 20px; } } @media (min-width: 960px) { report-staff-home .report-home-main,[data-is="report-staff-home"] .report-home-main{ column-count: 3; column-gap: 20px; } } report-staff-home .report-home-main,[data-is="report-staff-home"] .report-home-main{ margin: 0 auto; padding: 20px; max-width: 1000px; } report-staff-home .report-home-main,[data-is="report-staff-home"] .report-home-main{ display: block; margin: 0 auto; padding: 10px; } report-staff-home .report-home-main .report-item,[data-is="report-staff-home"] .report-home-main .report-item{ margin: 2px auto; padding: 0; margin-bottom: 20px; height: 100px; break-inside: avoid; } report-staff-home .report-home-main .report-item button,[data-is="report-staff-home"] .report-home-main .report-item button{ margin: 0 auto; padding: 0; display: grid; width: 100%; height: 100%; } report-staff-home .report-home-main .report-item button .icon,[data-is="report-staff-home"] .report-home-main .report-item button .icon{ justify-self: center; align-self: center; } report-staff-home .report-home-main .report-item button .text,[data-is="report-staff-home"] .report-home-main .report-item button .text{ justify-self: center; align-self: center; font-size: 1rem; font-weight: bold; } report-staff-home .report-home-main .report-item button .icon.cr1,[data-is="report-staff-home"] .report-home-main .report-item button .icon.cr1{ color: chocolate; } report-staff-home .report-home-main .report-item button .icon.cr2,[data-is="report-staff-home"] .report-home-main .report-item button .icon.cr2{ color: cornflowerblue; } report-staff-home .report-home-main .report-item button .icon.cr3,[data-is="report-staff-home"] .report-home-main .report-item button .icon.cr3{ color: olivedrab; } report-staff-home .report-home-main .report-item button .icon.cr4,[data-is="report-staff-home"] .report-home-main .report-item button .icon.cr4{ color: darkorchid; } report-staff-home .report-home-main .report-item button .icon.cr5,[data-is="report-staff-home"] .report-home-main .report-item button .icon.cr5{ color: sandybrown; } report-staff-home .report-home-main .report-item button .icon.cr6,[data-is="report-staff-home"] .report-home-main .report-item button .icon.cr6{ color: navy; }', '', function(opts) {
+
+
+        let self = this;
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {}
+        let unbindEvents = () => {}
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        this.showpiesummary = () => {
+            let url = 'http://localhost:3000/customer/staff/report/pie-votesummary';
+            secure.nav(url)
+
+        }
+        this.showbarsummary = () => {
+            let url = 'http://localhost:3000/customer/staff/report/bar-votesummary';
+            secure.nav(url)
+
+        }
+        this.showvotesummary = () => {
+            let url = 'http://localhost:3000/customer/staff/report/votesummary';
+            secure.nav(url)
+
+        }
+        this.showrawvote = () => {
+            let url = 'http://localhost:3000/customer/staff/report/raw-vote';
+            secure.nav(url)
+
+        }
+        this.showstaffcompare = () => {
+            let url = 'http://localhost:3000/customer/staff/report/staff-compare';
+            secure.nav(url)
+
+        }
+        this.showstaffperf = () => {
+            let url = 'http://localhost:3000/customer/staff/report/staff-perf';
+            secure.nav(url)
+
+        }
+});
+riot.tag2('edl-customer-branch-manage', '', '', '', function(opts) {
 });
 riot.tag2('edl-customer-editor', '<div class="entry"> <div class="tab"> <button ref="tabheader" class="tablinks active" name="default" onclick="{showContent}"> <span class="fas fa-cog"></span>&nbsp;{content.entry.tabDefault}&nbsp; </button> <button ref="tabheader" class="tablinks" name="miltilang" onclick="{showContent}"> <span class="fas fa-globe-americas"></span>&nbsp;{content.entry.tabMultiLang}&nbsp; </button> </div> <div ref="tabcontent" name="default" class="tabcontent" style="display: block;"> <edl-customer-entry ref="EN" langid=""></edl-customer-entry> </div> <div ref="tabcontent" name="miltilang" class="tabcontent"> <virtual if="{lang.languages}"> <virtual each="{item in lang.languages}"> <virtual if="{item.langId !== \'EN\'}"> <div class="panel-header" langid="{item.langId}"> &nbsp;&nbsp; <span class="flag-css flag-icon flag-icon-{item.flagId.toLowerCase()}"></span> &nbsp;{item.Description}&nbsp; </div> <div class="panel-body" langid="{item.langId}"> <edl-customer-entry ref="{item.langId}" langid="{item.langId}"></edl-customer-entry> </div> </virtual> </virtual> </virtual> </div> </div> <div class="tool"> <button onclick="{save}"><span class="fas fa-save"></span></button> <button onclick="{cancel}"><span class="fas fa-times"></span></button> </div>', 'edl-customer-editor,[data-is="edl-customer-editor"]{ margin: 0 auto; padding: 0; width: 100%; max-width: 800px; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr 30px; grid-template-areas: \'entry\' \'tool\'; overflow: hidden; background-color: white; } edl-customer-editor .entry,[data-is="edl-customer-editor"] .entry{ grid-area: entry; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: auto; } edl-customer-editor .entry .tab,[data-is="edl-customer-editor"] .entry .tab{ overflow: hidden; border: 1px solid #ccc; } edl-customer-editor .entry .tab button,[data-is="edl-customer-editor"] .entry .tab button{ background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 14px 16px; transition: 0.3s; } edl-customer-editor .entry .tab button:hover,[data-is="edl-customer-editor"] .entry .tab button:hover{ background-color: #ddd; } edl-customer-editor .entry .tab button.active,[data-is="edl-customer-editor"] .entry .tab button.active{ background-color: #ccc; } edl-customer-editor .entry .tabcontent,[data-is="edl-customer-editor"] .entry .tabcontent{ display: none; padding: 3px; width: 100%; max-width: 100%; overflow: auto; } edl-customer-editor .entry .tabcontent .panel-header,[data-is="edl-customer-editor"] .entry .tabcontent .panel-header{ margin: 0 auto; padding: 0; padding-top: 3px; width: 100%; height: 30px; color: white; background: cornflowerblue; border-radius: 5px 5px 0 0; } edl-customer-editor .entry .tabcontent .panel-body,[data-is="edl-customer-editor"] .entry .tabcontent .panel-body{ margin: 0 auto; margin-bottom: 5px; padding: 0; width: 100%; border: 1px solid cornflowerblue; } edl-customer-editor .tool,[data-is="edl-customer-editor"] .tool{ grid-area: tool; margin: 0 auto; padding: 0; padding-left: 3px; padding-top: 3px; width: 100%; height: 30px; overflow: hidden; }', '', function(opts) {
 
@@ -3450,6 +3681,16 @@ riot.tag2('edl-customer-view', '<div ref="container" class="scrarea"> <div ref="
             updatecontent();
         }
 
+});
+riot.tag2('edl-admin-home', '', '', '', function(opts) {
+});
+
+riot.tag2('edl-customer-home', '<h2>Customer Home.</h2>', '', '', function(opts) {
+});
+riot.tag2('edl-staff-home', '', '', '', function(opts) {
+});
+
+riot.tag2('edl-supervisor-home', '', '', '', function(opts) {
 });
 riot.tag2('rater-home', '<div class="content-area"> <div class="padtop"></div> <div class="padtop"></div> <div class="padtop"></div> <div class="padtop"></div> <div class="padtop"></div> <div class="padtop"></div> <div ref="userSignIn" class="user-signin"> <div class="group-header"> <h4><span class="fa fa-user-lock">&nbsp;</span>&nbsp;{content.title}</h4> <div class="padtop"></div> </div> <div class="group-body"> <div class="padtop"></div> <ninput ref="userName" title="{content.label.userName}" type="text" name="userName"></ninput> <ninput ref="passWord" title="{content.label.passWord}" type="password" name="pwd"></ninput> <div class="padtop"></div> <button ref="submit"> <span class="fas fa-user">&nbsp;</span> {content.label.submit} </button> <div class="padtop"></div> <div class="padtop"></div> </div> </div> <div ref="userSelection" class="user-selection hide"> <div class="group-header"> <h4>{content.label.selectAccount}</h4> <div class="padtop"></div> </div> <div class="group-body"> <div class="padtop"></div> <div class="padtop"></div> <company-selection ref="userList" companyname="{content.label.companyName}" fullname="{content.label.fullName}"> </company-selection> <div class="padtop"></div> <button ref="cancel"> <span class="fa fa-user-times">&nbsp;</span> Cancel </button> <div class="padtop"></div> <div class="padtop"></div> </div> </div> </div>', 'rater-home,[data-is="rater-home"]{ margin: 0 auto; padding: 2px; position: relative; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'content-area\'; overflow: hidden; } rater-home .content-area,[data-is="rater-home"] .content-area{ grid-area: content-area; margin: 0 auto; padding: 0px; position: relative; display: block; width: 100%; height: 100%; background-color: white; background-image: url(\'public/assets/images/backgrounds/bg-15.jpg\'); background-blend-mode: multiply, luminosity; background-position: center; background-repeat: no-repeat; background-size: cover; } rater-home .content-area .user-signin,[data-is="rater-home"] .content-area .user-signin,rater-home .content-area .user-selection,[data-is="rater-home"] .content-area .user-selection{ display: block; position: relative; margin: 0 auto; padding: 0; } rater-home .content-area .user-signin.hide,[data-is="rater-home"] .content-area .user-signin.hide,rater-home .content-area .user-selection.hide,[data-is="rater-home"] .content-area .user-selection.hide{ display: none; } rater-home .padtop,[data-is="rater-home"] .padtop,rater-home .content-area .padtop,[data-is="rater-home"] .content-area .padtop,rater-home .content-area .user-signin .group-header .padtop,[data-is="rater-home"] .content-area .user-signin .group-header .padtop,rater-home .content-area .user-signin .group-body .padtop,[data-is="rater-home"] .content-area .user-signin .group-body .padtop,rater-home .content-area .user-selection .group-header .padtop,[data-is="rater-home"] .content-area .user-selection .group-header .padtop,rater-home .content-area .user-selection .group-body .padtop,[data-is="rater-home"] .content-area .user-selection .group-body .padtop{ display: block; margin: 0 auto; width: 100%; min-height: 10px; } rater-home .content-area .user-signin .group-header,[data-is="rater-home"] .content-area .user-signin .group-header,rater-home .content-area .user-selection .group-header,[data-is="rater-home"] .content-area .user-selection .group-header{ display: block; margin: 0 auto; padding: 3px; width: 30%; min-width: 300px; max-width: 500px; opacity: 0.8; background-color: cornflowerblue; border: 1px solid dimgray; border-radius: 8px 8px 0 0; } rater-home .content-area .user-signin .group-header h4,[data-is="rater-home"] .content-area .user-signin .group-header h4,rater-home .content-area .user-selection .group-header h4,[data-is="rater-home"] .content-area .user-selection .group-header h4{ display: block; margin: 0 auto; padding: 0; padding-top: 5px; font-size: 1.1rem; text-align: center; color: whitesmoke; user-select: none; } rater-home .content-area .user-signin .group-body,[data-is="rater-home"] .content-area .user-signin .group-body,rater-home .content-area .user-selection .group-body,[data-is="rater-home"] .content-area .user-selection .group-body{ display: flex; flex-direction: column; align-items: center; margin: 0 auto; padding: 0; height: auto; width: 30%; min-width: 300px; max-width: 500px; opacity: 0.8; background-color: white; border: 1px solid dimgray; border-radius: 0 0 8px 8px; } rater-home .content-area .user-signin .group-body ninput,[data-is="rater-home"] .content-area .user-signin .group-body ninput,rater-home .content-area .user-selection .group-body ninput,[data-is="rater-home"] .content-area .user-selection .group-body ninput{ background-color: white; } rater-home .content-area .user-signin .group-body button,[data-is="rater-home"] .content-area .user-signin .group-body button,rater-home .content-area .user-selection .group-body button,[data-is="rater-home"] .content-area .user-selection .group-body button{ display: inline-block; margin: 5px auto; padding: 10px 15px; color: forestgreen; font-weight: bold; cursor: pointer; width: 45%; text-decoration: none; vertical-align: middle; }', '', function(opts) {
 
