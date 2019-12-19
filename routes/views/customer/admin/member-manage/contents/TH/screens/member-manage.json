@@ -1,0 +1,33 @@
+{
+    "title": "บัญชีผู้ใช้งาน",
+    "entry": {
+        "tabDefault": "ค่าตั้งต้น",
+        "tabMultiLang": "ภาษาอื่น",
+        "prefix": "คำนำหน้า",
+        "firstName": "ชื่อ",
+        "lastName": "นามสกุล",
+        "userName": "ชื่อบัญชี",
+        "passWord": "รหัสผ่าน",
+        "tagId": "หมายเลขแท็ก",
+        "idCard": "หมายเลขบัตรประชาชน",
+        "employeeCode": "รหัสพนักงาน",
+        "memberType": "ประเภทบัญชี"
+    },
+    "columns": [
+        {
+            "title": "คำนำหน้า",
+            "field": "Prefix",
+            "resizable": false
+        },
+        {
+            "title": "ชื่อ",
+            "field": "FirstName",
+            "resizable": false
+        },
+        {
+            "title": "นามสกุล",
+            "field": "LastName",
+            "resizable": false
+        }
+    ]
+}

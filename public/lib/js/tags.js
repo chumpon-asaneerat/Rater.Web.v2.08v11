@@ -1477,6 +1477,472 @@ riot.tag2('branch-view', '<div ref="container" class="scrarea"> <div ref="tool" 
         }
 
 });
+riot.tag2('device-editor', '<div class="entry"> <tabcontrol class="tabs" content="{opts.content}"> <tabheaders content="{opts.content}"> <tabheader for="default" content="{opts.content}"> <span class="fas fa-cog"></span> {opts.content.entry.tabDefault} </tabheader> <tabheader for="miltilang" content="{opts.content}"> <span class="fas fa-globe-americas"></span> {opts.content.entry.tabMultiLang} </tabheader> </tabheaders> <tabpages> <tabpage name="default"> <device-entry ref="EN" langid=""></device-entry> </tabpage> <tabpage name="miltilang"> <virtual if="{lang.languages}"> <virtual each="{item in lang.languages}"> <virtual if="{item.langId !==\'EN\'}"> <div class="panel-header" langid="{item.langId}"> &nbsp;&nbsp; <span class="flag-css flag-icon flag-icon-{item.flagId.toLowerCase()}"></span> &nbsp;{item.Description}&nbsp; </div> <div class="panel-body" langid="{item.langId}"> <device-entry ref="{item.langId}" langid="{item.langId}"></device-entry> </div> </virtual> </virtual> </virtual> </tabpage> </tabpages> </tabcontrol> <div class="tool"> <button class="float-button save" onclick="{save}"><span class="fas fa-save"></span></button> <button class="float-button cancel" onclick="{cancel}"><span class="fas fa-times"></span></button> </div> </div>', 'device-editor,[data-is="device-editor"]{ margin: 0 auto; padding: 0; width: 100%; max-width: 800px; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'entry\'; background-color: white; overflow: hidden; } device-editor>.entry,[data-is="device-editor"]>.entry{ grid-area: entry; display: grid; grid-template-columns: 1fr auto 5px; grid-template-rows: 1fr; grid-template-areas: \'tabs tool .\'; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } device-editor>.entry .tabs,[data-is="device-editor"]>.entry .tabs{ grid-area: tabs; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } device-editor>.entry .tool,[data-is="device-editor"]>.entry .tool{ grid-area: tool; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; grid-template-areas: \'. .\' \'btn-cancel .\' \'btn-save .\'; margin: 0 auto; margin-left: 3px; padding: 0; width: 100%; height: 100%; overflow: hidden; } device-editor>.entry .tool .float-button,[data-is="device-editor"]>.entry .tool .float-button{ margin: 0 auto; padding: 0; border: none; outline: none; border-radius: 50%; height: 40px; width: 40px; color: whitesmoke; background: silver; cursor: pointer; } device-editor>.entry .tool .float-button:hover,[data-is="device-editor"]>.entry .tool .float-button:hover{ color: whitesmoke; background: forestgreen; } device-editor>.entry .tool .float-button.save,[data-is="device-editor"]>.entry .tool .float-button.save{ grid-area: btn-save; } device-editor>.entry .tool .float-button.cancel,[data-is="device-editor"]>.entry .tool .float-button.cancel{ grid-area: btn-cancel; } device-editor .panel-header,[data-is="device-editor"] .panel-header{ margin: 0 auto; padding: 0; padding-top: 3px; width: 100%; height: 30px; color: white; background: cornflowerblue; border-radius: 5px 5px 0 0; } device-editor .panel-body,[data-is="device-editor"] .panel-body{ margin: 0 auto; margin-bottom: 5px; padding: 2px; width: 100%; border: 1px solid cornflowerblue; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'device-manage';
+
+        let deviceId = '';
+        let ctrls = [];
+
+        let defaultContent = {
+            entry: {
+                tabDefault: 'Default',
+                tabMultiLang: 'Languages'
+            }
+        }
+        this.content = defaultContent;
+        opts.content = this.content;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                opts.content = self.content;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => { }
+        let freeCtrls = () => { }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        let clone = (src) => { return JSON.parse(JSON.stringify(src)); }
+        let equals = (src, dst) => {
+            let o1 = JSON.stringify(src);
+            let o2 = JSON.stringify(dst);
+            return (o1 === o2);
+        }
+
+        this.save = (e) => {
+            let item;
+            let items = [];
+            ctrls.forEach(oRef => {
+                item = (oRef.entry) ? oRef.entry.getItem() : null;
+                if (item) {
+                    item.langId = oRef.langId;
+                    items.push(item)
+                }
+            });
+            devicemanager.save(items);
+            events.raise(events.name.EndEditDevice)
+        }
+        this.cancel = (e) => {
+            events.raise(events.name.EndEditDevice)
+        }
+
+        this.setup = (item) => {
+            let isNew = false;
+
+            deviceId = item.deviceId;
+            if (deviceId === undefined || deviceId === null || deviceId.trim() === '') {
+                isNew = true;
+            }
+            ctrls = [];
+
+            let loader = window.devicemanager;
+
+            lang.languages.forEach(lg => {
+                let ctrl = self.refs[lg.langId];
+                let original = (isNew) ? clone(item) : loader.find(lg.langId, deviceId);
+
+                if (ctrl) {
+                    let obj = {
+                        langId: lg.langId,
+                        entry: ctrl,
+                        scrObj: original
+                    }
+                    ctrl.setup(original);
+                    ctrls.push(obj)
+                }
+            });
+        }
+
+});
+riot.tag2('device-entry', '<div class="padtop"></div> <div class="padtop"></div> <ninput ref="deviceName" title="{content.entry.deviceName}" type="text" name="deviceName"></ninput> <ninput ref="location" title="{content.entry.location}" type="text" name="location"></ninput> <virtual if="{isDefault()}"> <nselect ref="deviceTypes" title="{content.entry.deviceTypeId}"></nselect> </virtual>', 'device-entry,[data-is="device-entry"]{ margin: 0; padding: 0; width: 100%; height: 100%; } device-entry .padtop,[data-is="device-entry"] .padtop{ display: block; margin: 0 auto; width: 100%; min-height: 10px; }', '', function(opts) {
+        let self = this;
+        let screenId = 'device-manage';
+        this.isDefault = () => { return (opts.langid === '' || opts.langid === 'EN') }
+
+        let defaultContent = {
+            entry: {
+                deviceName: 'Device Name',
+                deviceTypeId: 'Device Type',
+                location: 'Location'
+            }
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                self.update();
+            }
+        }
+
+        let deviceName, location;
+
+        let deviceTypes;
+
+        let initCtrls = () => {
+            deviceName = self.refs['deviceName'];
+
+            deviceTypes = self.refs['deviceTypes'];
+            location = self.refs['location'];
+        }
+        let freeCtrls = () => {
+            location = null;
+            deviceTypes = null;
+
+            deviceName = null;
+        }
+        let clearInputs = () => {
+            location.clear();
+            deviceTypes.clear();
+            deviceTypeId.clear();
+            deviceName.clear();
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.DeviceTypeListChanged, onDeviceTypeListChanged)
+            addEvt(events.name.OrgListChanged, onOrgListChanged);
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.OrgListChanged, onOrgListChanged);
+            delEvt(events.name.DeviceTypeListChanged, onDeviceTypeListChanged)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        let onDeviceTypeListChanged = (e) => { updatecontent(); }
+        let onOrgListChanged = (e) => {
+        }
+
+        let origObj;
+        let editObj;
+
+        let clone = (src) => { return JSON.parse(JSON.stringify(src)); }
+        let equals = (src, dst) => {
+            let o1 = JSON.stringify(src);
+            let o2 = JSON.stringify(dst);
+            return (o1 === o2);
+        }
+
+        let ctrlToObj = () => {
+            if (editObj) {
+
+                if (deviceName) editObj.DeviceName = deviceName.value();
+                if (location) editObj.Location = location.value();
+
+                if (deviceTypes) editObj.deviceTypeId = deviceTypes.value();
+            }
+        }
+        let objToCtrl = () => {
+            if (editObj) {
+
+                if (deviceName) deviceName.value(editObj.DeviceName);
+                if (location) location.value(editObj.Location);
+                if (deviceTypes) deviceTypes.value(editObj.deviceTypeId.toString());
+
+            }
+        }
+
+        this.setup = (item) => {
+
+            if (deviceTypes) {
+                deviceTypes.setup(master.devicetypes.current, { valueField:'deviceTypeId', textField:'Type' });
+            }
+
+            origObj = clone(item);
+            editObj = clone(item);
+
+            objToCtrl();
+        }
+        this.getItem = () => {
+            ctrlToObj();
+
+            let hasId = (editObj.deviceId !== undefined && editObj.deviceId != null)
+            let isDirty = !hasId || !equals(origObj, editObj);
+
+            return (isDirty) ? editObj : null;
+        }
+
+});
+riot.tag2('device-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <device-view ref="viewer" class="view"></device-view> </yield> <yield to="entry"> <device-editor ref="entry" class="entry"></device-editor> </yield> </flip-screen>', 'device-manage,[data-is="device-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } device-manage .view,[data-is="device-manage"] .view,device-manage .entry,[data-is="device-manage"] .entry{ margin: 0; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; overflow: hidden; } device-manage .entry,[data-is="device-manage"] .entry{ margin: 0 auto; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Title'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.BeginEditDevice, onBeginEdit)
+            addEvt(events.name.EndEditDevice, onEndEdit)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.EndEditDevice, onEndEdit)
+            delEvt(events.name.BeginEditDevice, onBeginEdit)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onBeginEdit = (e) => {
+
+            if (flipper) {
+                flipper.toggle();
+                let item = e.detail.data.item;
+
+                if (entry) entry.setup(item);
+            }
+
+        }
+        let onEndEdit = (e) => {
+
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+riot.tag2('device-view', '<div ref="container" class="scrarea"> <div ref="tool" class="toolarea"> <button class="float-button" onclick="{addnew}"> <span class="fas fa-plus">&nbsp;</span> </button> <button class="float-button" onclick="{refresh}"> <span class="fas fa-sync">&nbsp;</span> </button> </div> <div ref="grid" class="gridarea"></div> </div>', 'device-view,[data-is="device-view"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 20px 1fr 20px; grid-template-areas: \'.\' \'scrarea\' \'.\' } device-view>.scrarea,[data-is="device-view"]>.scrarea{ grid-area: scrarea; display: grid; grid-template-columns: 5px auto 1fr; grid-template-rows: 1fr; grid-template-areas: \'. toolarea gridarea\'; margin: 0 auto; padding: 0; margin-top: 3px; width: 100%; max-width: 800px; height: 100%; } device-view>.scrarea>.toolarea,[data-is="device-view"]>.scrarea>.toolarea{ grid-area: toolarea; margin: 0 auto; margin-right: 5px; padding: 0; height: 100%; overflow: hidden; background-color: transparent; color: whitesmoke; } device-view>.scrarea>.toolarea .float-button,[data-is="device-view"]>.scrarea>.toolarea .float-button{ display: block; margin: 0 auto; margin-bottom: 5px; padding: 3px; padding-right: 1px; height: 40px; width: 40px; color: whitesmoke; background: silver; border: none; outline: none; border-radius: 50%; cursor: pointer; } device-view>.scrarea>.toolarea .float-button:hover,[data-is="device-view"]>.scrarea>.toolarea .float-button:hover{ color: whitesmoke; background: forestgreen; } device-view>.scrarea>.gridarea,[data-is="device-view"]>.scrarea>.gridarea{ grid-area: gridarea; margin: 0 auto; padding: 0; height: 100%; width: 100%; } device-view .tabulator-row button,[data-is="device-view"] .tabulator-row button{ margin: 0 auto; padding: 0px; width: 100%; font-size: small; color: inherit; background: transparent; border: none; outline: none; cursor: pointer; } device-view .tabulator-row button:hover,[data-is="device-view"] .tabulator-row button:hover{ color: forestgreen; } device-view .tabulator-row button>span,[data-is="device-view"] .tabulator-row button>span{ margin: 0 auto; padding: 0; }', '', function(opts) {
+
+
+        let self = this;
+        let table;
+        let screenId = 'device-manage';
+
+        let defaultContent = {
+            title: 'Device Management',
+            columns: []
+        }
+        this.content = defaultContent;
+
+        let editIcon = (cell, formatterParams) => {
+            return "<button><span class='fas fa-edit'></span></button>";
+        };
+        let deleteIcon = (cell, formatterParams) => {
+            return "<button><span class='fas fa-trash-alt'></span></button>";
+        };
+
+        let initGrid = (data) => {
+
+            let opts = {
+                height: "100%",
+                layout: "fitDataFill",
+                data: (data) ? data : []
+            }
+            setupColumns(opts);
+
+            table = new Tabulator(self.refs['grid'], opts);
+        }
+        let setupColumns = (opts) => {
+            let = columns = [
+                { formatter: editIcon, align:"center", width:44,
+                    resizable: false, frozen: true, headerSort: false,
+                    cellClick: editRow
+                },
+                { formatter: deleteIcon, align:"center", width: 44,
+                    resizable: false, frozen: true, headerSort: false,
+                    cellClick: deleteRow
+                }
+            ]
+
+            if (self.content && self.content.columns) {
+                let cols = self.content.columns;
+                columns.push(...cols)
+            }
+            opts.columns = columns;
+        }
+        let syncData = () => {
+            if (table) table = null;
+            let data = devicemanager.current;
+            initGrid(data)
+        }
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+
+                self.update();
+                if (table) table.redraw(true);
+            }
+        }
+
+        let initCtrls = () => { initGrid(); }
+        let freeCtrls = () => { table = null; }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.DeviceListChanged, onDeviceListChanged)
+            addEvt(events.name.EndEditDevice, onEndEdit)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.EndEditDevice, onEndEdit)
+            delEvt(events.name.DeviceListChanged, onDeviceListChanged)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                syncData();
+            }
+        }
+        let onScreenChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                devicemanager.load();
+            }
+        }
+        let onDeviceListChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                syncData();
+            }
+        }
+
+        let editRow = (e, cell) => {
+            let data = cell.getRow().getData();
+            events.raise(events.name.BeginEditDevice, { item: data })
+        }
+        let deleteRow = (e, cell) => {
+            let data = cell.getRow().getData();
+            console.log('delete:', data, ', langId:', lang.langId);
+            syncData();
+
+        }
+        let onEndEdit = (e) => {
+            syncData();
+            table.redraw(true);
+        }
+
+        this.addnew = (e) => {
+            let data = {
+                deviceId: null,
+                memberId: null,
+                deviceName: null,
+                location: null,
+                deviceTypeId: null
+            };
+            events.raise(events.name.BeginEditDevice, { item: data })
+        }
+        this.refresh = (e) => {
+            devicemanager.load();
+            updatecontent();
+        }
+
+});
 riot.tag2('admin-home', '<h3>{content.title}</h3>', 'admin-home,[data-is="admin-home"]{ margin: 0; padding: 0; width: 100%; height: 100%; }', '', function(opts) {
 
 
@@ -1535,6 +2001,496 @@ riot.tag2('admin-home', '<h3>{content.title}</h3>', 'admin-home,[data-is="admin-
             if (screenId === scrId) {
                 updatecontent();
             }
+        }
+
+});
+riot.tag2('member-editor', '<div class="entry"> <tabcontrol class="tabs" content="{opts.content}"> <tabheaders content="{opts.content}"> <tabheader for="default" content="{opts.content}"> <span class="fas fa-cog"></span> {opts.content.entry.tabDefault} </tabheader> <tabheader for="miltilang" content="{opts.content}"> <span class="fas fa-globe-americas"></span> {opts.content.entry.tabMultiLang} </tabheader> </tabheaders> <tabpages> <tabpage name="default"> <member-entry ref="EN" langid=""></member-entry> </tabpage> <tabpage name="miltilang"> <virtual if="{lang.languages}"> <virtual each="{item in lang.languages}"> <virtual if="{item.langId !==\'EN\'}"> <div class="panel-header" langid="{item.langId}"> &nbsp;&nbsp; <span class="flag-css flag-icon flag-icon-{item.flagId.toLowerCase()}"></span> &nbsp;{item.Description}&nbsp; </div> <div class="panel-body" langid="{item.langId}"> <member-entry ref="{item.langId}" langid="{item.langId}"></member-entry> </div> </virtual> </virtual> </virtual> </tabpage> </tabpages> </tabcontrol> <div class="tool"> <button class="float-button save" onclick="{save}"><span class="fas fa-save"></span></button> <button class="float-button cancel" onclick="{cancel}"><span class="fas fa-times"></span></button> </div> </div>', 'member-editor,[data-is="member-editor"]{ margin: 0 auto; padding: 0; width: 100%; max-width: 800px; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'entry\'; background-color: white; overflow: hidden; } member-editor>.entry,[data-is="member-editor"]>.entry{ grid-area: entry; display: grid; grid-template-columns: 1fr auto 5px; grid-template-rows: 1fr; grid-template-areas: \'tabs tool .\'; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tabs,[data-is="member-editor"]>.entry .tabs{ grid-area: tabs; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tool,[data-is="member-editor"]>.entry .tool{ grid-area: tool; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; grid-template-areas: \'. .\' \'btn-cancel .\' \'btn-save .\'; margin: 0 auto; margin-left: 3px; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tool .float-button,[data-is="member-editor"]>.entry .tool .float-button{ margin: 0 auto; padding: 0; border: none; outline: none; border-radius: 50%; height: 40px; width: 40px; color: whitesmoke; background: silver; cursor: pointer; } member-editor>.entry .tool .float-button:hover,[data-is="member-editor"]>.entry .tool .float-button:hover{ color: whitesmoke; background: forestgreen; } member-editor>.entry .tool .float-button.save,[data-is="member-editor"]>.entry .tool .float-button.save{ grid-area: btn-save; } member-editor>.entry .tool .float-button.cancel,[data-is="member-editor"]>.entry .tool .float-button.cancel{ grid-area: btn-cancel; } member-editor .panel-header,[data-is="member-editor"] .panel-header{ margin: 0 auto; padding: 0; padding-top: 3px; width: 100%; height: 30px; color: white; background: cornflowerblue; border-radius: 5px 5px 0 0; } member-editor .panel-body,[data-is="member-editor"] .panel-body{ margin: 0 auto; margin-bottom: 5px; padding: 2px; width: 100%; border: 1px solid cornflowerblue; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'member-manage';
+
+        let memberId = '';
+        let ctrls = [];
+
+        let defaultContent = {
+            entry: {
+                tabDefault: 'Default',
+                tabMultiLang: 'Languages'
+            }
+        }
+        this.content = defaultContent;
+        opts.content = this.content;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                opts.content = self.content;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => { }
+        let freeCtrls = () => { }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        let clone = (src) => { return JSON.parse(JSON.stringify(src)); }
+        let equals = (src, dst) => {
+            let o1 = JSON.stringify(src);
+            let o2 = JSON.stringify(dst);
+            return (o1 === o2);
+        }
+
+        this.save = (e) => {
+            let item;
+            let items = [];
+            ctrls.forEach(oRef => {
+                item = (oRef.entry) ? oRef.entry.getItem() : null;
+                if (item) {
+                    item.langId = oRef.langId;
+                    items.push(item)
+                }
+            });
+            membermanager.save(items);
+            events.raise(events.name.EndEditMember)
+        }
+        this.cancel = (e) => {
+            events.raise(events.name.EndEditMember)
+        }
+
+        this.setup = (item) => {
+            let isNew = false;
+
+            memberId = item.memberId;
+            if (memberId === undefined || memberId === null || memberId.trim() === '') {
+                isNew = true;
+            }
+            ctrls = [];
+
+            let loader = window.membermanager;
+
+            lang.languages.forEach(lg => {
+                let ctrl = self.refs[lg.langId];
+                let original = (isNew) ? clone(item) : loader.find(lg.langId, memberId);
+
+                if (ctrl) {
+                    let obj = {
+                        langId: lg.langId,
+                        entry: ctrl,
+                        scrObj: original
+                    }
+                    ctrl.setup(original);
+                    ctrls.push(obj)
+                }
+            });
+        }
+
+});
+riot.tag2('member-entry', '<div class="padtop"></div> <div class="padtop"></div> <ninput ref="prefix" title="{content.entry.prefix}" type="text" name="prefix"></ninput> <ninput ref="firstName" title="{content.entry.firstName}" type="text" name="firstName"></ninput> <ninput ref="lastName" title="{content.entry.lastName}" type="text" name="lastName"></ninput> <virtual if="{isDefault()}"> <ninput ref="userName" title="{content.entry.userName}" type="text" name="userName"></ninput> <ninput ref="passWord" title="{content.entry.passWord}" type="password" name="passWord"></ninput> <nselect ref="memberTypes" title="{content.entry.memberType}"></nselect> </virtual>', 'member-entry,[data-is="member-entry"]{ margin: 0; padding: 0; width: 100%; height: 100%; } member-entry .padtop,[data-is="member-entry"] .padtop{ display: block; margin: 0 auto; width: 100%; min-height: 10px; }', '', function(opts) {
+        let self = this;
+        let screenId = 'member-manage';
+        this.isDefault = () => { return (opts.langid === '' || opts.langid === 'EN') }
+
+        let defaultContent = {
+            entry: {
+                prefix: 'Prefix Name',
+                firstName: 'First Name',
+                lastName: 'Last Name',
+                userName: 'User Name',
+                passWord: 'Password',
+                memberType: 'Member Type',
+                tagId: 'Tag ID',
+                idCard: 'ID Card',
+                employeeCode: 'Employee Code',
+            }
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                self.update();
+            }
+        }
+
+        let prefix, firstName, lastName, userName, passWord;
+
+        let memberTypes;
+
+        let initCtrls = () => {
+            prefix = self.refs['prefix'];
+            firstName = self.refs['firstName'];
+            lastName = self.refs['lastName'];
+            userName = self.refs['userName'];
+            passWord = self.refs['passWord'];
+
+            memberTypes = self.refs['memberTypes'];
+
+        }
+        let freeCtrls = () => {
+            prefix = null;
+            firstName = null;
+            lastName = null;
+            userName = null;
+            passWord = null;
+            memberTypes = null;
+
+        }
+        let clearInputs = () => {
+            prefix.clear()
+            firstName.clear()
+            lastName.clear()
+            userName.clear()
+            passWord.clear()
+            memberTypes.clear();
+
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.MemberTypeListChanged, onMemberTypeListChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.MemberTypeListChanged, onMemberTypeListChanged)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        let onMemberTypeListChanged = (e) => { updatecontent(); }
+
+        let origObj;
+        let editObj;
+
+        let clone = (src) => { return JSON.parse(JSON.stringify(src)); }
+        let equals = (src, dst) => {
+            let o1 = JSON.stringify(src);
+            let o2 = JSON.stringify(dst);
+            return (o1 === o2);
+        }
+
+        let ctrlToObj = () => {
+            if (editObj) {
+                if (prefix) editObj.Prefix = prefix.value();
+                if (firstName) editObj.FirstName = firstName.value();
+                if (lastName) editObj.LastName = lastName.value();
+                if (userName) editObj.UserName = userName.value();
+                if (passWord) editObj.Password = passWord.value();
+
+                if (memberTypes) editObj.MemberType = memberTypes.value();
+
+            }
+        }
+        let objToCtrl = () => {
+            if (editObj) {
+
+                if (prefix) prefix.value(editObj.Prefix);
+                if (firstName) firstName.value(editObj.FirstName);
+                if (lastName) lastName.value(editObj.LastName);
+                if (userName) userName.value(editObj.UserName);
+                if (passWord) passWord.value(editObj.Password);
+
+                if (memberTypes) memberTypes.value(editObj.MemberType.toString());
+
+            }
+        }
+
+        this.setup = (item) => {
+
+            if (memberTypes) {
+                memberTypes.setup(master.membertypes.current, { valueField:'memberTypeId', textField:'Description' });
+            }
+
+            origObj = clone(item);
+            editObj = clone(item);
+
+            objToCtrl();
+        }
+        this.getItem = () => {
+            ctrlToObj();
+
+            let hasId = (editObj.memberId !== undefined && editObj.memberId != null)
+            let isDirty = !hasId || !equals(origObj, editObj);
+
+            return (isDirty) ? editObj : null;
+        }
+
+});
+riot.tag2('member-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <member-view ref="viewer" class="view"></member-view> </yield> <yield to="entry"> <member-editor ref="entry" class="entry"></member-editor> </yield> </flip-screen>', 'member-manage,[data-is="member-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } member-manage .view,[data-is="member-manage"] .view,member-manage .entry,[data-is="member-manage"] .entry{ margin: 0; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; overflow: hidden; } member-manage .entry,[data-is="member-manage"] .entry{ margin: 0 auto; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Title'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.BeginEditMember, onBeginEdit)
+            addEvt(events.name.EndEditMember, onEndEdit)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.EndEditMember, onEndEdit)
+            delEvt(events.name.BeginEditMember, onBeginEdit)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onBeginEdit = (e) => {
+
+            if (flipper) {
+                flipper.toggle();
+                let item = e.detail.data.item;
+
+                if (entry) entry.setup(item);
+            }
+
+        }
+        let onEndEdit = (e) => {
+
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+riot.tag2('member-view', '<div ref="container" class="scrarea"> <div ref="tool" class="toolarea"> <button class="float-button" onclick="{addnew}"> <span class="fas fa-plus">&nbsp;</span> </button> <button class="float-button" onclick="{refresh}"> <span class="fas fa-sync">&nbsp;</span> </button> </div> <div ref="grid" class="gridarea"></div> </div>', 'member-view,[data-is="member-view"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 20px 1fr 20px; grid-template-areas: \'.\' \'scrarea\' \'.\' } member-view>.scrarea,[data-is="member-view"]>.scrarea{ grid-area: scrarea; display: grid; grid-template-columns: 5px auto 1fr; grid-template-rows: 1fr; grid-template-areas: \'. toolarea gridarea\'; margin: 0 auto; padding: 0; margin-top: 3px; width: 100%; max-width: 800px; height: 100%; } member-view>.scrarea>.toolarea,[data-is="member-view"]>.scrarea>.toolarea{ grid-area: toolarea; margin: 0 auto; margin-right: 5px; padding: 0; height: 100%; overflow: hidden; background-color: transparent; color: whitesmoke; } member-view>.scrarea>.toolarea .float-button,[data-is="member-view"]>.scrarea>.toolarea .float-button{ display: block; margin: 0 auto; margin-bottom: 5px; padding: 3px; padding-right: 1px; height: 40px; width: 40px; color: whitesmoke; background: silver; border: none; outline: none; border-radius: 50%; cursor: pointer; } member-view>.scrarea>.toolarea .float-button:hover,[data-is="member-view"]>.scrarea>.toolarea .float-button:hover{ color: whitesmoke; background: forestgreen; } member-view>.scrarea>.gridarea,[data-is="member-view"]>.scrarea>.gridarea{ grid-area: gridarea; margin: 0 auto; padding: 0; height: 100%; width: 100%; } member-view .tabulator-row button,[data-is="member-view"] .tabulator-row button{ margin: 0 auto; padding: 0px; width: 100%; font-size: small; color: inherit; background: transparent; border: none; outline: none; cursor: pointer; } member-view .tabulator-row button:hover,[data-is="member-view"] .tabulator-row button:hover{ color: forestgreen; } member-view .tabulator-row button>span,[data-is="member-view"] .tabulator-row button>span{ margin: 0 auto; padding: 0; }', '', function(opts) {
+
+
+        let self = this;
+        let table;
+        let screenId = 'member-manage';
+
+        let defaultContent = {
+            title: 'Member Management',
+            columns: []
+        }
+        this.content = defaultContent;
+
+        let editIcon = (cell, formatterParams) => {
+            return "<button><span class='fas fa-edit'></span></button>";
+        };
+        let deleteIcon = (cell, formatterParams) => {
+            return "<button><span class='fas fa-trash-alt'></span></button>";
+        };
+
+        let initGrid = (data) => {
+
+            let opts = {
+                height: "100%",
+                layout: "fitDataFill",
+                data: (data) ? data : []
+            }
+            setupColumns(opts);
+
+            table = new Tabulator(self.refs['grid'], opts);
+        }
+        let setupColumns = (opts) => {
+            let = columns = [
+                { formatter: editIcon, align:"center", width:44,
+                    resizable: false, frozen: true, headerSort: false,
+                    cellClick: editRow
+                },
+                { formatter: deleteIcon, align:"center", width: 44,
+                    resizable: false, frozen: true, headerSort: false,
+                    cellClick: deleteRow
+                }
+            ]
+
+            if (self.content && self.content.columns) {
+                let cols = self.content.columns;
+                columns.push(...cols)
+            }
+            opts.columns = columns;
+        }
+        let syncData = () => {
+            if (table) table = null;
+            let data = membermanager.current;
+            initGrid(data)
+        }
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+
+                self.update();
+                if (table) table.redraw(true);
+            }
+        }
+
+        let initCtrls = () => { initGrid(); }
+        let freeCtrls = () => { table = null; }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.MemberListChanged, onMemberListChanged)
+            addEvt(events.name.EndEditMember, onEndEdit)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.EndEditMember, onEndEdit)
+            delEvt(events.name.MemberListChanged, onMemberListChanged)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                syncData();
+            }
+        }
+        let onScreenChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                membermanager.load();
+            }
+        }
+        let onMemberListChanged = (e) => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                updatecontent();
+                syncData();
+            }
+        }
+
+        let editRow = (e, cell) => {
+            let data = cell.getRow().getData();
+            events.raise(events.name.BeginEditMember, { item: data })
+        }
+        let deleteRow = (e, cell) => {
+            let data = cell.getRow().getData();
+            console.log('delete:', data, ', langId:', lang.langId);
+            syncData();
+
+        }
+        let onEndEdit = (e) => {
+            syncData();
+            table.redraw(true);
+        }
+
+        this.addnew = (e) => {
+            let data = {
+                memberId: null,
+                Prefix: '',
+                FirstName: 'First Name',
+                LastName: 'Last Name',
+                UserName: 'user@company.com',
+                Password: '',
+                MemberType: 280,
+                TagId: null,
+                IDCard: null,
+                EmployeeCode: null,
+            };
+            events.raise(events.name.BeginEditMember, { item: data })
+        }
+        this.refresh = (e) => {
+            membermanager.load();
+            updatecontent();
         }
 
 });
