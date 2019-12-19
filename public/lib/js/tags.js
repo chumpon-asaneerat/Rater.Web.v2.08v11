@@ -2625,7 +2625,7 @@ riot.tag2('org-editor', '<div class="entry"> <tabcontrol class="tabs" content="{
         }
 
 });
-riot.tag2('org-entry', '<ninput ref="orgName" title="{content.entry.orgName}" type="text" name="orgName"></ninput> <div class="padtop"></div>', 'org-entry,[data-is="org-entry"]{ margin: 0; padding: 0; width: 100%; height: 100%; } org-entry .padtop,[data-is="org-entry"] .padtop{ display: block; margin: 0 auto; width: 100%; min-height: 10px; }', '', function(opts) {
+riot.tag2('org-entry', '<div class="padtop"></div> <div class="padtop"></div> <ninput ref="orgName" title="{content.entry.orgName}" type="text" name="orgName"></ninput> <virtual if="{isDefault()}"> <ninput ref="parentId" title="{content.entry.parentId}" type="text" name="parentId"></ninput> <ninput ref="branchId" title="{content.entry.branchId}" type="text" name="branchId"></ninput> </virtual>', 'org-entry,[data-is="org-entry"]{ margin: 0; padding: 0; width: 100%; height: 100%; } org-entry .padtop,[data-is="org-entry"] .padtop{ display: block; margin: 0 auto; width: 100%; min-height: 10px; }', '', function(opts) {
         let self = this;
         let screenId = 'org-manage';
         this.isDefault = () => { return (opts.langid === '' || opts.langid === 'EN') }

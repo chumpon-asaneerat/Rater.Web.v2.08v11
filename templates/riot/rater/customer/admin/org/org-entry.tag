@@ -1,6 +1,11 @@
 <org-entry>
-    <ninput ref="orgName" title="{ content.entry.orgName }" type="text" name="orgName"></ninput>
     <div class="padtop"></div>
+    <div class="padtop"></div>
+    <ninput ref="orgName" title="{ content.entry.orgName }" type="text" name="orgName"></ninput>
+    <virtual if={ isDefault() }>
+        <ninput ref="parentId" title="{ content.entry.parentId }" type="text" name="parentId"></ninput>
+        <ninput ref="branchId" title="{ content.entry.branchId }" type="text" name="branchId"></ninput>
+    </virtual>
     <style>
         :scope {
             margin: 0;
