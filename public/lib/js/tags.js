@@ -2086,6 +2086,17 @@ riot.tag2('member-editor', '<div class="entry"> <tabcontrol class="tabs" content
             events.raise(events.name.EndEditMember)
         }
 
+        findCtrl = (langId) => {
+            let ctrl;
+            let tabpages = self.tags['tabcontrol'].tags['tabpages'].tags['tabpage'];
+            for (let i = 0; i < tabpages.length; i++) {
+                let tp = tabpages[i];
+                ctrl = tp.refs[langId];
+                if (ctrl) break;
+            }
+            return ctrl;
+        }
+
         this.setup = (item) => {
             let isNew = false;
 
@@ -2098,7 +2109,7 @@ riot.tag2('member-editor', '<div class="entry"> <tabcontrol class="tabs" content
             let loader = window.membermanager;
 
             lang.languages.forEach(lg => {
-                let ctrl = self.refs[lg.langId];
+                let ctrl = findCtrl(lg.langId)
                 let original = (isNew) ? clone(item) : loader.find(lg.langId, memberId);
 
                 if (ctrl) {

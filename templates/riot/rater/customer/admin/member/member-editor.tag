@@ -246,6 +246,18 @@
 
         //#region public methods
 
+        // update 2019-12-19
+        findCtrl = (langId) => {
+            let ctrl;
+            let tabpages = self.tags['tabcontrol'].tags['tabpages'].tags['tabpage'];
+            for (let i = 0; i < tabpages.length; i++) {                
+                let tp = tabpages[i];
+                ctrl = tp.refs[langId];
+                if (ctrl) break;
+            }
+            return ctrl;
+        }
+
         this.setup = (item) => {
             let isNew = false;
             //console.log('setup:', item)
@@ -258,7 +270,7 @@
             let loader = window.membermanager;
 
             lang.languages.forEach(lg => {
-                let ctrl = self.refs[lg.langId];
+                let ctrl = findCtrl(lg.langId) // update 2019-12-19
                 let original = (isNew) ? clone(item) : loader.find(lg.langId, memberId);
                 //console.log('find ori:' ,original)
                 if (ctrl) {
