@@ -1,0 +1,27 @@
+{
+    "title": "ผังองกรณ์",
+    "entry": {
+        "tabDefault": "ค่าตั้งต้น",
+        "tabMultiLang": "ภาษาอื่น",
+        "orgName": "ชื่อหน่วยงาน",
+        "parentId": "หน่วยงานแม่",
+        "branchId": "สาขา"
+    },
+    "columns": [
+        {
+            "title": "ชื่อหน่วยงาน",
+            "field": "OrgName",
+            "resizable": false
+        },
+        {
+            "title": "หน่วยงานแม่",
+            "field": "parentId",
+            "resizable": false
+        },
+        {
+            "title": "สาขา",
+            "field": "BranchName",
+            "resizable": false
+        }
+    ]
+}

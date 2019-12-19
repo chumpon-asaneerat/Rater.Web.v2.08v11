@@ -1,4 +1,4 @@
-<branch-editor>
+<org-editor>
     <div class="entry">
         <tabcontrol class="tabs" content={ opts.content }>
             <tabheaders content={ opts.content }>
@@ -13,19 +13,19 @@
             </tabheaders>
             <tabpages>
                 <tabpage name="default">
-                    <branch-entry ref="EN" langId=""></branch-entry>
+                    <org-entry ref="EN" langId=""></org-entry>
                 </tabpage>
                 <tabpage name="miltilang">
                     <virtual if={ lang.languages }>
                         <virtual each={ item in lang.languages }>
-                            <virtual if={ item.langId !== 'EN' }>
+                            <virtual if={ item.langId !=='EN' }>
                                 <div class="panel-header" langId="{ item.langId }">
                                     &nbsp;&nbsp;
                                     <span class="flag-css flag-icon flag-icon-{ item.flagId.toLowerCase() }"></span>
                                     &nbsp;{ item.Description }&nbsp;
                                 </div>
                                 <div class="panel-body" langId="{ item.langId }">
-                                    <branch-entry ref="{ item.langId }" langId="{ item.langId }"></branch-entry>
+                                    <org-entry ref="{ item.langId }" langId="{ item.langId }"></org-entry>
                                 </div>
                             </virtual>
                         </virtual>
@@ -131,19 +131,20 @@
             border: 1px solid cornflowerblue;
         }
     </style>
+    </style>
     <script>
         //#region Internal Variables
 
         let self = this;
-        let screenId = 'branch-manage';
+        let screenId = 'org-manage';
 
-        let branchId = '';
+        let orgId = '';
         let ctrls = [];
 
         //#endregion
 
         //#region content variables and methods
-                
+        
         let defaultContent = {
             entry: { 
                 tabDefault: 'Default',
@@ -151,14 +152,14 @@
             }
         }
         this.content = defaultContent;
-        opts.content = this.content; // update 2019-12-19
+        opts.content = this.content;
 
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (screenId === scrId) {
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
-                opts.content = self.content; // update 2019-12-19
+                opts.content = self.content;
                 self.update();
             }
         }
@@ -167,8 +168,8 @@
 
         //#region controls variables and methods
 
-        let initCtrls = () => { }
-        let freeCtrls = () => { }
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
 
         //#endregion
 
@@ -232,11 +233,11 @@
                     items.push(item)
                 }
             });
-            branchmanager.save(items);
-            events.raise(events.name.EndEditBranch)
+            orgmanager.save(items);
+            events.raise(events.name.EndEditOrg)
         }
         this.cancel = (e) => {
-            events.raise(events.name.EndEditBranch)
+            events.raise(events.name.EndEditOrg)
         }
 
         //#region public methods
@@ -255,17 +256,17 @@
 
         this.setup = (item) => {
             let isNew = false;
-            branchId = item.branchId;
-            if (branchId === undefined || branchId === null || branchId.trim() === '') {
+            orgId = item.orgId;
+            if (orgId === undefined || orgId === null || orgId.trim() === '') {
                 isNew = true;
             }
             ctrls = [];
             
-            let loader = window.branchmanager;
+            let loader = window.orgmanager;
 
             lang.languages.forEach(lg => {
                 let ctrl = findCtrl(lg.langId) // update 2019-12-19
-                let original = (isNew) ? clone(item) : loader.find(lg.langId, branchId);
+                let original = (isNew) ? clone(item) : loader.find(lg.langId, orgId);
                 
                 if (ctrl) {
                     let obj = {
@@ -281,4 +282,4 @@
 
         //#endregion
     </script>
-</branch-editor>
+</org-editor>

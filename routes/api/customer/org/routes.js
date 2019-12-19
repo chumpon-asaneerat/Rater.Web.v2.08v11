@@ -210,7 +210,7 @@ api.Save = class {
 
 //#region Implement - Delete
 
-api.Save = class {
+api.Delete = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
         /*
