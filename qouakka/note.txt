@@ -1,0 +1,21 @@
+command: press F1
+- quokka.js start on current file -> for start
+- quokka.js stop current file -> for stop
+
+
+
+
+[== SETTING for Support access HTML DOM. Set only one time ==]
+1. Open %USERPROFILE%\.quokka
+2. edit or add config below.
+    {
+        "pro":false,
+        "plugins": [ "jsdom-quokka-plugin", "quokka-jquery-loader" ],
+        "jsdom": { "config" : { "file": "./index.html" } }
+    }
+3. Run command:
+   npm i jsdom-quokka-plugin
+   npm i quokka-jquery-loader
+   npm i moment
+4. Add index.html in target folder (root folder).
+5. Run quokka in VS Code.
