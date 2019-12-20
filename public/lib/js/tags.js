@@ -3098,6 +3098,410 @@ riot.tag2('org-view', '<div ref="container" class="scrarea"> <div ref="tool" cla
         }
 
 });
+riot.tag2('bar-votesummary-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <bar-votesummary-search ref="viewer" class="view"></bar-votesummary-search> </yield> <yield to="entry"> <bar-votesummary-result ref="entry" class="entry"></bar-votesummary-result> </yield> </flip-screen>', 'bar-votesummary-manage,[data-is="bar-votesummary-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } bar-votesummary-manage .view,[data-is="bar-votesummary-manage"] .view,bar-votesummary-manage .entry,[data-is="bar-votesummary-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Vote Summary (Bar graph)'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.BarSummarySearch, onShowSearch)
+            addEvt(events.name.BarSummaryResult, onShowResult)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.BarSummaryResult, onShowResult)
+            delEvt(events.name.BarSummarySearch, onShowSearch)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onShowResult = (e) => {
+            if (flipper) {
+                flipper.toggle();
+                let criteria = e.detail.data;
+                if (entry) entry.setup(criteria);
+            }
+
+        }
+        let onShowSearch = (e) => {
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+
+riot.tag2('bar-votesummary-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <bar-question-slide slide="{slide}"></bar-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'bar-votesummary-result,[data-is="bar-votesummary-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } bar-votesummary-result .input-block,[data-is="bar-votesummary-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } bar-votesummary-result .input-block.center,[data-is="bar-votesummary-result"] .input-block.center{ margin: auto; margin-top: 10px; } bar-votesummary-result .input-block button,[data-is="bar-votesummary-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'bar-votesummary-manage';
+        let shown = false;
+        let result = null;
+        let search_opts = {
+            langId: 'EN',
+            beginDate: '',
+            endDate: ''
+        }
+        this.current = {
+            begin: '',
+            end: '',
+            slides: []
+        };
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (shown && screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+
+                if (result && result[lang.langId]) {
+                    self.current = result[lang.langId]
+                    self.current.begin = search_opts.beginDate;
+                    self.current.end = search_opts.endDate;
+
+                }
+                self.update();
+            }
+        }
+        let refresh = () => {
+            let scrId = screens.current.screenId;
+
+            search_opts.langId = lang.langId;
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/report/votesummaries/search",
+                data: JSON.stringify(search_opts),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    result = ret.data;
+                    updatecontent();
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.goback = () => {
+            shown = false;
+            events.raise(events.name.BarSummarySearch)
+        }
+
+        this.setup = (criteria) => {
+
+            search_opts = criteria;
+            shown = true;
+            refresh();
+        }
+});
+riot.tag2('bar-votesummary-search', '<div class="input-block center"> <span>Vote Summary Bar Graph.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <ncheckedtree ref="ctrlOrgTree" title="Organization" class="tree"></ncheckedtree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'bar-votesummary-search,[data-is="bar-votesummary-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; overflow: auto; } bar-votesummary-search .input-block,[data-is="bar-votesummary-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } bar-votesummary-search .input-block.center,[data-is="bar-votesummary-search"] .input-block.center{ margin: auto; margin-top: 10px; } bar-votesummary-search .input-block span,[data-is="bar-votesummary-search"] .input-block span,bar-votesummary-search .input-block button,[data-is="bar-votesummary-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } bar-votesummary-search .input-block span.label,[data-is="bar-votesummary-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } bar-votesummary-search .input-block span input,[data-is="bar-votesummary-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } bar-votesummary-search .input-block .tree,[data-is="bar-votesummary-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'bar-votesummary-manage';
+        let qsetModel;
+        let quesModel;
+        let orgModel;
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                updateQSets();
+                updateQuestions();
+                updateOrgs();
+                self.update();
+            }
+        }
+
+        let onQSetSelectd = () => {
+            if (ctrlQSets) {
+                let qsetid = ctrlQSets.value();
+
+                if (qsetid) {
+                    loadQuestions(qsetid);
+                }
+                else {
+                    clearQuestions();
+                }
+            }
+        }
+
+        let updateQSets = () => {
+            if (ctrlQSets && qsetModel) {
+                let lastValue = ctrlQSets.value();
+
+                let values = qsetModel[lang.langId];
+                let fldmap = { valueField: 'qSetId', textField: 'desc'}
+                ctrlQSets.setup(values, fldmap, onQSetSelectd);
+
+                ctrlQSets.value(lastValue);
+            }
+        }
+
+        let loadQSets = () => {
+            let criteria = {}
+            if (ctrlQSets) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/set/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        qsetModel = ret.data;
+                        updateQSets();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearQuestions = () => {
+            if (ctrlQuesTree) {
+                ctrlQuesTree.clear();
+            }
+        }
+
+        let updateQuestions = () => {
+            if (ctrlQuesTree && quesModel) {
+                let lastValues = ctrlQuesTree.selectedItems();
+
+                let questions = quesModel[lang.langId];
+                let values = questions[0].slides;
+
+                let fldmap = { valueField: 'qSeq', textField: 'text', parentField: null }
+                ctrlQuesTree.setup(values, fldmap);
+
+                ctrlQuesTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadQuestions = (qsetid) => {
+            let criteria = {
+                qSetId: qsetid
+            }
+            if (ctrlQuesTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/slide/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        quesModel = ret.data;
+                        updateQuestions();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearOrgs = () => {
+            if (ctrlOrgTree) {
+                ctrlOrgTree.clear();
+            }
+        }
+
+        let updateOrgs = () => {
+            if (ctrlOrgTree && orgModel) {
+                let lastValues = ctrlOrgTree.selectedItems();
+
+                let values = orgModel[lang.langId];
+
+                let fldmap = { valueField: 'orgId', textField: 'OrgName', parentField: 'parentId' }
+                ctrlOrgTree.setup(values, fldmap);
+
+                ctrlOrgTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadOrgs = (qsetid) => {
+            let criteria = { }
+            if (ctrlOrgTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/org/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        orgModel = ret.data;
+                        updateOrgs();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree, ctrlOrgTree;
+        let initCtrls = () => {
+            ctrlQSets = self.refs['ctrlQSets']
+            ctrlBegin = self.refs['ctrlBegin']
+            ctrlEnd = self.refs['ctrlEnd']
+            ctrlQuesTree = self.refs['ctrlQuesTree']
+            ctrlOrgTree = self.refs['ctrlOrgTree']
+
+            loadQSets();
+
+            loadOrgs();
+        }
+        let freeCtrls = () => {
+            ctrlOrgTree = null;
+            ctrlQuesTree = null;
+            ctrlEnd = null;
+            ctrlBegin = null;
+            ctrlQSets = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.onseach = () => {
+            let qsetid = ctrlQSets.value();
+            let beginDT = String(ctrlBegin.value());
+            let endDT = String(ctrlEnd.value());
+
+            let slides = [];
+            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
+            quesmap.forEach(quesId => {
+                slides.push({ qSeq: quesId })
+            });
+            let orgs = []
+            let orgmap = ctrlOrgTree.selectedItems().map(item => item.id );
+            orgmap.forEach(orgId => {
+                orgs.push({ orgId: orgId })
+            });
+
+            let criteria = {
+                qsetId: qsetid,
+                beginDate: beginDT,
+                endDate: endDT,
+                slides: slides,
+                orgs: orgs
+            }
+
+            events.raise(events.name.BarSummaryResult, criteria)
+        }
+});
 riot.tag2('report-admin-home', '<div class="report-home-main"> <div class="report-item"> <button onclick="{showvotesummary}"> <span class="icon fa-3x fas fa-table cr1"></span> <span class="text">Vote Summary</span> </button> </div> <div class="report-item"> <button onclick="{showpiesummary}"> <span class="icon fa-3x fas fa-chart-pie cr2"></span> <span class="text">Pie Chart</span> </button> </div> <div class="report-item"> <button onclick="{showbarsummary}"> <span class="icon fa-3x fas fa-chart-bar cr3"></span> <span class="text">Bar Chart</span> </button> </div> <div class="report-item"> <button onclick="{showstaffcompare}"> <span class="icon fa-3x fas fa-chalkboard-teacher cr6"></span> <span class="text">Staff Compare</span> </button> </div> <div class="report-item"> <button onclick="{showrawvote}"> <span class="icon fa-3x fas fa-table cr4"></span> <span class="text">Raw Vote</span> </button> </div> <div class="report-item"> <button onclick="{showstaffperf}"> <span class="icon fa-3x far fa-id-card cr5"></span> <span class="text">Staff Performance</span> </button> </div> </div>', 'report-admin-home,[data-is="report-admin-home"]{ margin: 0 auto; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; display: block; overflow: auto; } @media (min-width: 620px) { report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ column-count: 2; column-gap: 20px; } } @media (min-width: 960px) { report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ column-count: 3; column-gap: 20px; } } report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ margin: 0 auto; padding: 20px; max-width: 1000px; } report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ display: block; margin: 0 auto; padding: 10px; } report-admin-home .report-home-main .report-item,[data-is="report-admin-home"] .report-home-main .report-item{ margin: 2px auto; padding: 0; margin-bottom: 20px; height: 100px; break-inside: avoid; } report-admin-home .report-home-main .report-item button,[data-is="report-admin-home"] .report-home-main .report-item button{ margin: 0 auto; padding: 0; display: grid; width: 100%; height: 100%; } report-admin-home .report-home-main .report-item button .icon,[data-is="report-admin-home"] .report-home-main .report-item button .icon{ justify-self: center; align-self: center; } report-admin-home .report-home-main .report-item button .text,[data-is="report-admin-home"] .report-home-main .report-item button .text{ justify-self: center; align-self: center; font-size: 1rem; font-weight: bold; } report-admin-home .report-home-main .report-item button .icon.cr1,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr1{ color: chocolate; } report-admin-home .report-home-main .report-item button .icon.cr2,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr2{ color: cornflowerblue; } report-admin-home .report-home-main .report-item button .icon.cr3,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr3{ color: olivedrab; } report-admin-home .report-home-main .report-item button .icon.cr4,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr4{ color: darkorchid; } report-admin-home .report-home-main .report-item button .icon.cr5,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr5{ color: sandybrown; } report-admin-home .report-home-main .report-item button .icon.cr6,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr6{ color: navy; }', '', function(opts) {
 
 
@@ -3258,6 +3662,1865 @@ riot.tag2('report-staff-home', '<div class="report-home-main"> <div class="repor
             let url = 'http://localhost:3000/customer/staff/report/staff-perf';
             secure.nav(url)
 
+        }
+});
+riot.tag2('pie-votesummary-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <pie-votesummary-search ref="viewer" class="view"></pie-votesummary-search> </yield> <yield to="entry"> <pie-votesummary-result ref="entry" class="entry"></pie-votesummary-result> </yield> </flip-screen>', 'pie-votesummary-manage,[data-is="pie-votesummary-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } pie-votesummary-manage .view,[data-is="pie-votesummary-manage"] .view,pie-votesummary-manage .entry,[data-is="pie-votesummary-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Vote Summary (Pie Chart)'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.PieSummarySearch, onShowSearch)
+            addEvt(events.name.PieSummaryResult, onShowResult)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.PieSummaryResult, onShowResult)
+            delEvt(events.name.PieSummarySearch, onShowSearch)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onShowResult = (e) => {
+            if (flipper) {
+                flipper.toggle();
+                let criteria = e.detail.data;
+                if (entry) entry.setup(criteria);
+            }
+
+        }
+        let onShowSearch = (e) => {
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+
+riot.tag2('pie-votesummary-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <pie-question-slide slide="{slide}"></pie-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'pie-votesummary-result,[data-is="pie-votesummary-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } pie-votesummary-result .input-block,[data-is="pie-votesummary-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } pie-votesummary-result .input-block.center,[data-is="pie-votesummary-result"] .input-block.center{ margin: auto; margin-top: 10px; } pie-votesummary-result .input-block button,[data-is="pie-votesummary-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'pie-votesummary-manage';
+        let shown = false;
+        let result = null;
+        let search_opts = {
+            langId: 'EN',
+            beginDate: '',
+            endDate: ''
+        }
+        this.current = {
+            begin: '',
+            end: '',
+            slides: []
+        };
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (shown && screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+
+                if (result && result[lang.langId]) {
+                    self.current = result[lang.langId]
+                    self.current.begin = search_opts.beginDate;
+                    self.current.end = search_opts.endDate;
+
+                }
+                self.update();
+            }
+        }
+        let refresh = () => {
+            let scrId = screens.current.screenId;
+            if (!shown || screenId !== scrId) return;
+
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/report/votesummaries/search",
+                data: JSON.stringify(search_opts),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    result = ret.data;
+                    updatecontent();
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.goback = () => {
+            shown = false;
+            events.raise(events.name.PieSummarySearch)
+        }
+
+        this.setup = (criteria) => {
+
+            search_opts = criteria;
+            shown = true;
+            refresh();
+        }
+});
+riot.tag2('pie-votesummary-search', '<div class="input-block center"> <span>Vote Summary Pie Chart.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <ncheckedtree ref="ctrlOrgTree" title="Organization" class="tree"></ncheckedtree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'pie-votesummary-search,[data-is="pie-votesummary-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } pie-votesummary-search .input-block,[data-is="pie-votesummary-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } pie-votesummary-search .input-block.center,[data-is="pie-votesummary-search"] .input-block.center{ margin: auto; margin-top: 10px; } pie-votesummary-search .input-block span,[data-is="pie-votesummary-search"] .input-block span,pie-votesummary-search .input-block button,[data-is="pie-votesummary-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } pie-votesummary-search .input-block span.label,[data-is="pie-votesummary-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } pie-votesummary-search .input-block span input,[data-is="pie-votesummary-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } pie-votesummary-search .input-block .tree,[data-is="pie-votesummary-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'pie-votesummary-manage';
+        let qsetModel;
+        let quesModel;
+        let orgModel;
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                updateQSets();
+                updateQuestions();
+                updateOrgs();
+                self.update();
+            }
+        }
+
+        let onQSetSelectd = () => {
+            if (ctrlQSets) {
+                let qsetid = ctrlQSets.value();
+
+                if (qsetid) {
+                    loadQuestions(qsetid);
+                }
+                else {
+                    clearQuestions();
+                }
+            }
+        }
+
+        let updateQSets = () => {
+            if (ctrlQSets && qsetModel) {
+                let lastValue = ctrlQSets.value();
+
+                let values = qsetModel[lang.langId];
+                let fldmap = { valueField: 'qSetId', textField: 'desc'}
+                ctrlQSets.setup(values, fldmap, onQSetSelectd);
+
+                ctrlQSets.value(lastValue);
+            }
+        }
+
+        let loadQSets = () => {
+            let criteria = {}
+            if (ctrlQSets) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/set/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        qsetModel = ret.data;
+                        updateQSets();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearQuestions = () => {
+            if (ctrlQuesTree) {
+                ctrlQuesTree.clear();
+            }
+        }
+
+        let updateQuestions = () => {
+            if (ctrlQuesTree && quesModel) {
+                let lastValues = ctrlQuesTree.selectedItems();
+
+                let questions = quesModel[lang.langId];
+                let values = questions[0].slides;
+
+                let fldmap = { valueField: 'qSeq', textField: 'text', parentField: null }
+                ctrlQuesTree.setup(values, fldmap);
+
+                ctrlQuesTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadQuestions = (qsetid) => {
+            let criteria = {
+                qSetId: qsetid
+            }
+            if (ctrlQuesTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/slide/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        quesModel = ret.data;
+                        updateQuestions();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearOrgs = () => {
+            if (ctrlOrgTree) {
+                ctrlOrgTree.clear();
+            }
+        }
+
+        let updateOrgs = () => {
+            if (ctrlOrgTree && orgModel) {
+                let lastValues = ctrlOrgTree.selectedItems();
+
+                let values = orgModel[lang.langId];
+
+                let fldmap = { valueField: 'orgId', textField: 'OrgName', parentField: 'parentId' }
+                ctrlOrgTree.setup(values, fldmap);
+
+                ctrlOrgTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadOrgs = (qsetid) => {
+            let criteria = { }
+            if (ctrlOrgTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/org/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        orgModel = ret.data;
+                        updateOrgs();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree, ctrlOrgTree;
+        let initCtrls = () => {
+            ctrlQSets = self.refs['ctrlQSets']
+            ctrlBegin = self.refs['ctrlBegin']
+            ctrlEnd = self.refs['ctrlEnd']
+            ctrlQuesTree = self.refs['ctrlQuesTree']
+            ctrlOrgTree = self.refs['ctrlOrgTree']
+            loadQSets();
+
+            loadOrgs();
+        }
+        let freeCtrls = () => {
+            ctrlOrgTree = null;
+            ctrlQuesTree = null;
+            ctrlEnd = null;
+            ctrlBegin = null;
+            ctrlQSets = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.onseach = () => {
+            let qsetid = ctrlQSets.value();
+            let beginDT = String(ctrlBegin.value());
+            let endDT = String(ctrlEnd.value());
+
+            let slides = [];
+            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
+            quesmap.forEach(quesId => {
+                slides.push({ qSeq: quesId })
+            });
+            let orgs = []
+            let orgmap = ctrlOrgTree.selectedItems().map(item => item.id );
+            orgmap.forEach(orgId => {
+                orgs.push({ orgId: orgId })
+            });
+
+            let criteria = {
+                qsetId: qsetid,
+                beginDate: beginDT,
+                endDate: endDT,
+                slides: slides,
+                orgs: orgs
+            }
+
+            events.raise(events.name.PieSummaryResult, criteria)
+        }
+});
+riot.tag2('rawvote-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <rawvote-search ref="viewer" class="view"></rawvote-search> </yield> <yield to="entry"> <rawvote-result ref="entry" class="entry"></rawvote-result> </yield> </flip-screen>', 'rawvote-manage,[data-is="rawvote-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } rawvote-manage .view,[data-is="rawvote-manage"] .view,rawvote-manage .entry,[data-is="rawvote-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Raw Vote'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.RawVoteSearch, onShowSearch)
+            addEvt(events.name.RawVoteResult, onShowResult)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.RawVoteResult, onShowResult)
+            delEvt(events.name.RawVoteSearch, onShowSearch)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onShowResult = (e) => {
+            if (flipper) {
+                flipper.toggle();
+                let criteria = e.detail.data;
+                if (entry) entry.setup(criteria);
+            }
+
+        }
+        let onShowSearch = (e) => {
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+
+riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <rawvote-question-slide slide="{slide}"></rawvote-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'rawvote-result,[data-is="rawvote-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } rawvote-result .input-block,[data-is="rawvote-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } rawvote-result .input-block.center,[data-is="rawvote-result"] .input-block.center{ margin: auto; margin-top: 10px; } rawvote-result .input-block button,[data-is="rawvote-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'rawvote-manage';
+        let shown = false;
+        let result = null;
+        let search_opts = {
+            langId: 'EN',
+            beginDate: '',
+            endDate: ''
+        }
+        this.current = {
+            begin: '',
+            end: '',
+            slides: []
+        };
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (shown && screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                console.log(result)
+                if (result && result[lang.langId]) {
+                    self.current = result[lang.langId]
+                    self.current.begin = search_opts.beginDate;
+                    self.current.end = search_opts.endDate;
+
+                }
+                self.update();
+            }
+        }
+        let refresh = () => {
+            let scrId = screens.current.screenId;
+            if (!shown || screenId !== scrId) return;
+
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/report/rawvotes/search",
+                data: JSON.stringify(search_opts),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    result = ret.data;
+                    updatecontent();
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { refresh(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.goback = () => {
+            shown = false;
+            events.raise(events.name.RawVoteSearch)
+        }
+
+        this.setup = (criteria) => {
+
+            search_opts = criteria;
+            shown = true;
+            refresh();
+        }
+});
+riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'rawvote-search,[data-is="rawvote-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } rawvote-search .input-block,[data-is="rawvote-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } rawvote-search .input-block.center,[data-is="rawvote-search"] .input-block.center{ margin: auto; margin-top: 10px; } rawvote-search .input-block span,[data-is="rawvote-search"] .input-block span,rawvote-search .input-block button,[data-is="rawvote-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } rawvote-search .input-block span.label,[data-is="rawvote-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } rawvote-search .input-block span input,[data-is="rawvote-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } rawvote-search .input-block .tree,[data-is="rawvote-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'rawvote-manage';
+        let qsetModel;
+        let quesModel;
+        let orgModel;
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                updateQSets();
+                updateQuestions();
+                updateOrgs();
+                self.update();
+            }
+        }
+
+        let onQSetSelectd = () => {
+            if (ctrlQSets) {
+                let qsetid = ctrlQSets.value();
+
+                if (qsetid) {
+                    loadQuestions(qsetid);
+                }
+                else {
+                    clearQuestions();
+                }
+            }
+        }
+
+        let updateQSets = () => {
+            if (ctrlQSets && qsetModel) {
+                let lastValue = ctrlQSets.value();
+
+                let values = qsetModel[lang.langId];
+                let fldmap = { valueField: 'qSetId', textField: 'desc'}
+                ctrlQSets.setup(values, fldmap, onQSetSelectd);
+
+                ctrlQSets.value(lastValue);
+            }
+        }
+
+        let loadQSets = () => {
+            let criteria = {}
+            if (ctrlQSets) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/set/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        qsetModel = ret.data;
+                        updateQSets();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearQuestions = () => {
+            if (ctrlQuesTree) {
+                ctrlQuesTree.clear();
+            }
+        }
+
+        let updateQuestions = () => {
+            if (ctrlQuesTree && quesModel) {
+                let lastValues = ctrlQuesTree.selectedItems();
+
+                let questions = quesModel[lang.langId];
+                let values = questions[0].slides;
+
+                let fldmap = { valueField: 'qSeq', textField: 'text', parentField: null }
+                ctrlQuesTree.setup(values, fldmap);
+
+                ctrlQuesTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadQuestions = (qsetid) => {
+            let criteria = {
+                qSetId: qsetid
+            }
+            if (ctrlQuesTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/slide/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        quesModel = ret.data;
+                        updateQuestions();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearOrgs = () => {
+            if (ctrlOrgTree) {
+                ctrlOrgTree.clear();
+            }
+        }
+
+        let updateOrgs = () => {
+            if (ctrlOrgTree && orgModel) {
+                let lastValue = ctrlOrgTree.selectedItem();
+
+                let values = orgModel[lang.langId];
+
+                let fldmap = { valueField: 'orgId', textField: 'OrgName', parentField: 'parentId' }
+                ctrlOrgTree.setup(values, fldmap);
+
+            }
+        }
+
+        let loadOrgs = (qsetid) => {
+            let criteria = { }
+            if (ctrlOrgTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/org/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        orgModel = ret.data;
+                        updateOrgs();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree, ctrlOrgTree;
+        let initCtrls = () => {
+            ctrlQSets = self.refs['ctrlQSets']
+            ctrlBegin = self.refs['ctrlBegin']
+            ctrlEnd = self.refs['ctrlEnd']
+            ctrlQuesTree = self.refs['ctrlQuesTree']
+            ctrlOrgTree = self.refs['ctrlOrgTree']
+            loadQSets();
+
+            loadOrgs();
+        }
+        let freeCtrls = () => {
+            ctrlOrgTree = null;
+            ctrlQuesTree = null;
+            ctrlEnd = null;
+            ctrlBegin = null;
+            ctrlQSets = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.onseach = () => {
+            let qsetid = ctrlQSets.value();
+            let beginDT = String(ctrlBegin.value());
+            let endDT = String(ctrlEnd.value());
+
+            let slides = [];
+            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
+            quesmap.forEach(quesId => {
+                slides.push({ qSeq: quesId })
+            });
+            let orgid = ctrlOrgTree.selectedItem();
+
+            let criteria = {
+                langId: lang.langId,
+                qsetId: qsetid,
+                beginDate: beginDT,
+                endDate: endDT,
+
+                qseq: 1,
+                orgs: orgid
+            }
+
+            events.raise(events.name.RawVoteResult, criteria)
+        }
+});
+riot.tag2('staff-compare-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <staff-compare-search ref="viewer" class="view"></staff-compare-search> </yield> <yield to="entry"> <staff-compare-result ref="entry" class="entry"></staff-compare-result> </yield> </flip-screen>', 'staff-compare-manage,[data-is="staff-compare-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } staff-compare-manage .view,[data-is="staff-compare-manage"] .view,staff-compare-manage .entry,[data-is="staff-compare-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Staff Compare'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.StaffCompareSearch, onShowSearch)
+            addEvt(events.name.StaffCompareResult, onShowResult)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.StaffCompareResult, onShowResult)
+            delEvt(events.name.StaffCompareSearch, onShowSearch)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onShowResult = (e) => {
+            if (flipper) {
+                flipper.toggle();
+                let criteria = e.detail.data;
+                if (entry) entry.setup(criteria);
+            }
+
+        }
+        let onShowSearch = (e) => {
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+
+riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'staff-compare-result,[data-is="staff-compare-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } staff-compare-result .input-block,[data-is="staff-compare-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-result .input-block.center,[data-is="staff-compare-result"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-result .input-block button,[data-is="staff-compare-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'staff-compare-manage';
+        let shown = false;
+        let result = null;
+        let search_opts = {
+            langId: 'EN',
+            beginDate: '',
+            endDate: ''
+        }
+        this.current = {
+            begin: '',
+            end: '',
+            slides: []
+        };
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (shown && screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                console.log(result)
+                if (result && result[lang.langId]) {
+                    self.current = result[lang.langId]
+                    self.current.begin = search_opts.beginDate;
+                    self.current.end = search_opts.endDate;
+
+                }
+                self.update();
+            }
+        }
+        let refresh = () => {
+            let scrId = screens.current.screenId;
+            if (!shown || screenId !== scrId) return;
+
+        }
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.goback = () => {
+            shown = false;
+            events.raise(events.name.StaffCompareSearch)
+        }
+
+        this.setup = (criteria) => {
+
+            search_opts = criteria;
+            shown = true;
+            refresh();
+        }
+});
+riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff Compare.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'staff-compare-search,[data-is="staff-compare-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } staff-compare-search .input-block,[data-is="staff-compare-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-search .input-block.center,[data-is="staff-compare-search"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-search .input-block span,[data-is="staff-compare-search"] .input-block span,staff-compare-search .input-block button,[data-is="staff-compare-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } staff-compare-search .input-block span.label,[data-is="staff-compare-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block span input,[data-is="staff-compare-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block .tree,[data-is="staff-compare-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'staff-compare-manage';
+        let qsetModel;
+        let quesModel;
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                updateQSets();
+                updateQuestions();
+
+                self.update();
+            }
+        }
+
+        let onQSetSelectd = () => {
+            if (ctrlQSets) {
+                let qsetid = ctrlQSets.value();
+
+                if (qsetid) {
+                    loadQuestions(qsetid);
+                }
+                else {
+                    clearQuestions();
+                }
+            }
+        }
+
+        let updateQSets = () => {
+            if (ctrlQSets && qsetModel) {
+                let lastValue = ctrlQSets.value();
+
+                let values = qsetModel[lang.langId];
+                let fldmap = { valueField: 'qSetId', textField: 'desc'}
+                ctrlQSets.setup(values, fldmap, onQSetSelectd);
+
+                ctrlQSets.value(lastValue);
+            }
+        }
+
+        let loadQSets = () => {
+            let criteria = {}
+            if (ctrlQSets) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/set/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        qsetModel = ret.data;
+                        updateQSets();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearQuestions = () => {
+            if (ctrlQuesTree) {
+                ctrlQuesTree.clear();
+            }
+        }
+
+        let updateQuestions = () => {
+            if (ctrlQuesTree && quesModel) {
+                let lastValues = ctrlQuesTree.selectedItems();
+
+                let questions = quesModel[lang.langId];
+                let values = questions[0].slides;
+
+                let fldmap = { valueField: 'qSeq', textField: 'text', parentField: null }
+                ctrlQuesTree.setup(values, fldmap);
+
+                ctrlQuesTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadQuestions = (qsetid) => {
+            let criteria = {
+                qSetId: qsetid
+            }
+            if (ctrlQuesTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/slide/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        quesModel = ret.data;
+                        updateQuestions();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree;
+        let initCtrls = () => {
+            ctrlQSets = self.refs['ctrlQSets']
+            ctrlBegin = self.refs['ctrlBegin']
+            ctrlEnd = self.refs['ctrlEnd']
+            ctrlQuesTree = self.refs['ctrlQuesTree']
+
+            loadQSets();
+
+        }
+        let freeCtrls = () => {
+
+            ctrlQuesTree = null;
+            ctrlEnd = null;
+            ctrlBegin = null;
+            ctrlQSets = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.onseach = () => {
+
+            let criteria = { }
+
+            events.raise(events.name.StaffCompareResult, criteria)
+        }
+});
+riot.tag2('staff-perf-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <staff-perf-search ref="viewer" class="view"></staff-perf-search> </yield> <yield to="entry"> <staff-perf-result ref="entry" class="entry"></staff-perf-result> </yield> </flip-screen>', 'staff-perf-manage,[data-is="staff-perf-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } staff-perf-manage .view,[data-is="staff-perf-manage"] .view,staff-perf-manage .entry,[data-is="staff-perf-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Staff Performance'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.StaffPerfSearch, onShowSearch)
+            addEvt(events.name.StaffPerfResult, onShowResult)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.StaffPerfResult, onShowResult)
+            delEvt(events.name.StaffPerfSearch, onShowSearch)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onShowResult = (e) => {
+            if (flipper) {
+                flipper.toggle();
+                let criteria = e.detail.data;
+                if (entry) entry.setup(criteria);
+            }
+
+        }
+        let onShowSearch = (e) => {
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+
+riot.tag2('staff-perf-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'staff-perf-result,[data-is="staff-perf-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } staff-perf-result .input-block,[data-is="staff-perf-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-perf-result .input-block.center,[data-is="staff-perf-result"] .input-block.center{ margin: auto; margin-top: 10px; } staff-perf-result .input-block button,[data-is="staff-perf-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'staff-perf-manage';
+        let shown = false;
+        let result = null;
+        let search_opts = {
+            langId: 'EN',
+            beginDate: '',
+            endDate: ''
+        }
+        this.current = {
+            begin: '',
+            end: '',
+            slides: []
+        };
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (shown && screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                console.log(result)
+                if (result && result[lang.langId]) {
+                    self.current = result[lang.langId]
+                    self.current.begin = search_opts.beginDate;
+                    self.current.end = search_opts.endDate;
+
+                }
+                self.update();
+            }
+        }
+        let refresh = () => {
+            let scrId = screens.current.screenId;
+            if (!shown || screenId !== scrId) return;
+
+        }
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.goback = () => {
+            shown = false;
+            events.raise(events.name.StaffPerfSearch)
+        }
+
+        this.setup = (criteria) => {
+
+            search_opts = criteria;
+            shown = true;
+            refresh();
+        }
+});
+riot.tag2('staff-perf-search', '<div class="input-block center"> <span>Staff Performance.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'staff-perf-search,[data-is="staff-perf-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } staff-perf-search .input-block,[data-is="staff-perf-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-perf-search .input-block.center,[data-is="staff-perf-search"] .input-block.center{ margin: auto; margin-top: 10px; } staff-perf-search .input-block span,[data-is="staff-perf-search"] .input-block span,staff-perf-search .input-block button,[data-is="staff-perf-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } staff-perf-search .input-block span.label,[data-is="staff-perf-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-perf-search .input-block span input,[data-is="staff-perf-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-perf-search .input-block .tree,[data-is="staff-perf-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'staff-perf-manage';
+        let qsetModel;
+        let quesModel;
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                updateQSets();
+                updateQuestions();
+
+                self.update();
+            }
+        }
+
+        let onQSetSelectd = () => {
+            if (ctrlQSets) {
+                let qsetid = ctrlQSets.value();
+
+                if (qsetid) {
+                    loadQuestions(qsetid);
+                }
+                else {
+                    clearQuestions();
+                }
+            }
+        }
+
+        let updateQSets = () => {
+            if (ctrlQSets && qsetModel) {
+                let lastValue = ctrlQSets.value();
+
+                let values = qsetModel[lang.langId];
+                let fldmap = { valueField: 'qSetId', textField: 'desc'}
+                ctrlQSets.setup(values, fldmap, onQSetSelectd);
+
+                ctrlQSets.value(lastValue);
+            }
+        }
+
+        let loadQSets = () => {
+            let criteria = {}
+            if (ctrlQSets) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/set/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        qsetModel = ret.data;
+                        updateQSets();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearQuestions = () => {
+            if (ctrlQuesTree) {
+                ctrlQuesTree.clear();
+            }
+        }
+
+        let updateQuestions = () => {
+            if (ctrlQuesTree && quesModel) {
+                let lastValues = ctrlQuesTree.selectedItems();
+
+                let questions = quesModel[lang.langId];
+                let values = questions[0].slides;
+
+                let fldmap = { valueField: 'qSeq', textField: 'text', parentField: null }
+                ctrlQuesTree.setup(values, fldmap);
+
+                ctrlQuesTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadQuestions = (qsetid) => {
+            let criteria = {
+                qSetId: qsetid
+            }
+            if (ctrlQuesTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/slide/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        quesModel = ret.data;
+                        updateQuestions();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree;
+        let initCtrls = () => {
+            ctrlQSets = self.refs['ctrlQSets']
+            ctrlBegin = self.refs['ctrlBegin']
+            ctrlEnd = self.refs['ctrlEnd']
+            ctrlQuesTree = self.refs['ctrlQuesTree']
+
+            loadQSets();
+
+        }
+        let freeCtrls = () => {
+
+            ctrlQuesTree = null;
+            ctrlEnd = null;
+            ctrlBegin = null;
+            ctrlQSets = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.onseach = () => {
+
+            let criteria = { }
+
+            events.raise(events.name.StaffPerfResult, criteria)
+        }
+});
+riot.tag2('votesummary-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <votesummary-search ref="viewer" class="view"></votesummary-search> </yield> <yield to="entry"> <votesummary-result ref="entry" class="entry"></votesummary-result> </yield> </flip-screen>', 'votesummary-manage,[data-is="votesummary-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } votesummary-manage .view,[data-is="votesummary-manage"] .view,votesummary-manage .entry,[data-is="votesummary-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
+
+
+        let self = this;
+
+        let defaultContent = {
+            title: 'Vote Summary'
+        }
+        this.content = defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+            self.update();
+        }
+
+        let flipper, view, entry;
+        let initCtrls = () => {
+
+            flipper = self.refs['flipper'];
+            entry = (flipper) ? flipper.refs['entry'] : undefined;
+        }
+        let freeCtrls = () => {
+            entry = null;
+            flipper = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.VoteSummarySearch, onShowSearch)
+            addEvt(events.name.VoteSummaryResult, onShowResult)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.VoteSummaryResult, onShowResult)
+            delEvt(events.name.VoteSummarySearch, onShowSearch)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+        let onShowResult = (e) => {
+            if (flipper) {
+                flipper.toggle();
+                let criteria = e.detail.data;
+                if (entry) entry.setup(criteria);
+            }
+
+        }
+        let onShowSearch = (e) => {
+            if (flipper) {
+                flipper.toggle();
+            }
+        }
+
+});
+
+riot.tag2('votesummary-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <votesummary-question-slide slide="{slide}"></votesummary-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'votesummary-result,[data-is="votesummary-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } votesummary-result .input-block,[data-is="votesummary-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } votesummary-result .input-block.center,[data-is="votesummary-result"] .input-block.center{ margin: auto; margin-top: 10px; } votesummary-result .input-block button,[data-is="votesummary-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'votesummary-manage';
+        let shown = false;
+        let search_opts = {
+            langId: 'EN',
+            beginDate: '',
+            endDate: ''
+        }
+        let result = null;
+        this.current = {
+            begin: '',
+            end: '',
+            slides: []
+        };
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (shown && screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+
+                if (result && result[lang.langId]) {
+                    self.current = result[lang.langId]
+                    self.current.begin = search_opts.beginDate;
+                    self.current.end = search_opts.endDate;
+
+                }
+                self.update();
+            }
+        }
+        let refresh = () => {
+            let scrId = screens.current.screenId;
+            if (!shown || screenId !== scrId) return;
+
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/report/votesummaries/search",
+                data: JSON.stringify(search_opts),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    result = ret.data;
+
+                    updatecontent();
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+
+        let initCtrls = () => {}
+        let freeCtrls = () => {}
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.goback = () => {
+            shown = false;
+            events.raise(events.name.VoteSummarySearch)
+        }
+
+        this.setup = (criteria) => {
+
+            search_opts = criteria;
+            shown = true;
+            refresh();
+        }
+});
+riot.tag2('votesummary-search', '<div class="input-block center"> <span>Vote Summary.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <ncheckedtree ref="ctrlOrgTree" title="Organization" class="tree"></ncheckedtree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'votesummary-search,[data-is="votesummary-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } votesummary-search .input-block,[data-is="votesummary-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } votesummary-search .input-block.center,[data-is="votesummary-search"] .input-block.center{ margin: auto; margin-top: 10px; } votesummary-search .input-block span,[data-is="votesummary-search"] .input-block span,votesummary-search .input-block button,[data-is="votesummary-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } votesummary-search .input-block span.label,[data-is="votesummary-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } votesummary-search .input-block span input,[data-is="votesummary-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } votesummary-search .input-block .tree,[data-is="votesummary-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+
+
+        let self = this;
+        let screenId = 'votesummary-manage';
+        let qsetModel;
+        let quesModel;
+        let orgModel;
+
+        let defaultContent = {
+            title: ''
+        }
+        this.content = this.defaultContent;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                updateQSets();
+                updateQuestions();
+                updateOrgs();
+                self.update();
+            }
+        }
+
+        let onQSetSelectd = () => {
+            if (ctrlQSets) {
+                let qsetid = ctrlQSets.value();
+
+                if (qsetid) {
+                    loadQuestions(qsetid);
+                }
+                else {
+                    clearQuestions();
+                }
+            }
+        }
+
+        let updateQSets = () => {
+            if (ctrlQSets && qsetModel) {
+                let lastValue = ctrlQSets.value();
+
+                let values = qsetModel[lang.langId];
+                let fldmap = { valueField: 'qSetId', textField: 'desc'}
+                ctrlQSets.setup(values, fldmap, onQSetSelectd);
+
+                ctrlQSets.value(lastValue);
+            }
+        }
+
+        let loadQSets = () => {
+            let criteria = {}
+            if (ctrlQSets) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/set/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        qsetModel = ret.data;
+                        updateQSets();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearQuestions = () => {
+            if (ctrlQuesTree) {
+                ctrlQuesTree.clear();
+            }
+        }
+
+        let updateQuestions = () => {
+            if (ctrlQuesTree && quesModel) {
+                let lastValues = ctrlQuesTree.selectedItems();
+
+                let questions = quesModel[lang.langId];
+                let values = questions[0].slides;
+
+                let fldmap = { valueField: 'qSeq', textField: 'text', parentField: null }
+                ctrlQuesTree.setup(values, fldmap);
+
+                ctrlQuesTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadQuestions = (qsetid) => {
+            let criteria = {
+                qSetId: qsetid
+            }
+            if (ctrlQuesTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/question/slide/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        quesModel = ret.data;
+                        updateQuestions();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let clearOrgs = () => {
+            if (ctrlOrgTree) {
+                ctrlOrgTree.clear();
+            }
+        }
+
+        let updateOrgs = () => {
+            if (ctrlOrgTree && orgModel) {
+                let lastValues = ctrlOrgTree.selectedItems();
+
+                let values = orgModel[lang.langId];
+
+                let fldmap = { valueField: 'orgId', textField: 'OrgName', parentField: 'parentId' }
+                ctrlOrgTree.setup(values, fldmap);
+
+                ctrlOrgTree.selectedItems(lastValues);
+            }
+        }
+
+        let loadOrgs = (qsetid) => {
+            let criteria = { }
+            if (ctrlOrgTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/org/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        orgModel = ret.data;
+                        updateOrgs();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree, ctrlOrgTree;
+        let initCtrls = () => {
+            ctrlQSets = self.refs['ctrlQSets']
+            ctrlBegin = self.refs['ctrlBegin']
+            ctrlEnd = self.refs['ctrlEnd']
+            ctrlQuesTree = self.refs['ctrlQuesTree']
+            ctrlOrgTree = self.refs['ctrlOrgTree']
+            loadQSets();
+
+            loadOrgs();
+        }
+        let freeCtrls = () => {
+            ctrlOrgTree = null;
+            ctrlQuesTree = null;
+            ctrlEnd = null;
+            ctrlBegin = null;
+            ctrlQSets = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+        this.onseach = () => {
+            let qsetid = ctrlQSets.value();
+            let beginDT = String(ctrlBegin.value());
+            let endDT = String(ctrlEnd.value());
+
+            let slides = [];
+            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
+            quesmap.forEach(quesId => {
+                slides.push({ qSeq: quesId })
+            });
+            let orgs = []
+            let orgmap = ctrlOrgTree.selectedItems().map(item => item.id );
+            orgmap.forEach(orgId => {
+                orgs.push({ orgId: orgId })
+            });
+
+            let criteria = {
+                qsetId: qsetid,
+                beginDate: beginDT,
+                endDate: endDT,
+                slides: slides,
+                orgs: orgs
+            }
+
+            events.raise(events.name.VoteSummaryResult, criteria)
         }
 });
 riot.tag2('edl-customer-branch-manage', '', '', '', function(opts) {

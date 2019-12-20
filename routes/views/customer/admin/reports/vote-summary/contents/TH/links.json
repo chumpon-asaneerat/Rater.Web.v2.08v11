@@ -1,0 +1,10 @@
+[
+    { "type": "url", "id":"home", "ref": "/customer/admin", "text":"หน้าหลัก", "icon": "fas fa-home", "icontype": "fontcss" },
+    { "type": "url", "id":"member-manage", "ref": "/customer/admin/members", "text":"บัญชีผู้ใช้งาน", "icon": "fas fa-user-friends", "icontype": "fontcss" },
+    { "type": "url", "id":"branch-manage", "ref": "/customer/admin/branchs", "text":"ข้อมูลสาขา", "icon": "fas fa-sitemap", "icontype": "fontcss" },
+    { "type": "url", "id":"org-manage", "ref": "/customer/admin/orgs", "text":"ผังองกรณ์", "icon": "fas fa-sitemap", "icontype": "fontcss" },
+    { "type": "url", "id":"device-manage", "ref": "/customer/admin/devices", "text":"บัญชีอุปกรณ์", "icon": "fas fa-mobile-alt", "icontype": "fontcss" },
+    { "type": "url", "id":"question-manage", "ref": "/customer/admin/questions", "text":"จัดการชุดคำถาม", "icon": "far fa-newspaper", "icontype": "fontcss" },
+    { "type": "url", "id":"report-home", "ref": "/customer/admin/report", "text":"รายงานสรุป", "icon": "fas fa-chart-pie", "icontype": "fontcss" },
+    { "type": "cmd", "id":"signout", "ref": "signout", "text":"ออกจากระบบ", "icon": "fas fa-user-times", "icontype": "fontcss" }
+]

@@ -1,0 +1,6 @@
+[
+    { "type": "url", "id":"home", "ref": "/customer/exclusive", "text":"Home", "icon": "fas fa-home", "icontype": "fontcss" },
+    { "type": "url", "id":"branch-manage", "ref": "/customer/exclusive/branchs", "text":"Branch", "icon": "fas fa-sitemap", "icontype": "fontcss" },
+    { "type": "url", "id":"report-home", "ref": "/customer/exclusive/report", "text":"Reports", "icon": "fas fa-chart-pie", "icontype": "fontcss" },
+    { "type": "cmd", "id":"signout", "ref": "signout", "text":"Sign Out", "icon": "fas fa-user-times", "icontype": "fontcss" }
+]
