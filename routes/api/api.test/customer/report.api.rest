@@ -1,0 +1,60 @@
+#### GetVoteSummaries
+POST http://localhost:3000/customer/api/report/votesummaries/search
+content-type: application/json
+
+{
+    "langId": "EN",
+    "customerId": "EDL-C2019100003",
+    "beginDate": "2019-10-10",
+    "endDate": "2019-10-11",
+    "qsetId": "QS00001",
+    "slides": [
+        { "qSeq": 1 },
+        { "qSeq": 2 },
+        { "qSeq": 3 }
+    ],
+    "orgs": [
+        { "orgId": "O0001" },
+        { "orgId": "O0008" }
+    ],
+    "userId": ""
+}
+
+#### GetVoteSummaries 2
+POST http://localhost:3000/customer/api/report/votesummaries/search
+content-type: application/json
+
+{
+    "langId": null,
+    "customerId": "EDL-C2019100003",
+    "beginDate": "2019-10-10",
+    "endDate": "2019-10-11",
+    "qsetId": "QS00001",
+    "slides": [
+        { "qSeq": 3 }
+    ],
+    "orgs": [
+        { "orgId": "O0001" }
+    ],
+    "userId": null
+}
+
+#### GetStaffSummaries
+POST http://localhost:3000/customer/api/report/staffsummaries/search
+content-type: application/json
+
+{
+    "langId": null,
+    "customerId": "EDL-C2019100003",
+    "beginDate": "2019-10-01",
+    "endDate": "2019-11-01",
+    "qsetId": "QS00001",
+    "slides": [
+        { "qSeq": 3 }
+    ],
+    "orgs": null,
+    "users": [
+        { "userId": "M00001" },
+        { "userId": "M00008" }
+    ]
+}

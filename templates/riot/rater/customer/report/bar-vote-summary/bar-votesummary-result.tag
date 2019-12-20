@@ -74,6 +74,7 @@
                 //console.log(result)
                 if (result && result[lang.langId]) {
                     self.current = result[lang.langId]
+                    console.log(self.current)
                     self.current.begin = search_opts.beginDate;
                     self.current.end = search_opts.endDate;
                     //console.log(self.current)
@@ -83,8 +84,8 @@
         }
         let refresh = () => {
             let scrId = screens.current.screenId;
-            //if (!shown || screenId !== scrId) return;
-            search_opts.langId = lang.langId; // set langId
+            if (!shown || screenId !== scrId) return;
+            //search_opts.langId = lang.langId; // set langId
             $.ajax({
                 type: "POST",
                 url: "/customer/api/report/votesummaries/search",
