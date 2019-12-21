@@ -19,10 +19,80 @@
     <!-- style.css -->
     <link href="tosvg/style.css" rel="stylesheet" type="text/css" />
     <style>
+        .parent {
+            position: relative;
+            display: inline-block;
+        }
+        .area1 {
+            display: inline-block;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            width: calc(1024 / 2);
+            height: calc(768 / 2);
+        }
+        .area2 {
+            display: inline-block;
+            position: absolute;
+            left: 300px;
+            top: 10px;
+            width: calc(1024 / 10);
+            height: calc(768 / 10);
+        }
+        .dsgn-container {
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-rows: 5px 1fr 5px;
+            grid-template-columns: 5px 1fr 5px;
+            grid-template-areas: 
+                '. . .'
+                '. dsgn-canvas .'
+                '. . .';
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .dsgn-canvas-container {
+            grid-area: dsgn-canvas-container;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid black;
+            overflow: auto;
+        }
+        .dsgn-canvas {
+            position: relative;
+            margin: 0;
+            padding: 0;            
+        }
+        .canvas1 {
+            background-color: silver;
+        }
+        .canvas2 {
+            background-color: beige;
+        }
     </style>
 </head>
 <body>
     <h2>Fabric.js - Dual canvas</h2>
+    <div class="parent">
+        <div class="area1">
+            <div class="dsgn-container">
+                <div class="dsgn-container">
+                    <canvas class="dsgn-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="area2">
+            <div class="dsgn-container">
+                <div class="dsgn-container">
+                    <canvas class="dsgn-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- JQuery -->
     <script src="/dist/js/jquery.min.js"></script>
