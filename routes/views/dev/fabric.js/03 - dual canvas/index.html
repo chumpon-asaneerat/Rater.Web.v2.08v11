@@ -21,56 +21,81 @@
     <style>
         .parent {
             position: relative;
-            display: inline-block;
+            display: block;
+            width: 100%;
+            height: 100%;
         }
         .area1 {
-            display: inline-block;
             position: absolute;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
             left: 10px;
             top: 10px;
-            width: calc(1024 / 2);
-            height: calc(768 / 2);
+            width: calc(1024px / 2);
+            height: calc(768px / 2);
+            border: 1px solid forestgreen;
         }
         .area2 {
-            display: inline-block;
             position: absolute;
-            left: 300px;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            left: calc(10px + calc(1024px / 2) + 10px);
             top: 10px;
-            width: calc(1024 / 10);
-            height: calc(768 / 10);
+            width: calc(1024px / 4);
+            height: calc(768px / 4);
+            border: 1px solid cornflowerblue;
         }
+        .dsgn-container {
+            position: relative;
+            display: block;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         .dsgn-container {
             margin: 0;
             padding: 0;
             display: grid;
-            grid-template-rows: 5px 1fr 5px;
-            grid-template-columns: 5px 1fr 5px;
+            grid-template-rows: 5px auto 5px;
+            grid-template-columns: 5px auto 5px;
             grid-template-areas: 
                 '. . .'
-                '. dsgn-canvas .'
+                '. dsgn-canvas-container .'
                 '. . .';
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow: auto;
+
+            background-color: beige;
         }
         .dsgn-canvas-container {
             grid-area: dsgn-canvas-container;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
+            width: auto;
+            height: auto;
             border: 1px solid black;
-            overflow: auto;
         }
         .dsgn-canvas {
             position: relative;
+            display: block;
             margin: 0;
-            padding: 0;            
+            padding: 0;
         }
         .canvas1 {
+            width: calc(1024px / 2);
+            height: calc(768px / 2);
             background-color: silver;
         }
         .canvas2 {
+            position: relative;
+            display: block;
+            width: calc(1024px / 4);
+            height: calc(768px / 4);
             background-color: beige;
         }
     </style>
@@ -80,17 +105,18 @@
     <div class="parent">
         <div class="area1">
             <div class="dsgn-container">
-                <div class="dsgn-container">
-                    <canvas class="dsgn-canvas"></canvas>
+                <div class="dsgn-canvas-container">
+                    <canvas class="dsgn-canvas canvas1"></canvas>
                 </div>
             </div>
         </div>
         <div class="area2">
             <div class="dsgn-container">
-                <div class="dsgn-container">
-                    <canvas class="dsgn-canvas"></canvas>
+                <div class="dsgn-canvas-container">
+                    <canvas class="dsgn-canvas canvas2"></canvas>
                 </div>
             </div>
+
         </div>
     </div>
     
