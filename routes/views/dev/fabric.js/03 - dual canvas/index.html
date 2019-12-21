@@ -142,21 +142,10 @@
     <!-- script.js -->
     <script src="tosvg/script.js"></script>
     <script>
-        //console.log('page loaded.');
         let fb1 = new fabric.Canvas('canvas1')
-        /*
-        fb1.setWidth(1280)
-        fb1.setHeight(720)
-        fb1.setDimensions({ width: '1280px', height: '720px' }, { cssOnly: true });
-        */
         fb1.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
 
         let fb2 = new fabric.Canvas('canvas2')
-        /*
-        fb2.setWidth(1280 / 4)
-        fb2.setHeight(720 / 4)
-        fb2.setDimensions({ width: 'calc(1280px / 4)', height: 'calc(720px / 4)' }, { cssOnly: true });    
-        */
         fb2.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
 
         let addText = (fb, text, lf = 5, tp = 5, wd = 50, ht = 18, fg = '#000', bg = 'transparent') => {
@@ -172,7 +161,6 @@
             fb.add(obj); // add object
         }
         addRect = (fb, lf = 5, tp = 5, wd = 50, ht = 18, bg = '#f55') => {
-            //console.log('add rect')
             let obj = new fabric.Rect({
                 left: lf,
                 top: tp,
@@ -196,24 +184,7 @@
                     //object.play();
                 }
             })
-            // rescale
-            /*
-            let originalWidth = 1024;
-            let originalHeight = 768;
-            let newWidth = fb2.getWidth();
-            let newHeight = fb2.getHeight();
-            let ratio1 = newWidth/originalWidth;
-            let ratio2 = newHeight/originalHeight;
-            console.log('ratio 1:', ratio1)
-            console.log('ratio 2:', ratio2)
-            let ratio = Math.max(ratio1, ratio2);
-
-            fb2.setDimensions({ 
-                width: originalWidth * ratio, 
-                height: originalHeight * ratio
-            });
-            fb2.setZoom(ratio)
-            */
+            // rescale after loaded.
             fb2.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
         }
 
