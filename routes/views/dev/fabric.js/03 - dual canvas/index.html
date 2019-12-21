@@ -93,12 +93,12 @@
         .canvas1 {
             width: calc((1024px / 2) - 10px - 10px);
             height: calc((768px / 2) - 10px - 10px);
-            background-color: silver;
+            /* background-color: silver; */
         }
         .canvas2 {
             width: calc((1024px / 4) - 10px - 10px);
             height: calc((768px / 4) - 10px - 10px);
-            background-color: aquamarine;
+            /* background-color: aquamarine; */
         }
     </style>
 </head>
@@ -108,14 +108,14 @@
         <div class="area1">
             <div class="dsgn-container">
                 <div class="dsgn-canvas-container">
-                    <canvas class="dsgn-canvas canvas1"></canvas>
+                    <canvas id="canvas1" class="dsgn-canvas canvas1"></canvas>
                 </div>
             </div>
         </div>
         <div class="area2">
             <div class="dsgn-container">
                 <div class="dsgn-canvas-container">
-                    <canvas class="dsgn-canvas canvas2"></canvas>
+                    <canvas id="canvas2" class="dsgn-canvas canvas2"></canvas>
                 </div>
             </div>
 
@@ -143,6 +143,95 @@
     <script src="tosvg/script.js"></script>
     <script>
         //console.log('page loaded.');
+        let fb1 = new fabric.Canvas('canvas1')
+        /*
+        fb1.setWidth(1280)
+        fb1.setHeight(720)
+        fb1.setDimensions({ width: '1280px', height: '720px' }, { cssOnly: true });
+        */
+        fb1.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
+
+        let fb2 = new fabric.Canvas('canvas2')
+        /*
+        fb2.setWidth(1280 / 4)
+        fb2.setHeight(720 / 4)
+        fb2.setDimensions({ width: 'calc(1280px / 4)', height: 'calc(720px / 4)' }, { cssOnly: true });    
+        */
+        fb2.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
+
+        let addText = (fb, text, lf = 5, tp = 5, wd = 50, ht = 18, fg = '#000', bg = 'transparent') => {
+            let obj = new fabric.IText(text, {
+                left: lf,
+                top: tp,
+                width: wd, 
+                height: ht,
+                fill: fg,
+                backgroundColor: bg,
+                fontFamily: 'Comic Sans'
+            });
+            fb.add(obj); // add object
+        }
+        addRect = (fb, lf = 5, tp = 5, wd = 50, ht = 18, bg = '#f55') => {
+            //console.log('add rect')
+            let obj = new fabric.Rect({
+                left: lf,
+                top: tp,
+                width: wd, 
+                height: ht, 
+                fill: bg, 
+                opacity: 1
+            });
+            fb.add(obj); // add object
+        }
+
+        let sync = () => {
+            let json = fb1.toJSON()
+
+            fb2.loadFromJSON(json, () => {
+                fb2.renderAll()
+            }, (o, object) => {
+                //console.log(o, object)
+                if (o.type === 'GIF') {
+                    //object.on('image:loaded', canvas.renderAll.bind(canvas))
+                    //object.play();
+                }
+            })
+            // rescale
+            /*
+            let originalWidth = 1024;
+            let originalHeight = 768;
+            let newWidth = fb2.getWidth();
+            let newHeight = fb2.getHeight();
+            let ratio1 = newWidth/originalWidth;
+            let ratio2 = newHeight/originalHeight;
+            console.log('ratio 1:', ratio1)
+            console.log('ratio 2:', ratio2)
+            let ratio = Math.max(ratio1, ratio2);
+
+            fb2.setDimensions({ 
+                width: originalWidth * ratio, 
+                height: originalHeight * ratio
+            });
+            fb2.setZoom(ratio)
+            */
+            fb2.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
+        }
+
+        function render1() {
+            if (fb1) { fb1.renderAll(); }
+            fabric.util.requestAnimFrame(render1);
+        }
+        function render2() {
+            if (fb2) { fb2.renderAll(); }
+            fabric.util.requestAnimFrame(render2);
+        }
+        render1()
+        render2()
+        
+        addRect(fb1)
+        addRect(fb1, 10, 25)
+        addText(fb1, 'Sample text 1')
+        addText(fb1, 'Sample text 2', 10, 25, undefined, undefined, undefined, '#ccc')
     </script>
 </body>
 </html>
