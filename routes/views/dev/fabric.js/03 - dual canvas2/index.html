@@ -31,7 +31,13 @@
             width: 280px;
             height: 500px;
             overflow: hidden;
-            z-index: 20;
+            z-index: 20;            
+        }
+        @media all and (display-mode: fullscreen) {
+            .preview-window {
+                /* hide when full screen. */
+                display: none;
+            }
         }
         .preview-container {
             position: relative;
@@ -134,7 +140,7 @@
             padding: 0;
             width: fit-content;
             height: fit-content;
-            /* border: 1px solid black; */
+            border: 1px solid black;
         }
         .dsgn-canvas-container {
             grid-area: dsgn-canvas-container;
@@ -143,21 +149,29 @@
             margin: 0;
             padding: 0;
             /* required to match size of target canvas (max resulation) */
-            /*
             width: 1280px;
             height: 720px;
-            */
-            width: calc(100vw - 10px);
-            height: calc(100vh - 10px);
-            /* border: 1px solid black; */
+            border: 1px solid black;
         }
+        @media all and (display-mode: fullscreen) {
+            .dsgn-container {
+                grid-template-rows: auto;
+                grid-template-columns: auto;
+                grid-template-areas: 
+                    'dsgn-canvas-container';
+                border: none;
+            }
+            .dsgn-canvas-container {
+                width: 100vw;
+                height: 100vh;
+                border: none;
+            }
+        }        
         .dsgn-canvas {
             margin: 0;
             padding: 0;
             align-self: center;
         }
-        .canvas1 { margin: 0 auto; padding: 0; }
-        .canvas2 { margin: 0 auto; padding: 0; }
     </style>
 
 </head>
@@ -172,7 +186,7 @@
                 <div class="preview-area">
                     <div class="preview-canvas-containers">
                         <div class="preview-canvas-container">
-                            <canvas id="canvas2" class="dsgn-canvas canvas2"></canvas>
+                            <canvas id="canvas2" class="dsgn-canvas"></canvas>
                         </div>
                         <div class="preview-canvas-container"></div>
                         <div class="preview-canvas-container"></div>
@@ -192,7 +206,7 @@
         <div class="dsgnwindow">
             <div class="dsgn-container">
                 <div class="dsgn-canvas-container">
-                    <canvas id="canvas1" class="dsgn-canvas canvas1"></canvas>
+                    <canvas id="canvas1" class="dsgn-canvas"></canvas>
                 </div>
             </div>
         </div>
