@@ -23,18 +23,13 @@
     <link href="/dist/css/emojisymbol.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <p><i class="fas fa-arrow-right">&nbsp;&nbsp;</i>Sample icon</p>
-    
+    <!--  SINGLE FILE -->    
     <input id="fileName" type="file" name="myFile" />
-    <input type="submit" value="Upload a file" onclick="uploadfile()">
+    <input type="button" value="Upload a file" onclick="uploadfile()">
+    <!--  Cancel (not fully functional) -->
+    <input type="button" value="Cancel" onclick="abort()">
     <progress id="progress" value="0" max="100"></progress>
-    <!--  SINGLE FILE -->
-    <!--
-    <form action="/dev/files/upload/file" enctype="multipart/form-data" method="POST"> 
-        <input type="file" name="myFile" />
-        <input type="submit" value="Upload a file"/>
-    </form>
-    -->
+    
     <!-- MULTIPLE FILES -->
     <!--
     <form action="/uploadmultiple"  enctype="multipart/form-data" method="POST">
@@ -57,6 +52,14 @@
     <script src="/dist/js/nlib.js"></script>
     <!-- page custom script -->
     <script>
+        let xhr;
+        let abort = () => {
+            if (xhr) {
+                console.log('abort upload file.')
+                xhr.abort();
+                xhr = null;
+            }
+        }
         let uploadfile = () => {
             let file = document.getElementById('fileName')
             console.log(file)
@@ -66,14 +69,16 @@
             let files = []
             files.push(file.files[0])
             let progresssCB = (e) => {
-                //console.log(e)
+                console.log(e)
                 progress.value = e.result;
             }
             let completedCB = (e) => {
-                //console.log(e)
+                console.log(e)
                 progress.value = e.result;
+
+                xhr = null;
             }
-            XHR.sendFiles(url, files, progresssCB, completedCB)
+            xhr = XHR.sendFiles(url, files, progresssCB, completedCB)
         }
     </script>
 </body>

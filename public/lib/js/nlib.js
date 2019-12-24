@@ -1316,6 +1316,8 @@ class XHR {
         XHR.setPostProgressHandler(xhr, progresssCB);
 
         xhr.send(formData);
+
+        return xhr; // used for abort.
     }
 }
 
