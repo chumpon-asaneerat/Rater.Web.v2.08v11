@@ -1,0 +1,11 @@
+{
+    "title": "Branch Management",
+    "entry":  {
+        "tabDefault": "Default",
+        "tabMultiLang": "Languages",
+        "branchName": "Branch Name"
+    },
+    "columns": [
+        { "title": "Branch Name", "field": "branchName", "resizable": false }
+    ]
+}

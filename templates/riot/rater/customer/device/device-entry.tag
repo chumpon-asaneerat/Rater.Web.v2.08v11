@@ -65,7 +65,9 @@
         }
         let clearInputs = () => {
             location.clear();
-            deviceTypes.clear();
+            // required to check null in case some input(s) not used in
+            // multilanguages tab
+            if (deviceTypes) deviceTypes.clear();
             deviceName.clear();
         }
 
@@ -147,11 +149,15 @@
                 //console.log('objToCtrl:', editObj)
                 if (deviceName) deviceName.value(editObj.DeviceName);
                 if (location) location.value(editObj.Location);
-                if (deviceTypes) deviceTypes.value(editObj.deviceTypeId.toString());
+                if (deviceTypes && editObj.deviceTypeId) {
+                    deviceTypes.value(editObj.deviceTypeId.toString());
+                }
             }
         }
 
         this.setup = (item) => {
+            clearInputs();
+
             // load lookup.
             if (deviceTypes) {
                 deviceTypes.setup(master.devicetypes.current, { valueField:'deviceTypeId', textField:'Type' });

@@ -1246,6 +1246,8 @@ riot.tag2('branch-entry', '<ninput ref="branchName" title="{content.entry.branch
         }
 
         this.setup = (item) => {
+            clearInputs();
+
             origObj = clone(item);
             editObj = clone(item);
 
@@ -1466,7 +1468,7 @@ riot.tag2('branch-view', '<div ref="container" class="scrarea"> <div ref="tool" 
         this.addnew = (e) => {
             let data = {
                 branchId: null,
-                branchName: 'New Branch'
+                branchName: null
             };
             events.raise(events.name.BeginEditBranch, { item: data })
         }
@@ -1636,7 +1638,8 @@ riot.tag2('device-entry', '<div class="padtop"></div> <div class="padtop"></div>
         }
         let clearInputs = () => {
             location.clear();
-            deviceTypes.clear();
+
+            if (deviceTypes) deviceTypes.clear();
             deviceName.clear();
         }
 
@@ -1698,11 +1701,14 @@ riot.tag2('device-entry', '<div class="padtop"></div> <div class="padtop"></div>
 
                 if (deviceName) deviceName.value(editObj.DeviceName);
                 if (location) location.value(editObj.Location);
-                if (deviceTypes) deviceTypes.value(editObj.deviceTypeId.toString());
+                if (deviceTypes && editObj.deviceTypeId) {
+                    deviceTypes.value(editObj.deviceTypeId.toString());
+                }
             }
         }
 
         this.setup = (item) => {
+            clearInputs();
 
             if (deviceTypes) {
                 deviceTypes.setup(master.devicetypes.current, { valueField:'deviceTypeId', textField:'Type' });
@@ -2311,7 +2317,8 @@ riot.tag2('member-entry', '<div class="padtop"></div> <div class="padtop"></div>
             lastName.clear()
             userName.clear()
             passWord.clear()
-            memberTypes.clear();
+
+            if (memberTypes) memberTypes.clear();
 
         }
 
@@ -2377,12 +2384,15 @@ riot.tag2('member-entry', '<div class="padtop"></div> <div class="padtop"></div>
                 if (userName) userName.value(editObj.UserName);
                 if (passWord) passWord.value(editObj.Password);
 
-                if (memberTypes) memberTypes.value(editObj.MemberType.toString());
+                if (memberTypes && editObj.MemberType) {
+                    memberTypes.value(editObj.MemberType.toString());
+                }
 
             }
         }
 
         this.setup = (item) => {
+            clearInputs();
 
             if (memberTypes) {
                 memberTypes.setup(master.membertypes.current, { valueField:'memberTypeId', textField:'Description' });
@@ -2615,11 +2625,11 @@ riot.tag2('member-view', '<div ref="container" class="scrarea"> <div ref="tool" 
         this.addnew = (e) => {
             let data = {
                 memberId: null,
-                Prefix: '',
-                FirstName: 'First Name',
-                LastName: 'Last Name',
-                UserName: 'user@company.com',
-                Password: '',
+                Prefix: null,
+                FirstName: null,
+                LastName: null,
+                UserName: null,
+                Password: null,
                 MemberType: 280,
                 TagId: null,
                 IDCard: null,
@@ -2789,8 +2799,10 @@ riot.tag2('org-entry', '<div class="padtop"></div> <div class="padtop"></div> <n
             branchId = null;
         }
         let clearInputs = () => {
-            branchId.clear();
-            parentId.clear();
+
+            if (branchId) branchId.clear();
+
+            if (branchId) parentId.clear();
             orgName.clear();
         }
 
@@ -2856,6 +2868,7 @@ riot.tag2('org-entry', '<div class="padtop"></div> <div class="padtop"></div> <n
         }
 
         this.setup = (item) => {
+            clearInputs();
 
             origObj = clone(item);
             editObj = clone(item);
@@ -3086,7 +3099,7 @@ riot.tag2('org-view', '<div ref="container" class="scrarea"> <div ref="tool" cla
         this.addnew = (e) => {
             let data = {
                 orgId: null,
-                OrgName: 'New Org',
+                OrgName: null,
                 parentId: 'O0001',
                 branchId: 'B0001'
             };

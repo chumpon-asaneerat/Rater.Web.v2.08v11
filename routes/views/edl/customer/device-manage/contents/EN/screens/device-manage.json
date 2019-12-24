@@ -1,0 +1,29 @@
+{
+    "title": "Device Management",
+    "entry": {
+        "tabDefault": "Default",
+        "tabMultiLang": "Languages",
+        "deviceName": "Device Name",
+        "deviceTypeId": "Device Type",
+        "location": "Location",
+        "orgId": "Organization",
+        "memberId": "User"
+    },
+    "columns": [
+        {
+            "title": "Name",
+            "field": "DeviceName",
+            "resizable": false
+        },
+        {
+            "title": "Type",
+            "field": "Type",
+            "resizable": false
+        },
+        {
+            "title": "Location",
+            "field": "Location",
+            "resizable": false
+        }
+    ]
+}

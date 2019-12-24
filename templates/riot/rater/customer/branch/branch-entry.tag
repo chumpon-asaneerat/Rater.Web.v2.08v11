@@ -125,6 +125,8 @@
         }
 
         this.setup = (item) => {
+            clearInputs();
+            
             origObj = clone(item);
             editObj = clone(item);
             //console.log('branch entry edit obj:', editObj)

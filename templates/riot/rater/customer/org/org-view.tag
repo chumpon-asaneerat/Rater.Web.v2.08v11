@@ -273,7 +273,7 @@
         this.addnew = (e) => {
             let data = {
                 orgId: null, 
-                OrgName: 'New Org', 
+                OrgName: null, 
                 parentId: 'O0001', 
                 branchId: 'B0001' 
             };

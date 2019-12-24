@@ -273,11 +273,11 @@
         this.addnew = (e) => {
             let data = {
                 memberId: null, 
-                Prefix: '',
-                FirstName: 'First Name',
-                LastName: 'Last Name',
-                UserName: 'user@company.com',
-                Password: '',
+                Prefix: null,
+                FirstName: null,
+                LastName: null,
+                UserName: null,
+                Password: null,
                 MemberType: 280,
                 TagId: null,
                 IDCard: null,

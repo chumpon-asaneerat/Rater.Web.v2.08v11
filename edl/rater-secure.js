@@ -351,7 +351,11 @@ class RaterSecure {
     }
     static getCustomerId(req, res) {
         let secure = getSecure(req, res);
-        let ret = (secure) ? secure.customerId : null;
+        let ret;
+        ret = (secure) ? secure.EDLCustomerId : null;
+        if (!ret) {
+            ret =  secure.customerId;
+        }
         return ret;
     }
     static getDeviceId(req, res) {

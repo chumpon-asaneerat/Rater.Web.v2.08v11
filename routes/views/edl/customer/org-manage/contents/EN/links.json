@@ -1,0 +1,10 @@
+[
+    { "type": "url", "id":"edl-customer-home", "ref": "/edl/customer", "text":"Home", "icon": "fas fa-home", "icontype": "fontcss" },
+    { "type": "url", "id":"member-manage", "ref": "/edl/customer/members", "text":"User Account", "icon": "fas fa-user-friends", "icontype": "fontcss" },
+    { "type": "url", "id":"branch-manage", "ref": "/edl/customer/branchs", "text":"Branch", "icon": "fas fa-sitemap", "icontype": "fontcss" },
+    { "type": "url", "id":"org-manage", "ref": "/edl/customer/orgs", "text":"Organization", "icon": "fas fa-sitemap", "icontype": "fontcss" },
+    { "type": "url", "id":"device-manage", "ref": "/edl/customer/devices", "text":"Device", "icon": "fas fa-mobile-alt", "icontype": "fontcss" },
+    { "type": "url", "id":"question-manage", "ref": "/edl/customer/questions", "text":"Question", "icon": "far fa-newspaper", "icontype": "fontcss" },
+    { "type": "url", "id":"report-home", "ref": "/edl/customer/report", "text":"Reports", "icon": "fas fa-chart-pie", "icontype": "fontcss" },
+    { "type": "cmd", "id":"exit", "ref": "exit", "text":"Exit to EDL", "icon": "fas fa-user-times", "icontype": "fontcss" }
+]

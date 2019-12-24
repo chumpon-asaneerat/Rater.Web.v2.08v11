@@ -1,0 +1,33 @@
+{
+    "title": "User Account Management",
+    "entry": {
+        "tabDefault": "Default",
+        "tabMultiLang": "Languages",
+        "prefix": "Prefix",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "userName": "User Name",
+        "passWord": "Password",
+        "tagId": "Tag Id",
+        "idCard": "ID Card",
+        "employeeCode": "Employee Code",
+        "memberType": "Member Type"
+    },
+    "columns": [
+        {
+            "title": "Prefix",
+            "field": "Prefix",
+            "resizable": false
+        },
+        {
+            "title": "First Name",
+            "field": "FirstName",
+            "resizable": false
+        },
+        {
+            "title": "Last Name",
+            "field": "LastName",
+            "resizable": false
+        }
+    ]
+}

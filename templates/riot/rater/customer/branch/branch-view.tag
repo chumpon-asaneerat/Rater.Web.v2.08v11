@@ -261,7 +261,7 @@
         this.addnew = (e) => {
             let data = { 
                 branchId: null, 
-                branchName: 'New Branch'
+                branchName: null
             };
             events.raise(events.name.BeginEditBranch, { item: data })
         }

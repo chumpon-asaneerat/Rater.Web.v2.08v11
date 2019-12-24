@@ -106,8 +106,9 @@
             lastName.clear()
             userName.clear()
             passWord.clear()
-            memberTypes.clear();
-            //memberType.clear()
+            // required to check null in case some input(s) not used in
+            // multilanguages tab
+            if (memberTypes) memberTypes.clear();
             /*
             tagId.clear()
             idCard.clear()
@@ -204,7 +205,9 @@
                 if (passWord) passWord.value(editObj.Password);
 
                 //if (memberType) memberType.value(editObj.MemberType);
-                if (memberTypes) memberTypes.value(editObj.MemberType.toString());
+                if (memberTypes && editObj.MemberType) {
+                    memberTypes.value(editObj.MemberType.toString());
+                }
 
                 /*
                 if (tagId) tagId.value(editObj.TagId);
@@ -215,6 +218,8 @@
         }
 
         this.setup = (item) => {
+            clearInputs();
+            
             // load lookup.
             if (memberTypes) {
                 memberTypes.setup(master.membertypes.current, { valueField:'memberTypeId', textField:'Description' });

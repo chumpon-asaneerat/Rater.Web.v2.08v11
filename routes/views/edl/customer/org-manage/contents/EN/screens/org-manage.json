@@ -1,0 +1,27 @@
+{
+    "title": "Organization Management",
+    "entry": {
+        "tabDefault": "Default",
+        "tabMultiLang": "Languages",
+        "orgName": "Org Name",
+        "parentId": "Parent Org",
+        "branchId": "Branch"
+    },
+    "columns": [
+        {
+            "title": "Name",
+            "field": "OrgName",
+            "resizable": false
+        },
+        {
+            "title": "Parent",
+            "field": "parentId",
+            "resizable": false
+        },
+        {
+            "title": "Branch Name",
+            "field": "BranchName",
+            "resizable": false
+        }
+    ]
+}

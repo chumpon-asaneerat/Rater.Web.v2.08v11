@@ -62,8 +62,11 @@
             branchId = null;
         }
         let clearInputs = () => {
-            branchId.clear();
-            parentId.clear();
+            // required to check null in case some input(s) not used in
+            // multilanguages tab
+            if (branchId) branchId.clear();
+            //if (branchs) branchs.clear()
+            if (branchId) parentId.clear();
             orgName.clear();
         }
 
@@ -149,6 +152,8 @@
         }
 
         this.setup = (item) => {
+            clearInputs();
+            
             // load lookup.
             /*
             if (branchs) {
