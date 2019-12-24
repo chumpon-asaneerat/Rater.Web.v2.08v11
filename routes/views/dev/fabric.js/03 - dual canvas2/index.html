@@ -22,16 +22,18 @@
         body { 
             margin: 0;
             padding: 0;
+            /*
             width: 100%; 
             height: 100%;
-            overflow: hidden;
+            */
         }
         .parent {
             position: relative;
             display: block;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            /*
+            width: 100%;
+            height: 100%;
+            */
         }
         .preview-window {
             position: absolute;
@@ -40,9 +42,10 @@
             padding: 0;
             top: 10px;
             right: 10px;
-            bottom: 10px;
             width: 280px;
+            height: 500px;
             overflow: hidden;
+            z-index: 20;
         }
         .preview-container {
             position: relative;
@@ -119,87 +122,57 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            /* overflow: none; */
+            overflow: none;
             background-color: cornsilk;
             border: 1px solid silver;
         }
-
         .dsgnwindow {
             position: relative;
             display: block;
-            margin: 0;
+            margin: 0 auto;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            border: 1px solid forestgreen;
-            overflow: hidden;
+            width: fit-content;
+            height: fit-content;
+            background-color: beige;
         }
         .dsgn-container {
             position: relative;
-            display: block;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .dsgn-container {
-            margin: 0;
-            padding: 0;
             display: grid;
-            grid-template-rows: 5px 1fr 5px;
-            grid-template-columns: 5px 1fr 5px;
+            grid-template-rows: 5px auto 5px;
+            grid-template-columns: 5px auto 5px;
             grid-template-areas: 
                 '. . .'
                 '. dsgn-canvas-container .'
                 '. . .';
-            width: 100%;
-            height: 100%;
-            overflow: none;
-
-            background-color: beige;
+            margin: 0;
+            padding: 0;
+            width: fit-content;
+            height: fit-content;
+            border: 1px solid black;
         }
         .dsgn-canvas-container {
             grid-area: dsgn-canvas-container;
             position: relative;
-            /* for child center */
             display: flex;
-            margin: 0 auto;
+            margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
+            /* required to match size of target canvas (max resulation) */
+            width: 1280px;
+            height: 720px;
             border: 1px solid black;
         }
         .dsgn-canvas {
-            margin: 0 auto;
+            margin: 0;
             padding: 0;
-            /* for center to its flex parent */
             align-self: center;
         }
-        .canvas1 {
-            margin: 0 auto;
-            padding: 0;
-            /*
-            width: calc((1024px / 2) - 10px - 10px);
-            height: calc((768px / 2) - 10px - 10px);
-            */
-            /* background-color: silver; */
-        }
-        .canvas2 {
-            margin: 0 auto;
-            padding: 0;
-            /*
-            width: calc((1024px / 4) - 10px - 10px);
-            height: calc((768px / 4) - 10px - 10px);
-            */
-            /* background-color: aquamarine; */
-        }
+        .canvas1 { margin: 0 auto; padding: 0; }
+        .canvas2 { margin: 0 auto; padding: 0; }
     </style>
+
 </head>
 <body>
     <div class="parent">
-        <h2>Fabric.js - Dual canvas 2</h2>
         <!-- Preview -->
         <div class="preview-window">
             <div class="preview-container">
@@ -208,7 +181,9 @@
                 </div>
                 <div class="preview-area">
                     <div class="preview-canvas-containers">
-                        <div class="preview-canvas-container"></div>
+                        <div class="preview-canvas-container">
+                            <canvas id="canvas2" class="dsgn-canvas canvas2"></canvas>
+                        </div>
                         <div class="preview-canvas-container"></div>
                         <div class="preview-canvas-container"></div>
                         <div class="preview-canvas-container"></div>
@@ -221,24 +196,16 @@
                         <div class="preview-canvas-container"></div>
                     </div>
                 </div>
-
-                <!--
-                <div class="dsgn-canvas-container">
-                    <canvas id="canvas2" class="dsgn-canvas canvas2"></canvas>
-                </div>
-                -->
             </div>
         </div>
         <!-- Designer -->
-        <!--
         <div class="dsgnwindow">
             <div class="dsgn-container">
                 <div class="dsgn-canvas-container">
                     <canvas id="canvas1" class="dsgn-canvas canvas1"></canvas>
                 </div>
-            </div>            
+            </div>
         </div>
-        -->
     </div>
     
     <!-- JQuery -->
@@ -261,13 +228,21 @@
     <!-- script.js -->
     <script src="tosvg/script.js"></script>
     <script>
-        /*
+        let WD = 1280;
+        let HT = 720;
+
         let cv1 = document.getElementById('canvas1')
         let fb1 = new fabric.Canvas(cv1)
+        fb1.setWidth(WD)
+        fb1.setHeight(HT)
+        //fb1.setDimensions({ width: WD, height: HT }, { cssOnly: true });
         fb1.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
 
         let cv2 = document.getElementById('canvas2')
-        let fb2 = new fabric.Canvas(cv2)
+        let fb2 = new fabric.Canvas(cv2)        
+        fb2.setWidth(WD)
+        fb2.setHeight(HT)
+        //fb2.setDimensions({ width: WD / 5, height: HT / 5 }, { cssOnly: true });
         fb2.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
 
         let addText = (fb, text, lf = 5, tp = 5, wd = 50, ht = 18, fg = '#000', bg = 'transparent') => {
@@ -307,6 +282,9 @@
                 }
             })
             // rescale after loaded.
+            fb2.setWidth(WD)
+            fb2.setHeight(HT)
+            //fb2.setDimensions({ width: WD / 5, height: HT / 5 }, { cssOnly: true });
             fb2.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
         }
 
@@ -321,13 +299,16 @@
         render1()
         render2()
 
-        setInterval(() => { sync() }, 500); // auto sync canvas
+        fb1.on({
+            'object:added': () => { sync() },
+            'object:removed': () => { sync() }, 
+            'object:modified': () => { sync() }
+        });
         
         addRect(fb1)
         addRect(fb1, 10, 25)
         addText(fb1, 'Sample text 1')
         addText(fb1, 'Sample text 2', 10, 25, undefined, undefined, undefined, '#ccc')
-        */
     </script>
 </body>
 </html>
