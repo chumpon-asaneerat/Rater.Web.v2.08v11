@@ -3111,6 +3111,12 @@ riot.tag2('org-view', '<div ref="container" class="scrarea"> <div ref="tool" cla
         }
 
 });
+riot.tag2('rating-device-home', '<h2>Rating Device Home</h2>', '', '', function(opts) {
+});
+
+riot.tag2('rating-question', '<h2>Today Question.</h2>', '', '', function(opts) {
+});
+
 riot.tag2('bar-votesummary-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <bar-votesummary-search ref="viewer" class="view"></bar-votesummary-search> </yield> <yield to="entry"> <bar-votesummary-result ref="entry" class="entry"></bar-votesummary-result> </yield> </flip-screen>', 'bar-votesummary-manage,[data-is="bar-votesummary-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } bar-votesummary-manage .view,[data-is="bar-votesummary-manage"] .view,bar-votesummary-manage .entry,[data-is="bar-votesummary-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
 
 
