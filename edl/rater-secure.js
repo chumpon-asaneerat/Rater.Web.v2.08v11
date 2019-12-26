@@ -47,10 +47,6 @@ const checkForError = (data) => {
 
 //#region Cookies and Urls
 
-const secureNames = {
-    deviceId: 'deviceId',
-    accessId: 'accessId'
-}
 const hasValue = (obj, name) => {
     let ret = false;
     ret = (obj && obj[name] !== undefined && obj[name] !== null);
@@ -69,8 +65,6 @@ const getRoutePath = (req) => {
     let url = getFullUrl(req);
     let rootUrl = req.protocol + '://' + req.get('host');
     let ret = url.replace(rootUrl, '');
-    //console.log('Full Url:', url);
-    //console.log('Path only:', ret);
     return ret;
 }
 const isStartsWith = (src, sPath) => {
@@ -94,14 +88,7 @@ const isEDLAdmin = (url) => { return isStartsWith(url, 'edl/admin'); }
 const isEDLSupervisor = (url) => { return isStartsWith(url, 'edl/supervisor'); }
 const isEDLStaff = (url) => { return isStartsWith(url, 'edl/staff'); }
 const isEDLCustomer = (url) => { return isStartsWith(url, 'edl/customer'); }
-/*
-const isAdminAPI = (url) => { return isStartsWith(url, 'customer/api/admin'); }
-const isExclusiveAPI = (url) => { return isStartsWith(url, 'customer/api/exclusive'); }
-const isStaffAPI = (url) => { return isStartsWith(url, 'customer/api/staff'); }
-const isEDLAdminAPI = (url) => { return isStartsWith(url, 'edl/api/admin'); }
-const isEDLSupervisorAPI = (url) => { return isStartsWith(url, 'edl/api/supervisor'); }
-const isEDLStaffAPI = (url) => { return isStartsWith(url, 'edl/api/staff'); }
-*/
+
 const gotoHome = (req, res, next, url) => {
     if (!isHome(url)) res.redirect('/')
     else {
@@ -407,8 +394,6 @@ class RaterSecure {
             return db.ChangeCustomer(params);
         }
         exec(db, fn).then(result => {
-            obj.EDLCustomerId = (obj.EDLCustomerId) ? obj.EDLCustomerId : ''; // cannot assign null
-            WebServer.signedCookie.writeObject(req, res, obj, WebServer.expires.in(5).years);
             WebServer.sendJson(req, res, result);
         });
     }

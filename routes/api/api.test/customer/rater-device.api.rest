@@ -1,0 +1,28 @@
+### Checks device is registered.
+
+### Register device (used in device access - new SP required, add code in secure module).
+### Required:
+### 1. Add TABLE - DeviceAccess.
+### 2. Add SP - RegisterDevice @customerId, @deviceId
+### 
+### Implements logic:
+### 1. Required EDL User for access screen selection.
+### 2. If has deviceAccessId exit process.
+### 3. 
+
+### Unregister device (used in device access - new SP required, add code in secure module).
+
+### 
+
+### 
+
+### Checks device has org
+
+### Checks device has member
+
+### Change device org (SP exist, requred new route)
+
+### Change device member (SP exist, requred new route)
+
+### Get QSet By Date (new SP required)
+
