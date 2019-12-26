@@ -112,5 +112,6 @@
     "DeleteQSlide": true,
     "DeleteQSet": true,
     "GetTopLevelOrgs": true,
-    "ChangeCustomer": true
+    "ChangeCustomer": true,
+    "SetAccessDevice": true
 }

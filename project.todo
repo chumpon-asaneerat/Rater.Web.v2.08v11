@@ -42,22 +42,9 @@ Project:
                 Dev:
                     fabric.js:
                         ☐ 
-                Customer:
-                    Admin:
-                        Home:
-                            ☐ 
-                    Exclusive:
-                        Home:
-                            ☐ 
-                    Staff:
-                        Home:
-                            ☐ 
-                    Device:
-                        Home:
-                            ☐ 
-            API:
-                ☐ 
-                ☐ 
+                Device:
+                    Home:
+                        ☐ 
     CSS:
         ✔ nested absolute position. @done(19-12-10 10:29)
         ☐ Dock able panel.
@@ -165,5 +152,3 @@ Project:
             ✔ Add Test Counter item UI. @done(19-12-12 09:48)
             ✔ Add Bar Chart item UI. @done(19-12-12 13:14)
             ✔ Add Pie Chart item UI. @done(19-12-12 13:15)
-        ☐ 
-    

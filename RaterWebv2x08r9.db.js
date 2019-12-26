@@ -471,6 +471,12 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
+    async ChangeCustomer(pObj) {
+        let name = 'ChangeCustomer';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
     async CheckAccess(pObj) {
         let name = 'CheckAccess';
         let proc = schema[name];
@@ -483,8 +489,8 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
-    async ChangeCustomer(pObj) {
-        let name = 'ChangeCustomer';
+    async SetAccessDevice(pObj) {
+        let name = 'SetAccessDevice';
         let proc = schema[name];
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }

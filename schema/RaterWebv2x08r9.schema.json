@@ -2483,9 +2483,36 @@
             ]
         }
     },
+    "ChangeCustomer": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-19T08:59:42.850Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "accessId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)",
+                    "default": "NULL"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
     "CheckAccess": {
         "type": "PROCEDURE",
-        "updated": "2019-12-19T08:42:31.340Z",
+        "updated": "2019-12-26T11:27:06.647Z",
         "parameter": {
             "inputs": [
                 {
@@ -2507,7 +2534,7 @@
     },
     "GetAccessUser": {
         "type": "PROCEDURE",
-        "updated": "2019-12-19T08:45:52.953Z",
+        "updated": "2019-12-26T11:28:48.397Z",
         "parameter": {
             "inputs": [
                 {
@@ -2531,9 +2558,9 @@
             ]
         }
     },
-    "ChangeCustomer": {
+    "SetAccessDevice": {
         "type": "PROCEDURE",
-        "updated": "2019-12-19T08:59:42.850Z",
+        "updated": "2019-12-26T11:49:45.377Z",
         "parameter": {
             "inputs": [
                 {
@@ -2542,6 +2569,10 @@
                 },
                 {
                     "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "deviceId",
                     "type": "nvarchar(30)",
                     "default": "NULL"
                 }
