@@ -273,12 +273,6 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
-    async SaveQSet(pObj) {
-        let name = 'SaveQSet';
-        let proc = schema[name];
-        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
-    }
-
     async SaveQSetML(pObj) {
         let name = 'SaveQSetML';
         let proc = schema[name];
@@ -491,6 +485,18 @@ const RaterWebv2x08r9 = class extends SqlServer {
 
     async SetAccessDevice(pObj) {
         let name = 'SetAccessDevice';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async SaveQSet(pObj) {
+        let name = 'SaveQSet';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async GetQSetByDate(pObj) {
+        let name = 'GetQSetByDate';
         let proc = schema[name];
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }

@@ -113,5 +113,6 @@
     "DeleteQSet": true,
     "GetTopLevelOrgs": true,
     "ChangeCustomer": true,
-    "SetAccessDevice": true
+    "SetAccessDevice": true,
+    "GetQSetByDate": true
 }

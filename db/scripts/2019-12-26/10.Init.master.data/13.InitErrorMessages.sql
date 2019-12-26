@@ -172,7 +172,7 @@ BEGIN
     EXEC SaveErrorMsg 1415, N'Description(ML) already exists.'
     EXEC SaveErrorMsg 1416, N'Description (default) cannot be null or empty string.'
     EXEC SaveErrorMsg 1417, N'Description (default) already exists.'
-    EXEC SaveErrorMsg 1418, N'Description (ML) cannot be null or empty string.'
+    EXEC SaveErrorMsg 1418, N'Begin Date or End Date is overlap with another Question Set.'
     -- QSLIDES.
     EXEC SaveErrorMsg 1501, N'Customer Id cannot be null or empty string.'
     EXEC SaveErrorMsg 1502, N'Question Set Id cannot be null or empty string.'
@@ -347,6 +347,11 @@ BEGIN
     EXEC SaveErrorMsg 4602, N'Customer Id cannot be null or empty string.'
     EXEC SaveErrorMsg 4603, N'Access Id not found.'
     EXEC SaveErrorMsg 4604, N'Device Id not found.'
+    -- Get QSet By Date
+    EXEC SaveErrorMsg 4701, N'Customer Id cannot be null or empty string.'
+    EXEC SaveErrorMsg 4702, N'Begin Date is null.'
+    EXEC SaveErrorMsg 4703, N'Begin Date should less than End Date.'
+    EXEC SaveErrorMsg 4704, N'No QSet Found.'
 END
 
 GO

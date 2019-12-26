@@ -1280,56 +1280,6 @@
             "outputs": []
         }
     },
-    "SaveQSet": {
-        "type": "PROCEDURE",
-        "updated": "2019-10-10T16:23:27.933Z",
-        "parameter": {
-            "inputs": [
-                {
-                    "name": "customerId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "description",
-                    "type": "nvarchar(max)"
-                },
-                {
-                    "name": "hasRemark",
-                    "type": "bit"
-                },
-                {
-                    "name": "displayMode",
-                    "type": "tinyint"
-                },
-                {
-                    "name": "isDefault",
-                    "type": "bit"
-                },
-                {
-                    "name": "beginDate",
-                    "type": "datetime"
-                },
-                {
-                    "name": "endDate",
-                    "type": "datetime"
-                }
-            ],
-            "outputs": [
-                {
-                    "name": "qSetId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "errNum",
-                    "type": "int"
-                },
-                {
-                    "name": "errMsg",
-                    "type": "nvarchar(max)"
-                }
-            ]
-        }
-    },
     "SaveQSetML": {
         "type": "PROCEDURE",
         "updated": "2019-10-10T16:23:27.937Z",
@@ -2574,6 +2524,94 @@
                 {
                     "name": "deviceId",
                     "type": "nvarchar(30)",
+                    "default": "NULL"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "SaveQSet": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-26T13:03:17.060Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "description",
+                    "type": "nvarchar(max)"
+                },
+                {
+                    "name": "hasRemark",
+                    "type": "bit"
+                },
+                {
+                    "name": "displayMode",
+                    "type": "tinyint"
+                },
+                {
+                    "name": "isDefault",
+                    "type": "bit"
+                },
+                {
+                    "name": "beginDate",
+                    "type": "datetime"
+                },
+                {
+                    "name": "endDate",
+                    "type": "datetime"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "qSetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "GetQSetByDate": {
+        "type": "PROCEDURE",
+        "updated": "2019-12-26T15:27:44.537Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "beginDate",
+                    "type": "datetime",
+                    "default": "NULL"
+                },
+                {
+                    "name": "endDate",
+                    "type": "datetime",
                     "default": "NULL"
                 }
             ],
