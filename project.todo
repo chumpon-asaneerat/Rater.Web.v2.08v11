@@ -14,6 +14,12 @@ Project:
             Orgs:
                 ✔ GetTopLevelOrgs. @done(19-12-16 09:12)
             Reports:
+                ✔ Vote Summary. @done(19-12-27 18:26)
+                ✔ Vote Summary (bar) @done(19-12-27 18:26)
+                ✔ Vote Summary (pie) @done(19-12-27 18:27)
+                ☐ Raw Vote (single org)
+                ☐ Staff Performance (single org filter members)
+                ☐ Staff Compare (single org filter members)
                 ☐ Get Bar graph Vote Summary -> last 7 days (auto period).
                 ☐ Get Pie chart Vote Summary -> last 7 days (auto period).
                 ☐ Get Bar graph Vote Summary -> last month (auto period).
