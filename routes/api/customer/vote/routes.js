@@ -268,8 +268,9 @@ api.Delete = class {
 //#endregion
 
 router.use(secure.checkAccess);
-router.all('/report/vote/search', api.Get.entry);
-router.all('/report/vote/save', api.Save.entry);
+// same as rawvote
+router.all('/vote/search', api.Get.entry);
+router.all('/vote/save', api.Save.entry);
 //router.all('/report/vote/delete', api.Delete.entry);
 
 const init_routes = (svr) => {
