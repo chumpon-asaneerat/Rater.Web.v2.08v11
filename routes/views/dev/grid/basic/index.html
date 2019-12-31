@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home Page.</title>
+
+    <!-- Font Awesome -->
+    <link href="/dist/css/fontawesome.all.min.css" rel="stylesheet" type="text/css" />
+    <!-- JQuery UI -->
+    <link href="/dist/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap 4 -->
+    <link href="/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css" />
+    <!-- Flag and Emoji icons -->
+    <link href="/dist/css/flag-icon.min.css" rel="stylesheet" type="text/css" />
+    <link href="/dist/css/emojisymbol.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- nlib css -->
+    <link href="/dist/css/nlib.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .scope {
+            display: grid;
+            width: 100vw;
+            height: 100vh;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-gap: 10px;
+            grid-auto-rows: 200px;
+            border: 1px solid cornflowerblue;
+            overflow: auto;
+        }
+        .item {
+            margin: 0;
+            padding: 0;
+            background-color: blanchedalmond;
+            border: 1px solid silver;
+        }
+    </style>
+</head>
+<body>
+    <div class="scope">
+        <div class="item">css grid 01</div>
+        <div class="item">css grid 02</div>
+        <div class="item">css grid 03</div>
+        <div class="item">css grid 04</div>
+        <div class="item">css grid 05</div>
+        <div class="item">css grid 06</div>
+        <div class="item">css grid 07</div>
+        <div class="item">css grid 08</div>
+        <div class="item">css grid 09</div>
+        <div class="item">css grid 10</div>
+        <div class="item">css grid 11</div>
+        <div class="item">css grid 12</div>
+        <div class="item">css grid 13</div>
+        <div class="item">css grid 14</div>
+        <div class="item">css grid 15</div>
+        <div class="item">css grid 16</div>
+        <div class="item">css grid 17</div>
+        <div class="item">css grid 18</div>
+        <div class="item">css grid 19</div>
+    </div>
+    <osd></osd>
+
+    <!-- JQuery -->
+    <script src="/dist/js/jquery.min.js"></script>
+    <!-- JQuery UI -->
+    <script src="/dist/js/jquery-ui.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/dist/js/popper.min.js"></script>
+    <script src="/dist/js/tooltip.min.js"></script>
+    <script src="/dist/js/bootstrap.min.js">/* bootstrap required jQuery and popperjs. */</script>
+    <!-- Moment.js -->
+    <script src="/dist/js/moment.min.js"></script>
+    <!-- Riot.js -->
+    <script src="/dist/js/riot.min.js"></script>
+    <!-- custom components -->
+    <script src="/dist/js/tags.js"></script>
+    <!-- nlib -->
+    <script src="/dist/js/nlib.js"></script>
+    <!-- services -->
+    <!--
+    <script src="/dist/js/services.js"></script>
+    -->
+    <!-- script.js -->
+    <script src="basic/script.js"></script>
+    <script>
+        riot.mount('osd')
+    </script>
+</body>
+</html>
