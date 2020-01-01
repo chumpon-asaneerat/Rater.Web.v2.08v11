@@ -55,6 +55,46 @@ const checkForError = (data) => {
 // static class.
 const api = class { }
 
+/*
+Rawvote required to implements seperate data in below structure.
+{
+    "data": {
+        "EN": {
+        "slides": [
+            {
+                "qseq": 1,
+                "text": "Plase rate for product`s quality.",
+                "maxChoice": 4,
+                "choices": [{
+                    "choice": 1,
+                    "text": "Poor"
+                }, {
+                    "choice": 2,
+                    "text": "Fair"
+                }, {
+                    "choice": 3,
+                    "text": "Good"
+                }, {
+                    "choice": 4,
+                    "text": "Excellent"
+                }],
+                "orgs": [
+                    {
+                        "orgId": "O0001",
+                        "OrgName": "EDL Co., Ltd.",
+                        "parentId": "",
+                        "branchId": "B0001",
+                        "BranchName": "HQ",                        
+                    }
+                ],
+                votes :[
+                    { "VoteDate": "", "VoteValue": 1, ... }
+                ]
+            }
+        ]
+    }
+}
+*/
 //#region Implement - Get
 
 api.Get = class {

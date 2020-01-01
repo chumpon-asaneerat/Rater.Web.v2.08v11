@@ -340,7 +340,7 @@ class RaterSecure {
         let secure = getSecure(req, res);
         let ret;
         ret = (secure) ? secure.EDLCustomerId : null;
-        if (!ret) {
+        if (!ret && secure) {
             ret =  secure.customerId;
         }
         return ret;
