@@ -235,10 +235,16 @@ const api = class {
             }
         }
     }
+
+    static findIndex(items, property, value) {
+        let maps = items.map(item => { return item[property] })
+        let idx = maps.indexOf(value)
+        return idx;
+    }
 }
 
-/*
 // static class.
+/*
 const api = class {
     static findIndex(items, property, value) {
         let maps = items.map(item => { return item[property] })
@@ -246,6 +252,7 @@ const api = class {
         return idx;
     }
 }
+*/
 api.question = class {
     static checkLanguageId(params) {
         if (params.langId === undefined || params.langId === null || params.langId === '') {
@@ -261,11 +268,8 @@ api.question = class {
         util.prepare(params)
         let ret = {};
         await util.qslideitems.exec(db, params, ret)
-        console.log('qslideitems:', ret)
         await util.qslides.exec(db, params, ret)
-        console.log('qslides:', ret)
         await util.qsets.exec(db, params, ret)
-        console.log('qsets:', ret)
         return ret;
     }
     static parse(db, params, data) {
@@ -306,7 +310,7 @@ api.question.qslideitems = class {
     static async exec(db, params, model) {
         let util = api.question.qslideitems; // shotcut
         let rows = await util.exec_db(db, params)
-        await util.process_rows(model, rows)
+        util.process_rows(model, rows)
     }
     static async exec_db(db, params) {
         let dbResult = await db.GetQSlideItems({
@@ -319,19 +323,19 @@ api.question.qslideitems = class {
         });
         return (dbResult) ? dbResult.data : null;
     }
-    static async process_rows(model, rows) {
-        let util = api.question.qslides; // shotcut
+    static process_rows(model, rows) {
+        let util = api.question.qslideitems; // shotcut
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
-            await util.process_row(model, row)
+            util.process_row(model, row)
         }
     }
-    static async process_row(model, row) {
+    static process_row(model, row) {
         let util = api.question.qslideitems; // shotcut
         util.checkLanguagePropperty(model, row)
         let langObj = model[row.langId];
-        let slideObj = await util.getSlideByRow(row, langObj)
-        let slideItemObj = await util.getSlideItemByRow(row, slideObj)
+        let slideObj = util.getSlideByRow(row, langObj)
+        let slideItemObj = util.getSlideItemByRow(row, slideObj)
     }
     static checkLanguagePropperty(model, row) {
         if (!model[row.langId]) {
@@ -343,7 +347,7 @@ api.question.qslideitems = class {
             }
         }
     }
-    static async getSlideByRow(row, langObj) {
+    static getSlideByRow(row, langObj) {
         let util = api.question.qslideitems; // shotcut
         let ret;
         let idx = api.findIndex(langObj.slides, 'qseq', row.qSeq)
@@ -360,7 +364,7 @@ api.question.qslideitems = class {
         }
         return ret;
     }
-    static async getSlideItemByRow(row, slideObj) {
+    static getSlideItemByRow(row, slideObj) {
         let util = api.question.qslideitems; // shotcut
         let ret;
         let idx = api.findIndex(slideObj.items, 'choice', row.qSSeq)
@@ -450,7 +454,7 @@ api.question.qsets = class {
         }
     }
 }
-*/
+
 //#region Implement - Get
 
 api.Get = class {
@@ -484,6 +488,8 @@ api.Get = class {
         oParams.qsetId = params.qsetId;
 
         let qset = await api.GetQSet(db, params);
+
+        console.log(qset)
 
         let slides = params.slides;
         let orgs = params.orgs;
@@ -669,6 +675,17 @@ router.use(secure.checkAccess);
 router.all('/report/votesummaries/search', api.Get.entry);
 //router.post('/report/votesummaries/save', api.Save.entry);
 //router.post('/report/votesummaries/delete', api.Delete.entry);
+
+router.all('/report/votesummaries/test1', (req, res) => {
+    let db = new sqldb();
+    let params = api.Get.prepare(req, res);
+    let fn = async () => { 
+        return await api.question.load(db, params);
+    }
+    exec(db, fn).then(data => {
+        WebServer.sendJson(req, res, data);
+    })
+});
 
 const init_routes = (svr) => {
     svr.route('/customer/api/', router);
