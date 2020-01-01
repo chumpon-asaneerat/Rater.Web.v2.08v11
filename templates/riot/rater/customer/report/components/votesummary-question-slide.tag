@@ -78,6 +78,6 @@
             overflow: hidden;
         }
     </style>
-    <script>        
+    <script>
     </script>
 </votesummary-question-slide>

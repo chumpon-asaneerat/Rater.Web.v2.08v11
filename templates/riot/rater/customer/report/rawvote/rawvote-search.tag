@@ -321,11 +321,11 @@
                 qsetId: qsetid,
                 beginDate: beginDT,
                 endDate: endDT,
-                //slides: slides,
+                slides: slides,
                 qseq: 1,
                 orgs: orgid
             }
-            //console.log(criteria)
+            console.log(criteria)
 
             events.raise(events.name.RawVoteResult, criteria)
         }

@@ -3704,7 +3704,67 @@ riot.tag2('pie-question-slide', '<div class="question-box"> <span class="caption
 });
 riot.tag2('rawvote-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <rawvote-table class="item" choices="{opts.slide.choices}" orgs="{opts.slide.orgs}"></rawvote-table> </div> </div>', '@media (min-width: 620px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 550px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 850px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } rawvote-question-slide,[data-is="rawvote-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } rawvote-question-slide .question-box,[data-is="rawvote-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } rawvote-question-slide .question-box .caption,[data-is="rawvote-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } rawvote-question-slide .question-box .content-box .item,[data-is="rawvote-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
 });
-riot.tag2('rawvote-table', '', '', '', function(opts) {
+riot.tag2('rawvote-table', '<div ref="grid" class="grid-box"></div>', 'rawvote-table,[data-is="rawvote-table"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } rawvote-table .grid-box,[data-is="rawvote-table"] .grid-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; } rawvote-table .grid-box .tabulator-col-title,[data-is="rawvote-table"] .grid-box .tabulator-col-title{ text-align: center; }', '', function(opts) {
+        let self = this;
+
+        let updatecontent = () => {
+            let data = [];
+            let columns = [
+                { title: 'Org', field: 'OrgName', headerSort:false },
+                { title: 'Branch', field: 'BranchName', headerSort:false },
+                { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
+                { title: 'User', field: 'FullName', align: 'center', headerSort:false },
+                { title: 'Choice', field: 'VoteValue', align: 'center', headerSort:false }
+            ]
+
+            if (grid) {
+                let table = new Tabulator(grid, {
+                    layout: 'fitDataFill',
+                    columnVertAlign: 'middle',
+                    data: data,
+                    columns: columns
+                });
+            }
+
+            self.update();
+        }
+
+        let chart;
+        let initCtrls = () => {
+            grid = self.refs['grid']
+            updatecontent();
+        }
+        let freeCtrls = () => {
+            grid = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
 });
 riot.tag2('votesummary-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <votesummary-table class="item" choices="{opts.slide.choices}" orgs="{opts.slide.orgs}"></votesummary-table> </div> </div>', '@media (min-width: 620px) { votesummary-question-slide,[data-is="votesummary-question-slide"]{ max-width: 550px; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { votesummary-question-slide,[data-is="votesummary-question-slide"]{ max-width: 850px; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } votesummary-question-slide,[data-is="votesummary-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } votesummary-question-slide .question-box,[data-is="votesummary-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } votesummary-question-slide .question-box .caption,[data-is="votesummary-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } votesummary-question-slide .question-box .content-box .item,[data-is="votesummary-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
 });
@@ -4470,6 +4530,9 @@ riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}"
                     self.current.end = search_opts.endDate;
 
                 }
+                else {
+                    console.log('No result that match language.')
+                }
                 self.update();
             }
         }
@@ -4753,10 +4816,11 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
                 qsetId: qsetid,
                 beginDate: beginDT,
                 endDate: endDT,
-
+                slides: slides,
                 qseq: 1,
                 orgs: orgid
             }
+            console.log(criteria)
 
             events.raise(events.name.RawVoteResult, criteria)
         }

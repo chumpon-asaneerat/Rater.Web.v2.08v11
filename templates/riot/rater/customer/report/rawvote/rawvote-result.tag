@@ -78,6 +78,9 @@
                     self.current.end = search_opts.endDate;
                     //console.log(self.current)
                 }
+                else {
+                    console.log('No result that match language.')
+                }
                 self.update();
             }
         }
