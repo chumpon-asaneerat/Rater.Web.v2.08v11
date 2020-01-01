@@ -1,0 +1,295 @@
+{
+    "data": {
+      "EN": {
+        "slides": [
+          {
+            "qseq": 1,
+            "text": "Plase rate for product`s quality.",
+            "maxChoice": 4,
+            "choices": [
+              {
+                "choice": 1,
+                "text": "Poor"
+              },
+              {
+                "choice": 2,
+                "text": "Fair"
+              },
+              {
+                "choice": 3,
+                "text": "Good"
+              },
+              {
+                "choice": 4,
+                "text": "Excellent"
+              }
+            ],
+            "orgs": [
+              {
+                "orgId": "O0001",
+                "OrgName": "EDL Co., Ltd.",
+                "parentId": "",
+                "branchId": "B0001",
+                "BranchName": "HQ",
+                "TotCnt": 1,
+                "AvgPct": 100,
+                "AvgTot": 4,
+                "choices": [
+                  {
+                    "choice": 1,
+                    "text": "Poor",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 2,
+                    "text": "Fair",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 3,
+                    "text": "Good",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 4,
+                    "text": "Excellent",
+                    "Cnt": 1,
+                    "Pct": 100
+                  }
+                ]
+              },
+              {
+                "orgId": "O0008",
+                "OrgName": "Restroom L.",
+                "parentId": "O0005",
+                "branchId": "B0001",
+                "BranchName": "HQ",
+                "TotCnt": 1,
+                "AvgPct": 100,
+                "AvgTot": 4,
+                "choices": [
+                  {
+                    "choice": 1,
+                    "text": "Poor",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 2,
+                    "text": "Fair",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 3,
+                    "text": "Good",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 4,
+                    "text": "Excellent",
+                    "Cnt": 1,
+                    "Pct": 100
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "qseq": 2,
+            "text": "Plase rate for our services",
+            "maxChoice": 3,
+            "choices": [
+              {
+                "choice": 2,
+                "text": "Fair"
+              },
+              {
+                "choice": 3,
+                "text": "Good"
+              },
+              {
+                "choice": 4,
+                "text": "Excellent"
+              }
+            ],
+            "orgs": [
+              {
+                "orgId": "O0001",
+                "OrgName": "EDL Co., Ltd.",
+                "parentId": "",
+                "branchId": "B0001",
+                "BranchName": "HQ",
+                "TotCnt": 0,
+                "AvgPct": 0,
+                "AvgTot": 0,
+                "choices": [
+                  {
+                    "choice": 1,
+                    "text": "",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 2,
+                    "text": "Fair",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 3,
+                    "text": "Good",
+                    "Cnt": 0,
+                    "Pct": 0
+                  }
+                ]
+              },
+              {
+                "orgId": "O0008",
+                "OrgName": "Restroom L.",
+                "parentId": "O0005",
+                "branchId": "B0001",
+                "BranchName": "HQ",
+                "TotCnt": 0,
+                "AvgPct": 0,
+                "AvgTot": 0,
+                "choices": [
+                  {
+                    "choice": 1,
+                    "text": "",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 2,
+                    "text": "Fair",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 3,
+                    "text": "Good",
+                    "Cnt": 0,
+                    "Pct": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "qseq": 3,
+            "text": "Please rate for overall company",
+            "maxChoice": 4,
+            "choices": [
+              {
+                "choice": 1,
+                "text": "Poor"
+              },
+              {
+                "choice": 2,
+                "text": "Fair"
+              },
+              {
+                "choice": 3,
+                "text": "Good"
+              },
+              {
+                "choice": 4,
+                "text": "Excellent"
+              }
+            ],
+            "orgs": [
+              {
+                "orgId": "O0001",
+                "OrgName": "EDL Co., Ltd.",
+                "parentId": "",
+                "branchId": "B0001",
+                "BranchName": "HQ",
+                "TotCnt": 1,
+                "AvgPct": 100,
+                "AvgTot": 4,
+                "choices": [
+                  {
+                    "choice": 1,
+                    "text": "Poor",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 2,
+                    "text": "Fair",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 3,
+                    "text": "Good",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 4,
+                    "text": "Excellent",
+                    "Cnt": 1,
+                    "Pct": 100
+                  }
+                ]
+              },
+              {
+                "orgId": "O0008",
+                "OrgName": "Restroom L.",
+                "parentId": "O0005",
+                "branchId": "B0001",
+                "BranchName": "HQ",
+                "TotCnt": 1,
+                "AvgPct": 100,
+                "AvgTot": 4,
+                "choices": [
+                  {
+                    "choice": 1,
+                    "text": "Poor",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 2,
+                    "text": "Fair",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 3,
+                    "text": "Good",
+                    "Cnt": 0,
+                    "Pct": 0
+                  },
+                  {
+                    "choice": 4,
+                    "text": "Excellent",
+                    "Cnt": 1,
+                    "Pct": 100
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "customerId": "EDL-C2019100003",
+        "CustomerName": "EDL Co., Ltd.",
+        "qsetId": "QS00001",
+        "desc": "General Questions",
+        "beginDate": "2019-10-01T00:00:00.000Z",
+        "endDate": "2022-12-31T23:59:59.000Z"
+      }
+    },
+    "errors": {
+      "hasError": false,
+      "errNum": 0,
+      "errMsg": ""
+    },
+    "out": {}
+  }
