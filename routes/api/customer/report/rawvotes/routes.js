@@ -60,8 +60,7 @@ Rawvote required to implements seperate data in below structure.
 {
     "data": {
         "EN": {
-        "slides": [
-            {
+            "slides": [{
                 "qseq": 1,
                 "text": "Plase rate for product`s quality.",
                 "maxChoice": 4,
@@ -91,8 +90,7 @@ Rawvote required to implements seperate data in below structure.
                     { "VoteDate": "", "VoteValue": 1, ... }
                 ]
             }
-        ]
-    }
+        ]}
 }
 */
 //#region Implement - Get
