@@ -2,7 +2,7 @@
     <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
     <virtial if={ current.slides && current.slides.length > 0 }>
         <virtial each={ slide in current.slides }>
-            <pie-question-slide slide="{ slide }"></pie-question-slide>
+            <pie-votesummary-question-slide slide="{ slide }"></pie-votesummary-question-slide>
         </virtial>
     </virtial>
     <div class="input-block center">

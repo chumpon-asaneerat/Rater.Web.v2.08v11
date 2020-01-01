@@ -1,10 +1,8 @@
-<pie-question-slide>
+<bar-votesummary-question-slide>
     <div class="question-box">
         <span class="caption">{ (opts.slide) ? opts.slide.text : '' }</span>
         <div class="content-box">
-            <virtual each={ org in opts.slide.orgs }>
-                <org-pie class="item" org="{ org }"></org-pie>
-            </virtual>
+            <bar-votesummary-org class="item" orgs="{ opts.slide.orgs }"></bar-votesummary-org>
         </div>
     </div>
     <style>
@@ -15,9 +13,9 @@
             }
             :scope .question-box .content-box {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: 1fr;
                 grid-gap: 5px;
-                grid-auto-rows: 100px;
+                grid-auto-rows: 200px;
             }
         }
         @media (min-width: 960px) {
@@ -27,9 +25,9 @@
             }
             :scope .question-box .content-box {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                grid-template-columns: 1fr;
                 grid-gap: 5px;
-                grid-auto-rows: 150px;
+                grid-auto-rows: 250px;
             }
         }
         :scope {
@@ -49,7 +47,7 @@
             color: white;
             border: 1px solid cornflowerblue;
             border-radius: 3px;
-            /* width: 100%; */
+            width: 100%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -65,9 +63,9 @@
             margin: 0 auto;
             margin-bottom: 5px;
             padding: 5px;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: 1fr;
             grid-gap: 5px;
-            grid-auto-rows: 200px;
+            grid-auto-rows: 300px;
         }
         :scope .question-box .content-box .item {
             display: inline-block;
@@ -80,4 +78,4 @@
     </style>
     <script>
     </script>
-</pie-question-slide>
+</bar-votesummary-question-slide>

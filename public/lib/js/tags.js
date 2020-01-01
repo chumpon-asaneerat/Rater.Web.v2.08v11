@@ -3191,7 +3191,100 @@ riot.tag2('bar-votesummary-manage', '<flip-screen ref="flipper"> <yield to="view
 
 });
 
-riot.tag2('bar-votesummary-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <bar-question-slide slide="{slide}"></bar-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'bar-votesummary-result,[data-is="bar-votesummary-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } bar-votesummary-result .input-block,[data-is="bar-votesummary-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } bar-votesummary-result .input-block.center,[data-is="bar-votesummary-result"] .input-block.center{ margin: auto; margin-top: 10px; } bar-votesummary-result .input-block button,[data-is="bar-votesummary-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+riot.tag2('bar-votesummary-org', '<div ref="chart" class="chart-box"></div>', 'bar-votesummary-org,[data-is="bar-votesummary-org"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } bar-votesummary-org .chart-box,[data-is="bar-votesummary-org"] .chart-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; min-width: 600px; }', '', function(opts) {
+        let self = this;
+
+        let updatecontent = () => {
+            let data = [];
+            let xlabels = []
+            self.opts.orgs.forEach(item => {
+                xlabels.push(item.OrgName)
+                data.push({ name: item.OrgName, y: item.AvgTot })
+            })
+
+            Highcharts.chart(chart, {
+                credits: {
+                    enabled: false
+                },
+                chart: { type: 'column' },
+                title: {
+                    text: 'Vote Summary Bar graph'
+                },
+                subtitle: {
+
+                },
+                xAxis: {
+
+                    categories: xlabels
+                },
+                yAxis: {
+                    title: { text: 'Average' }
+                },
+                legend: { enabled: false },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.2f}'
+                        }
+                    }
+                },
+                tooltip: {
+
+                    headerFormat: '',
+
+                    pointFormat: '<span>{point.name}</span>: <b>{point.y:.2f}</b><br/>'
+                },
+                series: [{
+                    name: "Organization",
+                    colorByPoint: true,
+                    data: data
+                }]
+            });
+            self.update();
+        }
+
+        let chart;
+        let initCtrls = () => {
+            chart = self.refs['chart']
+            updatecontent();
+        }
+        let freeCtrls = () => {
+            chart = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+});
+riot.tag2('bar-votesummary-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <bar-votesummary-org class="item" orgs="{opts.slide.orgs}"></bar-votesummary-org> </div> </div>', '@media (min-width: 620px) { bar-votesummary-question-slide,[data-is="bar-votesummary-question-slide"]{ max-width: 550px; } bar-votesummary-question-slide .question-box .content-box,[data-is="bar-votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { bar-votesummary-question-slide,[data-is="bar-votesummary-question-slide"]{ max-width: 850px; } bar-votesummary-question-slide .question-box .content-box,[data-is="bar-votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } bar-votesummary-question-slide,[data-is="bar-votesummary-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } bar-votesummary-question-slide .question-box,[data-is="bar-votesummary-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } bar-votesummary-question-slide .question-box .caption,[data-is="bar-votesummary-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } bar-votesummary-question-slide .question-box .content-box,[data-is="bar-votesummary-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } bar-votesummary-question-slide .question-box .content-box .item,[data-is="bar-votesummary-question-slide"] .question-box .content-box .item{ display: inline-block; margin: 3px auto; padding: 0; color: black; width: 100%; height: 100%; }', '', function(opts) {
+});
+riot.tag2('bar-votesummary-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <bar-votesummary-question-slide slide="{slide}"></bar-votesummary-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'bar-votesummary-result,[data-is="bar-votesummary-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } bar-votesummary-result .input-block,[data-is="bar-votesummary-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } bar-votesummary-result .input-block.center,[data-is="bar-votesummary-result"] .input-block.center{ margin: auto; margin-top: 10px; } bar-votesummary-result .input-block button,[data-is="bar-votesummary-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
 
 
         let self = this;
@@ -3522,339 +3615,9 @@ riot.tag2('bar-votesummary-search', '<div class="input-block center"> <span>Vote
             events.raise(events.name.BarSummaryResult, criteria)
         }
 });
-riot.tag2('bar-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <org-bar class="item" orgs="{opts.slide.orgs}"></org-bar> </div> </div>', '@media (min-width: 620px) { bar-question-slide,[data-is="bar-question-slide"]{ max-width: 550px; } bar-question-slide .question-box .content-box,[data-is="bar-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { bar-question-slide,[data-is="bar-question-slide"]{ max-width: 850px; } bar-question-slide .question-box .content-box,[data-is="bar-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } bar-question-slide,[data-is="bar-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } bar-question-slide .question-box,[data-is="bar-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } bar-question-slide .question-box .caption,[data-is="bar-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } bar-question-slide .question-box .content-box,[data-is="bar-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } bar-question-slide .question-box .content-box .item,[data-is="bar-question-slide"] .question-box .content-box .item{ display: inline-block; margin: 3px auto; padding: 0; color: black; width: 100%; height: 100%; }', '', function(opts) {
-});
 riot.tag2('date-result', '<div class="date-range"> <span class="label"> {(opts.caption) ? opts.caption : \'Date\'}:&nbsp; {(opts.begin) ? opts.begin : \'\'} &nbsp;-&nbsp; {(opts.end) ? opts.end : \'\'} </span> </div>', '@media (min-width: 620px) { date-result,[data-is="date-result"]{ max-width: 550px; } } @media (min-width: 960px) { date-result,[data-is="date-result"]{ max-width: 850px; } } date-result,[data-is="date-result"]{ display: block; margin: 0 auto; padding: 5px; padding-bottom: 1px; max-width: 1000px; } date-result .date-range,[data-is="date-result"] .date-range{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; overflow: hidden; white-space: nowrap; } date-result .date-range .label,[data-is="date-result"] .date-range .label{ margin: 0 auto; padding: 5px; display: block; color: cornflowerblue; font-size: 1rem; font-weight: bold; border: 0 solid cornflowerblue; border-bottom: 1px solid cornflowerblue; }', '', function(opts) {
         let updatecontent = () => {}
         this.setup = () => {}
-});
-riot.tag2('org-bar', '<div ref="chart" class="chart-box"></div>', 'org-bar,[data-is="org-bar"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } org-bar .chart-box,[data-is="org-bar"] .chart-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; min-width: 600px; }', '', function(opts) {
-        let self = this;
-
-        let updatecontent = () => {
-            let data = [];
-            let xlabels = []
-            self.opts.orgs.forEach(item => {
-                xlabels.push(item.OrgName)
-                data.push({ name: item.OrgName, y: item.AvgTot })
-            })
-
-            Highcharts.chart(chart, {
-                credits: {
-                    enabled: false
-                },
-                chart: { type: 'column' },
-                title: {
-                    text: 'Vote Summary Bar graph'
-                },
-                subtitle: {
-
-                },
-                xAxis: {
-
-                    categories: xlabels
-                },
-                yAxis: {
-                    title: { text: 'Average' }
-                },
-                legend: { enabled: false },
-                plotOptions: {
-                    series: {
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:.2f}'
-                        }
-                    }
-                },
-                tooltip: {
-
-                    headerFormat: '',
-
-                    pointFormat: '<span>{point.name}</span>: <b>{point.y:.2f}</b><br/>'
-                },
-                series: [{
-                    name: "Organization",
-                    colorByPoint: true,
-                    data: data
-                }]
-            });
-            self.update();
-        }
-
-        let chart;
-        let initCtrls = () => {
-            chart = self.refs['chart']
-            updatecontent();
-        }
-        let freeCtrls = () => {
-            chart = null;
-        }
-
-        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
-        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
-
-        let bindEvents = () => {
-            addEvt(events.name.LanguageChanged, onLanguageChanged)
-            addEvt(events.name.ContentChanged, onContentChanged)
-            addEvt(events.name.ScreenChanged, onScreenChanged)
-        }
-        let unbindEvents = () => {
-            delEvt(events.name.ScreenChanged, onScreenChanged)
-            delEvt(events.name.ContentChanged, onContentChanged)
-            delEvt(events.name.LanguageChanged, onLanguageChanged)
-        }
-
-        this.on('mount', () => {
-            initCtrls();
-            bindEvents();
-        });
-        this.on('unmount', () => {
-            unbindEvents();
-            freeCtrls();
-        });
-
-        let onContentChanged = (e) => { updatecontent(); }
-        let onLanguageChanged = (e) => { updatecontent(); }
-        let onScreenChanged = (e) => { updatecontent(); }
-
-});
-riot.tag2('org-pie', '<div ref="chart" class="chart-box"></div>', 'org-pie,[data-is="org-pie"]{ display: block; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; } org-pie .chart-box,[data-is="org-pie"] .chart-box{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; }', '', function(opts) {
-        let self = this;
-
-        let updatecontent = () => {
-            let data = [];
-            self.opts.org.choices.forEach(item => {
-                data.push({ name: item.text, y: item.Pct })
-            })
-            Highcharts.chart(chart, {
-                credits: {
-                    enabled: false
-                },
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
-                },
-                title: {
-                    text: self.opts.org.OrgName
-                },
-                tooltip: {
-                    pointFormat: '<b>{point.percentage:.2f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: false,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.2f} %'
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Choice',
-                    colorByPoint: true,
-                    data: data
-                }]
-            });
-
-            self.update();
-        }
-
-        let chart;
-        let initCtrls = () => {
-            chart = self.refs['chart']
-            updatecontent();
-        }
-        let freeCtrls = () => {
-            chart = null;
-        }
-
-        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
-        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
-
-        let bindEvents = () => {
-            addEvt(events.name.LanguageChanged, onLanguageChanged)
-            addEvt(events.name.ContentChanged, onContentChanged)
-            addEvt(events.name.ScreenChanged, onScreenChanged)
-        }
-        let unbindEvents = () => {
-            delEvt(events.name.ScreenChanged, onScreenChanged)
-            delEvt(events.name.ContentChanged, onContentChanged)
-            delEvt(events.name.LanguageChanged, onLanguageChanged)
-        }
-
-        this.on('mount', () => {
-            initCtrls();
-            bindEvents();
-        });
-        this.on('unmount', () => {
-            unbindEvents();
-            freeCtrls();
-        });
-
-        let onContentChanged = (e) => { updatecontent(); }
-        let onLanguageChanged = (e) => { updatecontent(); }
-        let onScreenChanged = (e) => { updatecontent(); }
-
-});
-riot.tag2('pie-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <virtual each="{org in opts.slide.orgs}"> <org-pie class="item" org="{org}"></org-pie> </virtual> </div> </div>', '@media (min-width: 620px) { pie-question-slide,[data-is="pie-question-slide"]{ max-width: 550px; } pie-question-slide .question-box .content-box,[data-is="pie-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-gap: 5px; grid-auto-rows: 100px; } } @media (min-width: 960px) { pie-question-slide,[data-is="pie-question-slide"]{ max-width: 850px; } pie-question-slide .question-box .content-box,[data-is="pie-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-gap: 5px; grid-auto-rows: 150px; } } pie-question-slide,[data-is="pie-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } pie-question-slide .question-box,[data-is="pie-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } pie-question-slide .question-box .caption,[data-is="pie-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } pie-question-slide .question-box .content-box,[data-is="pie-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-gap: 5px; grid-auto-rows: 200px; } pie-question-slide .question-box .content-box .item,[data-is="pie-question-slide"] .question-box .content-box .item{ display: inline-block; margin: 3px auto; padding: 0; color: black; width: 100%; height: 100%; }', '', function(opts) {
-});
-riot.tag2('rawvote-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <rawvote-table class="item" choices="{opts.slide.choices}" orgs="{opts.slide.orgs}"></rawvote-table> </div> </div>', '@media (min-width: 620px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 550px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 850px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } rawvote-question-slide,[data-is="rawvote-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } rawvote-question-slide .question-box,[data-is="rawvote-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } rawvote-question-slide .question-box .caption,[data-is="rawvote-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } rawvote-question-slide .question-box .content-box .item,[data-is="rawvote-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
-});
-riot.tag2('rawvote-table', '<div ref="grid" class="grid-box"></div>', 'rawvote-table,[data-is="rawvote-table"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } rawvote-table .grid-box,[data-is="rawvote-table"] .grid-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; } rawvote-table .grid-box .tabulator-col-title,[data-is="rawvote-table"] .grid-box .tabulator-col-title{ text-align: center; }', '', function(opts) {
-        let self = this;
-
-        let updatecontent = () => {
-            let data = [];
-            let columns = [
-                { title: 'Org', field: 'OrgName', headerSort:false },
-                { title: 'Branch', field: 'BranchName', headerSort:false },
-                { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
-                { title: 'User', field: 'FullName', align: 'center', headerSort:false },
-                { title: 'Choice', field: 'VoteValue', align: 'center', headerSort:false }
-            ]
-
-            if (grid) {
-                let table = new Tabulator(grid, {
-                    layout: 'fitDataFill',
-                    columnVertAlign: 'middle',
-                    data: data,
-                    columns: columns
-                });
-            }
-
-            self.update();
-        }
-
-        let chart;
-        let initCtrls = () => {
-            grid = self.refs['grid']
-            updatecontent();
-        }
-        let freeCtrls = () => {
-            grid = null;
-        }
-
-        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
-        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
-
-        let bindEvents = () => {
-            addEvt(events.name.LanguageChanged, onLanguageChanged)
-            addEvt(events.name.ContentChanged, onContentChanged)
-            addEvt(events.name.ScreenChanged, onScreenChanged)
-        }
-        let unbindEvents = () => {
-            delEvt(events.name.ScreenChanged, onScreenChanged)
-            delEvt(events.name.ContentChanged, onContentChanged)
-            delEvt(events.name.LanguageChanged, onLanguageChanged)
-        }
-
-        this.on('mount', () => {
-            initCtrls();
-            bindEvents();
-        });
-        this.on('unmount', () => {
-            unbindEvents();
-            freeCtrls();
-        });
-
-        let onContentChanged = (e) => { updatecontent(); }
-        let onLanguageChanged = (e) => { updatecontent(); }
-        let onScreenChanged = (e) => { updatecontent(); }
-
-});
-riot.tag2('votesummary-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <votesummary-table class="item" choices="{opts.slide.choices}" orgs="{opts.slide.orgs}"></votesummary-table> </div> </div>', '@media (min-width: 620px) { votesummary-question-slide,[data-is="votesummary-question-slide"]{ max-width: 550px; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { votesummary-question-slide,[data-is="votesummary-question-slide"]{ max-width: 850px; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } votesummary-question-slide,[data-is="votesummary-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } votesummary-question-slide .question-box,[data-is="votesummary-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } votesummary-question-slide .question-box .caption,[data-is="votesummary-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } votesummary-question-slide .question-box .content-box .item,[data-is="votesummary-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
-});
-riot.tag2('votesummary-table', '<div ref="grid" class="grid-box"></div>', 'votesummary-table,[data-is="votesummary-table"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } votesummary-table .grid-box,[data-is="votesummary-table"] .grid-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; } votesummary-table .grid-box .tabulator-col-title,[data-is="votesummary-table"] .grid-box .tabulator-col-title{ text-align: center; }', '', function(opts) {
-        let self = this;
-
-        let updatecontent = () => {
-            let data = [];
-            let columns = [
-                { title: 'Org', field: 'OrgName', headerSort:false },
-                { title: 'Branch', field: 'BranchName', headerSort:false },
-                { title: 'Count<br>(Total)', field: 'TotCnt', align: 'center', headerSort:false },
-                { title: 'Avg<br>(Total)', field: 'AvgTot', align: 'center', headerSort:false },
-                { title: 'Percent<br>(Total)', field: 'AvgPct', align: 'center', headerSort:false }
-            ]
-
-            self.opts.choices.forEach(choice => {
-                let group = {
-                    title: choice.text + ' (' + choice.choice + ')',
-                    columns: [
-                        { title: 'Count', field: 'Cnt-' + String(choice.choice), align: 'center', headerSort:false },
-                        { title: 'Percent', field: 'Pct-' + String(choice.choice), align: 'center', headerSort:false }
-                    ]
-                }
-                columns.push(group)
-            })
-            self.opts.orgs.forEach(item => {
-                let obj = {
-                    OrgName: item.OrgName,
-                    BranchName: item.BranchName,
-                    TotCnt: item.TotCnt,
-                    AvgPct: item.AvgPct,
-                    AvgTot: item.AvgTot,
-                }
-                item.choices.forEach(choice => {
-
-                    obj['Cnt-' + String(choice.choice)] = choice.Cnt,
-                    obj['Pct-' + String(choice.choice)] = choice.Pct
-                })
-                data.push(obj)
-            });
-
-            if (grid) {
-                let table = new Tabulator(grid, {
-                    layout: 'fitDataFill',
-                    columnVertAlign: 'middle',
-                    data: data,
-                    columns: columns
-                });
-            }
-
-            self.update();
-        }
-
-        let chart;
-        let initCtrls = () => {
-            grid = self.refs['grid']
-            updatecontent();
-        }
-        let freeCtrls = () => {
-            grid = null;
-        }
-
-        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
-        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
-
-        let bindEvents = () => {
-            addEvt(events.name.LanguageChanged, onLanguageChanged)
-            addEvt(events.name.ContentChanged, onContentChanged)
-            addEvt(events.name.ScreenChanged, onScreenChanged)
-        }
-        let unbindEvents = () => {
-            delEvt(events.name.ScreenChanged, onScreenChanged)
-            delEvt(events.name.ContentChanged, onContentChanged)
-            delEvt(events.name.LanguageChanged, onLanguageChanged)
-        }
-
-        this.on('mount', () => {
-            initCtrls();
-            bindEvents();
-        });
-        this.on('unmount', () => {
-            unbindEvents();
-            freeCtrls();
-        });
-
-        let onContentChanged = (e) => { updatecontent(); }
-        let onLanguageChanged = (e) => { updatecontent(); }
-        let onScreenChanged = (e) => { updatecontent(); }
-
 });
 riot.tag2('report-admin-home', '<div class="report-home-main"> <div class="report-item"> <button onclick="{showvotesummary}"> <span class="icon fa-3x fas fa-table cr1"></span> <span class="text">Vote Summary</span> </button> </div> <div class="report-item"> <button onclick="{showpiesummary}"> <span class="icon fa-3x fas fa-chart-pie cr2"></span> <span class="text">Pie Chart</span> </button> </div> <div class="report-item"> <button onclick="{showbarsummary}"> <span class="icon fa-3x fas fa-chart-bar cr3"></span> <span class="text">Bar Chart</span> </button> </div> <div class="report-item"> <button onclick="{showstaffcompare}"> <span class="icon fa-3x fas fa-chalkboard-teacher cr6"></span> <span class="text">Staff Compare</span> </button> </div> <div class="report-item"> <button onclick="{showrawvote}"> <span class="icon fa-3x fas fa-table cr4"></span> <span class="text">Raw Vote</span> </button> </div> <div class="report-item"> <button onclick="{showstaffperf}"> <span class="icon fa-3x far fa-id-card cr5"></span> <span class="text">Staff Performance</span> </button> </div> </div>', 'report-admin-home,[data-is="report-admin-home"]{ margin: 0 auto; padding: 0; padding-top: 20px; padding-bottom: 20px; width: 100%; height: 100%; display: block; overflow: auto; } @media (min-width: 620px) { report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ column-count: 2; column-gap: 20px; } } @media (min-width: 960px) { report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ column-count: 3; column-gap: 20px; } } report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ margin: 0 auto; padding: 20px; max-width: 1000px; } report-admin-home .report-home-main,[data-is="report-admin-home"] .report-home-main{ display: block; margin: 0 auto; padding: 10px; } report-admin-home .report-home-main .report-item,[data-is="report-admin-home"] .report-home-main .report-item{ margin: 2px auto; padding: 0; margin-bottom: 20px; height: 100px; break-inside: avoid; } report-admin-home .report-home-main .report-item button,[data-is="report-admin-home"] .report-home-main .report-item button{ margin: 0 auto; padding: 0; display: grid; width: 100%; height: 100%; } report-admin-home .report-home-main .report-item button .icon,[data-is="report-admin-home"] .report-home-main .report-item button .icon{ justify-self: center; align-self: center; } report-admin-home .report-home-main .report-item button .text,[data-is="report-admin-home"] .report-home-main .report-item button .text{ justify-self: center; align-self: center; font-size: 1rem; font-weight: bold; } report-admin-home .report-home-main .report-item button .icon.cr1,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr1{ color: chocolate; } report-admin-home .report-home-main .report-item button .icon.cr2,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr2{ color: cornflowerblue; } report-admin-home .report-home-main .report-item button .icon.cr3,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr3{ color: olivedrab; } report-admin-home .report-home-main .report-item button .icon.cr4,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr4{ color: darkorchid; } report-admin-home .report-home-main .report-item button .icon.cr5,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr5{ color: sandybrown; } report-admin-home .report-home-main .report-item button .icon.cr6,[data-is="report-admin-home"] .report-home-main .report-item button .icon.cr6{ color: navy; }', '', function(opts) {
 
@@ -4092,7 +3855,90 @@ riot.tag2('pie-votesummary-manage', '<flip-screen ref="flipper"> <yield to="view
 
 });
 
-riot.tag2('pie-votesummary-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <pie-question-slide slide="{slide}"></pie-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'pie-votesummary-result,[data-is="pie-votesummary-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } pie-votesummary-result .input-block,[data-is="pie-votesummary-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } pie-votesummary-result .input-block.center,[data-is="pie-votesummary-result"] .input-block.center{ margin: auto; margin-top: 10px; } pie-votesummary-result .input-block button,[data-is="pie-votesummary-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+riot.tag2('pie-votesummary-org', '<div ref="chart" class="chart-box"></div>', 'pie-votesummary-org,[data-is="pie-votesummary-org"]{ display: block; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; } pie-votesummary-org .chart-box,[data-is="pie-votesummary-org"] .chart-box{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; }', '', function(opts) {
+        let self = this;
+
+        let updatecontent = () => {
+            let data = [];
+            self.opts.org.choices.forEach(item => {
+                data.push({ name: item.text, y: item.Pct })
+            })
+            Highcharts.chart(chart, {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: self.opts.org.OrgName
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.percentage:.2f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: false,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.2f} %'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Choice',
+                    colorByPoint: true,
+                    data: data
+                }]
+            });
+
+            self.update();
+        }
+
+        let chart;
+        let initCtrls = () => {
+            chart = self.refs['chart']
+            updatecontent();
+        }
+        let freeCtrls = () => {
+            chart = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+});
+riot.tag2('pie-votesummary-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <virtual each="{org in opts.slide.orgs}"> <pie-votesummary-org class="item" org="{org}"></pie-votesummary-org> </virtual> </div> </div>', '@media (min-width: 620px) { pie-votesummary-question-slide,[data-is="pie-votesummary-question-slide"]{ max-width: 550px; } pie-votesummary-question-slide .question-box .content-box,[data-is="pie-votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-gap: 5px; grid-auto-rows: 100px; } } @media (min-width: 960px) { pie-votesummary-question-slide,[data-is="pie-votesummary-question-slide"]{ max-width: 850px; } pie-votesummary-question-slide .question-box .content-box,[data-is="pie-votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-gap: 5px; grid-auto-rows: 150px; } } pie-votesummary-question-slide,[data-is="pie-votesummary-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } pie-votesummary-question-slide .question-box,[data-is="pie-votesummary-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } pie-votesummary-question-slide .question-box .caption,[data-is="pie-votesummary-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } pie-votesummary-question-slide .question-box .content-box,[data-is="pie-votesummary-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-gap: 5px; grid-auto-rows: 200px; } pie-votesummary-question-slide .question-box .content-box .item,[data-is="pie-votesummary-question-slide"] .question-box .content-box .item{ display: inline-block; margin: 3px auto; padding: 0; color: black; width: 100%; height: 100%; }', '', function(opts) {
+});
+riot.tag2('pie-votesummary-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <pie-votesummary-question-slide slide="{slide}"></pie-votesummary-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'pie-votesummary-result,[data-is="pie-votesummary-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } pie-votesummary-result .input-block,[data-is="pie-votesummary-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } pie-votesummary-result .input-block.center,[data-is="pie-votesummary-result"] .input-block.center{ margin: auto; margin-top: 10px; } pie-votesummary-result .input-block button,[data-is="pie-votesummary-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
 
 
         let self = this;
@@ -4495,6 +4341,8 @@ riot.tag2('rawvote-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <ra
 
 });
 
+riot.tag2('rawvote-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <rawvote-table class="item" choices="{opts.slide.choices}" orgs="{opts.slide.orgs}"></rawvote-table> </div> </div>', '@media (min-width: 620px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 550px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 850px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } rawvote-question-slide,[data-is="rawvote-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } rawvote-question-slide .question-box,[data-is="rawvote-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } rawvote-question-slide .question-box .caption,[data-is="rawvote-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } rawvote-question-slide .question-box .content-box .item,[data-is="rawvote-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
+});
 riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <rawvote-question-slide slide="{slide}"></rawvote-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'rawvote-result,[data-is="rawvote-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } rawvote-result .input-block,[data-is="rawvote-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } rawvote-result .input-block.center,[data-is="rawvote-result"] .input-block.center{ margin: auto; margin-top: 10px; } rawvote-result .input-block button,[data-is="rawvote-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
 
 
@@ -4823,6 +4671,68 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
 
             events.raise(events.name.RawVoteResult, criteria)
         }
+});
+riot.tag2('rawvote-table', '<div ref="grid" class="grid-box"></div>', 'rawvote-table,[data-is="rawvote-table"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } rawvote-table .grid-box,[data-is="rawvote-table"] .grid-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; } rawvote-table .grid-box .tabulator-col-title,[data-is="rawvote-table"] .grid-box .tabulator-col-title{ text-align: center; }', '', function(opts) {
+        let self = this;
+
+        let updatecontent = () => {
+            let data = [];
+            let columns = [
+                { title: 'Org', field: 'OrgName', headerSort:false },
+                { title: 'Branch', field: 'BranchName', headerSort:false },
+                { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
+                { title: 'User', field: 'FullName', align: 'center', headerSort:false },
+                { title: 'Choice', field: 'VoteValue', align: 'center', headerSort:false }
+            ]
+
+            if (grid) {
+                let table = new Tabulator(grid, {
+                    layout: 'fitDataFill',
+                    columnVertAlign: 'middle',
+                    data: data,
+                    columns: columns
+                });
+            }
+
+            self.update();
+        }
+
+        let chart;
+        let initCtrls = () => {
+            grid = self.refs['grid']
+            updatecontent();
+        }
+        let freeCtrls = () => {
+            grid = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
 });
 riot.tag2('staff-compare-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <staff-compare-search ref="viewer" class="view"></staff-compare-search> </yield> <yield to="entry"> <staff-compare-result ref="entry" class="entry"></staff-compare-result> </yield> </flip-screen>', 'staff-compare-manage,[data-is="staff-compare-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } staff-compare-manage .view,[data-is="staff-compare-manage"] .view,staff-compare-manage .entry,[data-is="staff-compare-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
 
@@ -5550,6 +5460,8 @@ riot.tag2('votesummary-manage', '<flip-screen ref="flipper"> <yield to="viewer">
 
 });
 
+riot.tag2('votesummary-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <votesummary-table class="item" choices="{opts.slide.choices}" orgs="{opts.slide.orgs}"></votesummary-table> </div> </div>', '@media (min-width: 620px) { votesummary-question-slide,[data-is="votesummary-question-slide"]{ max-width: 550px; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { votesummary-question-slide,[data-is="votesummary-question-slide"]{ max-width: 850px; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } votesummary-question-slide,[data-is="votesummary-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } votesummary-question-slide .question-box,[data-is="votesummary-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } votesummary-question-slide .question-box .caption,[data-is="votesummary-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } votesummary-question-slide .question-box .content-box,[data-is="votesummary-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } votesummary-question-slide .question-box .content-box .item,[data-is="votesummary-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
+});
 riot.tag2('votesummary-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <votesummary-question-slide slide="{slide}"></votesummary-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'votesummary-result,[data-is="votesummary-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } votesummary-result .input-block,[data-is="votesummary-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } votesummary-result .input-block.center,[data-is="votesummary-result"] .input-block.center{ margin: auto; margin-top: 10px; } votesummary-result .input-block button,[data-is="votesummary-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
 
 
@@ -5879,6 +5791,94 @@ riot.tag2('votesummary-search', '<div class="input-block center"> <span>Vote Sum
 
             events.raise(events.name.VoteSummaryResult, criteria)
         }
+});
+riot.tag2('votesummary-table', '<div ref="grid" class="grid-box"></div>', 'votesummary-table,[data-is="votesummary-table"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } votesummary-table .grid-box,[data-is="votesummary-table"] .grid-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; } votesummary-table .grid-box .tabulator-col-title,[data-is="votesummary-table"] .grid-box .tabulator-col-title{ text-align: center; }', '', function(opts) {
+        let self = this;
+
+        let updatecontent = () => {
+            let data = [];
+            let columns = [
+                { title: 'Org', field: 'OrgName', headerSort:false },
+                { title: 'Branch', field: 'BranchName', headerSort:false },
+                { title: 'Count<br>(Total)', field: 'TotCnt', align: 'center', headerSort:false },
+                { title: 'Avg<br>(Total)', field: 'AvgTot', align: 'center', headerSort:false },
+                { title: 'Percent<br>(Total)', field: 'AvgPct', align: 'center', headerSort:false }
+            ]
+
+            self.opts.choices.forEach(choice => {
+                let group = {
+                    title: choice.text + ' (' + choice.choice + ')',
+                    columns: [
+                        { title: 'Count', field: 'Cnt-' + String(choice.choice), align: 'center', headerSort:false },
+                        { title: 'Percent', field: 'Pct-' + String(choice.choice), align: 'center', headerSort:false }
+                    ]
+                }
+                columns.push(group)
+            })
+            self.opts.orgs.forEach(item => {
+                let obj = {
+                    OrgName: item.OrgName,
+                    BranchName: item.BranchName,
+                    TotCnt: item.TotCnt,
+                    AvgPct: item.AvgPct,
+                    AvgTot: item.AvgTot,
+                }
+                item.choices.forEach(choice => {
+
+                    obj['Cnt-' + String(choice.choice)] = choice.Cnt,
+                    obj['Pct-' + String(choice.choice)] = choice.Pct
+                })
+                data.push(obj)
+            });
+
+            if (grid) {
+                let table = new Tabulator(grid, {
+                    layout: 'fitDataFill',
+                    columnVertAlign: 'middle',
+                    data: data,
+                    columns: columns
+                });
+            }
+
+            self.update();
+        }
+
+        let chart;
+        let initCtrls = () => {
+            grid = self.refs['grid']
+            updatecontent();
+        }
+        let freeCtrls = () => {
+            grid = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
 });
 riot.tag2('edl-customer-branch-manage', '', '', '', function(opts) {
 });

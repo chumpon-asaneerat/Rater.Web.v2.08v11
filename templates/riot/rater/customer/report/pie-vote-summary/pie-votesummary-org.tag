@@ -1,23 +1,19 @@
-<org-bar>
+<pie-votesummary-org>
     <div ref="chart" class="chart-box"></div>
     <style>
         :scope {
             display: block;
-            position: relative;
             margin: 0 auto;
             padding: 3px;
             border: 1px solid silver;
             border-radius: 3px;
-            overflow: auto;
         }
         :scope .chart-box {
             display: block;
-            position: absolute;
             margin: 0 auto;
             padding: 0;
             width: 100%;
             height: 100%;
-            min-width: 600px;
         }
     </style>
     <script>
@@ -25,52 +21,42 @@
 
         let updatecontent = () => {
             let data = [];
-            let xlabels = []
-            self.opts.orgs.forEach(item => {
-                xlabels.push(item.OrgName)
-                data.push({ name: item.OrgName, y: item.AvgTot })
+            self.opts.org.choices.forEach(item => {
+                data.push({ name: item.text, y: item.Pct })
             })
-
             Highcharts.chart(chart, {
                 credits: {
                     enabled: false
                 },
-                chart: { type: 'column' },
-                title: { 
-                    text: 'Vote Summary Bar graph'
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
                 },
-                subtitle: {
-                    //text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+                title: {
+                    text: self.opts.org.OrgName
                 },
-                xAxis: { 
-                    //type: 'Organization',
-                    categories: xlabels
+                tooltip: {
+                    pointFormat: '<b>{point.percentage:.2f}%</b>'
                 },
-                yAxis: { 
-                    title: { text: 'Average' }
-                },
-                legend: { enabled: false },
                 plotOptions: {
-                    series: {
-                        borderWidth: 0,
+                    pie: {
+                        allowPointSelect: false,
+                        cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '{point.y:.2f}'
+                            format: '<b>{point.name}</b>: {point.percentage:.2f} %'
                         }
                     }
                 },
-                tooltip: {
-                    //headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    headerFormat: '',
-                    //pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b><br/>'
-                    pointFormat: '<span>{point.name}</span>: <b>{point.y:.2f}</b><br/>'
-                },
                 series: [{
-                    name: "Organization",
+                    name: 'Choice',
                     colorByPoint: true,
                     data: data
                 }]
             });
+
             self.update();
         }
 
@@ -130,4 +116,4 @@
 
         //#endregion
     </script>
-</org-bar>
+</pie-votesummary-org>

@@ -2,7 +2,7 @@
     <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
     <virtial if={ current.slides && current.slides.length > 0 }>
         <virtial each={ slide in current.slides }>
-            <bar-question-slide slide="{ slide }"></bar-question-slide>
+            <bar-votesummary-question-slide slide="{ slide }"></bar-votesummary-question-slide>
         </virtial>
     </virtial>
     <div class="input-block center">
