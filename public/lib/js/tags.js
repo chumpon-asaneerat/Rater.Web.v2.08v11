@@ -4523,15 +4523,15 @@ riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}"
             if (shown && screenId === scrId) {
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
-                console.log(result)
-                if (result && result[lang.langId]) {
-                    self.current = result[lang.langId]
+
+                if (result) {
+                    self.current = result;
                     self.current.begin = search_opts.beginDate;
                     self.current.end = search_opts.endDate;
-
+                    console.log(self.current)
                 }
                 else {
-                    console.log('No result that match language.')
+                    console.log('No result found.')
                 }
                 self.update();
             }
@@ -4820,7 +4820,6 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
                 qseq: 1,
                 orgs: orgid
             }
-            console.log(criteria)
 
             events.raise(events.name.RawVoteResult, criteria)
         }
