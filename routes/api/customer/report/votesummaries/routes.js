@@ -147,20 +147,15 @@ const api = class {
 
 api.Get = class {
     static prepare(req, res) {
-        /*
-        let params = WebServer.parseReq(req).data;
-        let customerId = secure.getCustomerId(req, res);
-        if (customerId) params.customerId = customerId;
-        api.question.prepare(params)
-        params.deviceId = null;
-        params.userId = null;
-        */
        let params = WebServer.parseReq(req).data;
        if (params.langId === undefined || params.langId === null || params.langId === '') {
            params.langId = null;
        }
        let customerId = secure.getCustomerId(req, res);
        if (customerId) params.customerId = customerId;
+       
+       //api.question.prepare(params)
+
        params.deviceId = null;
        params.userId = null;
 
