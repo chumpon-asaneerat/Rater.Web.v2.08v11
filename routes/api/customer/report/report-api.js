@@ -254,3 +254,4 @@ api.question.qsets = class {
     }
 }
 
+module.exports.api = exports.api = api;
