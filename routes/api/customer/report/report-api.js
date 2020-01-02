@@ -58,10 +58,6 @@ api.question = class {
             params.langId = null;
         }
     }
-    static prepare(params) {
-        let util = api.question;
-        util.checkLanguageId(params)
-    }
     static async load(db, params) {
         let util = api.question;
         util.prepare(params)
