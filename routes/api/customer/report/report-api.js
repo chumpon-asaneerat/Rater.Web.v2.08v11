@@ -60,7 +60,7 @@ api.question = class {
     }
     static async load(db, params) {
         let util = api.question;
-        util.prepare(params)
+        util.checkLanguageId(params)
         let ret = {};
         await util.qslideitems.exec(db, params, ret)
         await util.qslides.exec(db, params, ret)

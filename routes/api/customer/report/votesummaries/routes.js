@@ -143,6 +143,17 @@ const api = class {
     }
 }
 
+api.votesummary = class {
+    static hasSlides(params) {
+        let slides = params.slides
+        return (slides && slides.length > 0)
+    }
+    static hasOrgs(params) {
+        let orgs = params.orgs;
+        return (orgs && orgs.length > 0)
+    }
+}
+
 //#region Implement - Get
 
 api.Get = class {
@@ -174,10 +185,10 @@ api.Get = class {
         let ret, dbresult;
         let result = {};
         // loop selected slide
-        if (slides && slides.length > 0) {
+        if (api.votesummary.hasSlides(params)) {
             for (let i = 0; i < slides.length; i++) {
                 oParams.qSeq = slides[i].qSeq;
-                if (orgs && orgs.length > 0) {
+                if (api.votesummary.hasOrgs(params)) {
                     for (let j = 0; j < orgs.length; j++) {
                         oParams.orgId = orgs[j].orgId;
                         // execute
@@ -199,7 +210,7 @@ api.Get = class {
         else {
             // no slide specificed
             oParams.qSeq = null;
-            if (orgs && orgs.length > 0) {
+            if (api.votesummary.hasOrgs(params)) {
                 for (let j = 0; j < orgs.length; j++) {
                     oParams.orgId = orgs[j].orgId;
                     // execute
