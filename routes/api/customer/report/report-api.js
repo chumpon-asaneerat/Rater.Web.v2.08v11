@@ -67,39 +67,6 @@ api.question = class {
         await util.qsets.exec(db, params, ret)
         return ret;
     }
-    static parse(db, params, data) {
-        let oParams = {}
-        oParams.langId = params.langId;
-        oParams.customerId = params.customerId;
-        oParams.beginDate = params.beginDate;
-        oParams.endDate = params.endDate;
-        oParams.qsetId = params.qsetId;
-
-        let slides = params.slides;
-        let orgs = params.orgs;
-
-        let result;
-
-        if (slides && slides.length > 0) {
-
-        }
-        else {
-
-        }
-
-        result = {
-            data: null,
-            errors: { hasError: false, errNum: 0, errMsg: '' },
-            out: {}
-        }
-        // set to result.
-        result.data = data;
-
-        return result;
-    }
-    static parseSlides(db, params, data, slides, orgs) {
-
-    }
 }
 api.question.qslideitems = class {
     static async exec(db, params, model) {

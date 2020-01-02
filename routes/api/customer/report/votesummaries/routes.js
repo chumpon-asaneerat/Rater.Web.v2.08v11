@@ -152,6 +152,40 @@ api.votesummary = class {
         let orgs = params.orgs;
         return (orgs && orgs.length > 0)
     }
+
+    static parse(db, params, data) {
+        let oParams = {}
+        oParams.langId = params.langId;
+        oParams.customerId = params.customerId;
+        oParams.beginDate = params.beginDate;
+        oParams.endDate = params.endDate;
+        oParams.qsetId = params.qsetId;
+
+        let slides = params.slides;
+        let orgs = params.orgs;
+
+        let result;
+
+        if (slides && slides.length > 0) {
+
+        }
+        else {
+
+        }
+
+        result = {
+            data: null,
+            errors: { hasError: false, errNum: 0, errMsg: '' },
+            out: {}
+        }
+        // set to result.
+        result.data = data;
+
+        return result;
+    }
+    static parseSlides(db, params, data, slides, orgs) {
+
+    }
 }
 
 //#region Implement - Get
