@@ -50,6 +50,9 @@ const api = class {
         let idx = maps.indexOf(value)
         return idx;
     }
+    static isEmpty(items) {
+        return (items && items.length > 0)
+    }
 
     static CreateVoteSummaries(obj, qset, results) {
         if (results && results.length > 0) {
@@ -307,40 +310,41 @@ api.question.qsets = class {
     }
 }
 api.votesummary = class {
-    static hasSlides(params) {
-        let slides = params.slides
-        return (slides && slides.length > 0)
-    }
-    static hasOrgs(orgs) {
-        return (orgs && orgs.length > 0)
-    }
-    static async GetVoteSummaries(db, params) {
-        let ret, dbresult;
-        ret = await db.GetVoteSummaries(params);
-        dbresult = validate(db, ret);
-        return dbresult;
-    }
     static async processSlides(db, params, slides, orgs, result, qset) {
+        let oParams = {};
+        oParams.langId = params.langId;
+        oParams.customerId = params.customerId;
+        oParams.beginDate = params.beginDate;
+        oParams.endDate = params.endDate;
+        oParams.qsetId = params.qsetId;
+
         for (let i = 0; i < slides.length; i++) {
-            params.qSeq = slides[i].qSeq;
-            if (api.votesummary.hasOrgs(orgs)) {
-                await api.votesummary.processOrgs(db, params, orgs, result, qset)
+            oParams.qSeq = slides[i].qSeq;
+            if (api.isEmpty(orgs)) {
+                await api.votesummary.processOrgs(db, oParams, orgs, result, qset)
             }
             else {
                 // no org specificed
-                await api.votesummary.processNoOrg(db, params, result, qset)
+                await api.votesummary.processNoOrg(db, oParams, result, qset)
             }
         }
     }
     static async processNoSlide(db, params, orgs, result, qset) {
+        let oParams = {};
+        oParams.langId = params.langId;
+        oParams.customerId = params.customerId;
+        oParams.beginDate = params.beginDate;
+        oParams.endDate = params.endDate;
+        oParams.qsetId = params.qsetId;
+
         // no slide specificed
-        params.qSeq = null;
-        if (api.votesummary.hasOrgs(orgs)) {
-            await api.votesummary.processOrgs(db, params, orgs, result, qset)
+        oParams.qSeq = null;
+        if (api.isEmpty(orgs)) {
+            await api.votesummary.processOrgs(db, oParams, orgs, result, qset)
         }
         else {
             // no org specificed
-            await api.votesummary.processNoOrg(db, params, result, qset)
+            await api.votesummary.processNoOrg(db, oParams, result, qset)
         }
     }
     static async processOrgs(db, params, orgs, result, qset) {
@@ -360,24 +364,23 @@ api.votesummary = class {
         dbresult = await api.votesummary.GetVoteSummaries(db, params);
         api.votesummary.CreateVoteSummaries(result, qset, dbresult.data)
     }
-    static CreateVoteSummaries(result, qset, data) {
-        api.CreateVoteSummaries(result, qset, data)
+    static async GetVoteSummaries(db, params) {
+        let ret, dbresult;
+        ret = await db.GetVoteSummaries(params);
+        dbresult = validate(db, ret);
+        return dbresult;
+    }
+    static CreateVoteSummaries(result, qset, results) {
+        api.CreateVoteSummaries(result, qset, results)
     }
     static async load(db, params) {
-        let oParams = {};
-        oParams.langId = params.langId;
-        oParams.customerId = params.customerId;
-        oParams.beginDate = params.beginDate;
-        oParams.endDate = params.endDate;
-        oParams.qsetId = params.qsetId;
-
         let qset = await api.question.load(db, params);
 
         let slides = params.slides;
         let orgs = params.orgs;
         let result = {};
         
-        if (api.votesummary.hasSlides(params)) {
+        if (api.isEmpty(slides)) {
             await api.votesummary.processSlides(db, params, slides, orgs, result, qset)
         }
         else {
