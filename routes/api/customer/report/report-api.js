@@ -46,102 +46,15 @@ const checkForError = (data) => {
 
 const api = class {
     static findIndex(items, property, value) {
-        let maps = items.map(item => { return item[property] })
-        let idx = maps.indexOf(value)
+        let idx = -1;
+        if (items) {
+            let maps = items.map(item => { return item[property] })
+            idx = maps.indexOf(value)
+        }
         return idx;
     }
     static isEmpty(items) {
         return (items && items.length > 0)
-    }
-
-    static CreateVoteSummaries(obj, qset, results) {
-        if (results && results.length > 0) {
-            for (let i = 0; i < results.length; i++) {
-                let row = results[i];
-                let landId = row.LangId;
-                if (!obj[landId]) {
-                    obj[landId] = {
-                        slides: []
-                    }
-                }
-                let cLangObj = obj[landId];
-                let cQSet = qset[landId]
-                cLangObj.customerId = row.CustomerId;
-                cLangObj.CustomerName = row.CustomerName;
-                cLangObj.qsetId = row.QSetId;
-                cLangObj.desc = cQSet.desc;
-                cLangObj.beginDate = cQSet.beginDate;
-                cLangObj.endDate = cQSet.endDate;
-                let slidemaps = cLangObj.slides.map(slide => { return slide.qseq })
-                let slideidx = slidemaps.indexOf(row.QSeq);
-                let currSlide;
-                let cqslidemap = cQSet.slides.map(qslide => { return qslide.qseq })
-                let cqslideidx = cqslidemap.indexOf(row.QSeq);
-                let cQSlide = (cqslideidx !== -1) ? cQSet.slides[cqslideidx] : null;
-
-                if (slideidx === -1) {
-                    currSlide = { 
-                        qseq: row.QSeq,
-                        text: (cQSlide) ? cQSlide.text : '',
-                        maxChoice: row.MaxChoice,
-                        choices: [],
-                        orgs: []
-                    }
-                    // setup choices
-                    cQSlide.items.forEach(item => {
-                        let choice = {
-                            choice: item.choice,
-                            text: item.text,
-                        }
-                        currSlide.choices.push(choice)
-                    })
-                    cLangObj.slides.push(currSlide)
-                }
-                else { 
-                    currSlide = cLangObj.slides[slideidx];
-                }
-
-                let orgmaps = currSlide.orgs.map(org => { return org.orgId });
-                let orgidx = orgmaps.indexOf(row.OrgId);
-                let currOrg;
-                if (orgidx === -1) {
-                    currOrg = { 
-                        orgId: row.OrgId,
-                        OrgName: row.OrgName,
-                        parentId: row.ParentId,
-                        branchId: row.BranchId,
-                        BranchName: row.BranchName,
-                        TotCnt: row.TotCnt,
-                        AvgPct: row.AvgPct,
-                        AvgTot: row.AvgTot,
-                        choices: []
-                    }
-                    currSlide.orgs.push(currOrg)
-                }
-                else { 
-                    currOrg = currSlide.orgs[orgidx];
-                }
-
-                let choicemaps = currOrg.choices.map(item => { return item.choice });
-                let choiceidx = choicemaps.indexOf(row.Choice);
-                let currChoice;
-
-                let cQItemmaps = (cQSlide) ? cQSlide.items.map(item => { return item.choice }) : null
-                let cQItemidx = (cQItemmaps) ? cQItemmaps.indexOf(row.Choice) : -1;
-                if (choiceidx === -1) {
-                    currChoice = {
-                        choice: row.Choice,
-                        text: (cQItemmaps && cQItemidx !== -1) ? cQSlide.items[cQItemidx].text : '',
-                        Cnt: row.Cnt,
-                        Pct: row.Pct,
-                    }
-                    currOrg.choices.push(currChoice)
-                }
-                else {
-                    currChoice = currOrg.choices[choiceidx];
-                }
-            }
-        }
     }
 }
 
@@ -370,8 +283,120 @@ api.votesummary = class {
         dbresult = validate(db, ret);
         return dbresult;
     }
-    static CreateVoteSummaries(result, qset, results) {
-        api.CreateVoteSummaries(result, qset, results)
+    static CreateVoteSummaries(obj, qset, results) {
+        if (results && results.length > 0) {
+            for (let i = 0; i < results.length; i++) {
+                let row = results[i];
+                api.votesummary.ParseVoteSummaryRow(obj, qset, row)
+            }
+        }
+    }
+    static ParseVoteSummaryRow(obj, qset, row) {
+        let cQSet = qset[row.LangId]
+        let cqslideidx = api.findIndex(cQSet.slides, 'qseq', row.QSeq) 
+        let cQSlide = (cqslideidx !== -1) ? cQSet.slides[cqslideidx] : null;
+
+        let cLangObj = api.votesummary.GetLangObj(obj, row, cQSlide)
+        let currSlide = api.votesummary.GetCurrentSlide(row, cLangObj, cQSlide)
+        let currOrg = api.votesummary.GetCurrentOrg(row, currSlide)
+        api.votesummary.GetOrgChoice(row, cQSlide, currOrg)
+    }
+    static GetLangObj(obj, row, cQSet) {
+        let landId = row.LangId;
+        if (!obj[landId]) {
+            obj[landId] = {
+                slides: []
+            }
+        }
+        let ret = obj[landId]
+        ret.customerId = row.CustomerId;
+        ret.CustomerName = row.CustomerName;
+        ret.qsetId = row.QSetId;
+        ret.desc = cQSet.desc;
+        ret.beginDate = cQSet.beginDate;
+        ret.endDate = cQSet.endDate;
+        return ret;
+    }
+    static GetCurrentSlide(row, cLangObj, cQSlide) {
+        let ret;
+        let slideidx = api.findIndex(cLangObj.slides, 'qseq', row.QSeq)
+        if (slideidx === -1) {
+            ret = { 
+                qseq: row.QSeq,
+                text: (cQSlide) ? cQSlide.text : '',
+                maxChoice: row.MaxChoice,
+                choices: [],
+                orgs: []
+            }
+            // setup choices
+            api.votesummary.setupSlideChoices(ret, cQSlide)
+            cLangObj.slides.push(ret)
+        }
+        else {
+            ret = cLangObj.slides[slideidx];
+        }
+        return ret;
+    }
+    static setupSlideChoices(result, cQSlide) {
+        if (cQSlide && cQSlide.items.length > 0) {
+            for (let i = 0; i < cQSlide.items.length; i++) {
+                let item = cQSlide.items[i]
+                let choice = {
+                    choice: item.choice,
+                    text: item.text,
+                }
+                result.choices.push(choice)
+            }
+        }
+    }
+    static GetCurrentOrg(row, currSlide) {
+        let orgidx = api.findIndex(currSlide.orgs, 'orgId', row.OrgId)
+        let ret;
+        if (orgidx === -1) {
+            ret = { 
+                orgId: row.OrgId,
+                OrgName: row.OrgName,
+                parentId: row.ParentId,
+                branchId: row.BranchId,
+                BranchName: row.BranchName,
+                TotCnt: row.TotCnt,
+                AvgPct: row.AvgPct,
+                AvgTot: row.AvgTot,
+                choices: []
+            }
+            currSlide.orgs.push(ret)
+        }
+        else { 
+            ret = currSlide.orgs[orgidx];
+        }
+        return ret;
+    }
+    static GetOrgChoice(row, cQSlide, currOrg) {
+        let choiceidx = api.findIndex(currOrg.choices, 'choice', row.Choice)
+        let ret;
+        if (choiceidx === -1) {
+            ret = {
+                choice: row.Choice,
+                text: api.votesummary.getOrgChoiceText(row, cQSlide),
+                Cnt: row.Cnt,
+                Pct: row.Pct,
+            }
+            currOrg.choices.push(ret)
+        }
+        else {
+            ret = currOrg.choices[choiceidx];
+        }
+        return ret;
+    }
+    static getOrgChoiceText(row, cQSlide) {
+        let ret = ''
+        if (cQSlide && cQSlide.items.length > 0) {
+            let cQItemidx = api.findIndex(cQSlide.items, 'choice', row.Choice)
+            if (cQItemidx !== -1) {
+                ret = cQSlide.items[cQItemidx].text;
+            }
+        }
+        return ret
     }
     static async load(db, params) {
         let qset = await api.question.load(db, params);
