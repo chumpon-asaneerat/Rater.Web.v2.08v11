@@ -321,7 +321,6 @@ api.votesummary = class {
         return dbresult;
     }
     static async processSlides(db, params, slides, orgs, result, qset) {
-        let dbresult;
         for (let i = 0; i < slides.length; i++) {
             params.qSeq = slides[i].qSeq;
             if (api.votesummary.hasOrgs(orgs)) {
@@ -350,7 +349,7 @@ api.votesummary = class {
             params.orgId = orgs[j].orgId;
             // execute
             dbresult = await api.votesummary.GetVoteSummaries(db, params);
-            api.CreateVoteSummaries(result, qset, dbresult.data)
+            api.votesummary.CreateVoteSummaries(result, qset, dbresult.data)
         }
     }
     static async processNoOrg(db, params, result, qset) {
@@ -359,9 +358,11 @@ api.votesummary = class {
         params.orgId = null;
         // execute
         dbresult = await api.votesummary.GetVoteSummaries(db, params);
-        api.CreateVoteSummaries(result, qset, dbresult.data)
+        api.votesummary.CreateVoteSummaries(result, qset, dbresult.data)
     }
-
+    static CreateVoteSummaries(result, qset, data) {
+        api.CreateVoteSummaries(result, qset, data)
+    }
     static async load(db, params) {
         let oParams = {};
         oParams.langId = params.langId;
@@ -375,7 +376,7 @@ api.votesummary = class {
         let slides = params.slides;
         let orgs = params.orgs;
         let result = {};
-        // loop selected slide
+        
         if (api.votesummary.hasSlides(params)) {
             await api.votesummary.processSlides(db, params, slides, orgs, result, qset)
         }
@@ -384,39 +385,6 @@ api.votesummary = class {
         }
 
         return result;
-    }
-    static parse(db, params, data) {
-        let oParams = {}
-        oParams.langId = params.langId;
-        oParams.customerId = params.customerId;
-        oParams.beginDate = params.beginDate;
-        oParams.endDate = params.endDate;
-        oParams.qsetId = params.qsetId;
-
-        let slides = params.slides;
-        let orgs = params.orgs;
-
-        let result;
-
-        if (slides && slides.length > 0) {
-
-        }
-        else {
-
-        }
-
-        result = {
-            data: null,
-            errors: { hasError: false, errNum: 0, errMsg: '' },
-            out: {}
-        }
-        // set to result.
-        result.data = data;
-
-        return result;
-    }
-    static parseSlides(db, params, data, slides, orgs) {
-
     }
 }
 

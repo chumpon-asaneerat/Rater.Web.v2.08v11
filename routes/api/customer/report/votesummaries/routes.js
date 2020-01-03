@@ -70,7 +70,6 @@ api.Get = class {
         return await rptAPI.votesummary.load(db, params);
     }
     static parse(db, data, callback) {
-        //let result = api.question.parse(db, params, data)
         let result = {
             data: null,
             errors: {
