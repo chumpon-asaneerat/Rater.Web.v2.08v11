@@ -101,17 +101,6 @@ router.use(secure.checkAccess);
 // routes for vote summaries
 router.all('/report/votesummaries/search', api.Get.entry);
 
-router.all('/report/votesummaries/test1', (req, res) => {
-    let db = new sqldb();
-    let params = api.Get.prepare(req, res);
-    let fn = async () => { 
-        return await rptAPI.question.load(db, params);
-    }
-    exec(db, fn).then(data => {
-        WebServer.sendJson(req, res, data);
-    })
-});
-
 const init_routes = (svr) => {
     svr.route('/customer/api/', router);
 };
