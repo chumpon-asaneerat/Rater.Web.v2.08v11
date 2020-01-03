@@ -1,0 +1,19 @@
+#### GetStaffSummaries
+POST http://localhost:3000/customer/api/report/staffsummaries/search
+content-type: application/json
+
+{
+    "langId": null,
+    "customerId": "EDL-C2019100003",
+    "beginDate": "2019-10-01",
+    "endDate": "2019-11-01",
+    "qsetId": "QS00001",
+    "slides": [
+        { "qSeq": 3 }
+    ],
+    "orgs": null,
+    "users": [
+        { "userId": "M00001" },
+        { "userId": "M00008" }
+    ]
+}
