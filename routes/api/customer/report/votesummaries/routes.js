@@ -153,58 +153,6 @@ api.votesummary = class {
         return (orgs && orgs.length > 0)
     }
     static async load(db, params) {
-
-    }
-    static parse(db, params, data) {
-        let oParams = {}
-        oParams.langId = params.langId;
-        oParams.customerId = params.customerId;
-        oParams.beginDate = params.beginDate;
-        oParams.endDate = params.endDate;
-        oParams.qsetId = params.qsetId;
-
-        let slides = params.slides;
-        let orgs = params.orgs;
-
-        let result;
-
-        if (slides && slides.length > 0) {
-
-        }
-        else {
-
-        }
-
-        result = {
-            data: null,
-            errors: { hasError: false, errNum: 0, errMsg: '' },
-            out: {}
-        }
-        // set to result.
-        result.data = data;
-
-        return result;
-    }
-    static parseSlides(db, params, data, slides, orgs) {
-
-    }
-}
-
-//#region Implement - Get
-
-api.Get = class {
-    static prepare(req, res) {
-       let params = WebServer.parseReq(req).data;
-       rptAPI.question.checkLanguageId(params)
-       let customerId = secure.getCustomerId(req, res);
-       if (customerId) params.customerId = customerId;
-       params.deviceId = null;
-       params.userId = null;
-
-        return params;
-    }
-    static async call(db, params) { 
-        //return await api.question.load(db, params);
         let oParams = {};
         oParams.langId = params.langId;
         oParams.customerId = params.customerId;
@@ -213,8 +161,6 @@ api.Get = class {
         oParams.qsetId = params.qsetId;
 
         let qset = await rptAPI.question.load(db, params);
-
-        console.log(qset)
 
         let slides = params.slides;
         let orgs = params.orgs;
@@ -267,6 +213,57 @@ api.Get = class {
 
         //return db.GetVoteSummaries(params);
         return result;
+    }
+    static parse(db, params, data) {
+        let oParams = {}
+        oParams.langId = params.langId;
+        oParams.customerId = params.customerId;
+        oParams.beginDate = params.beginDate;
+        oParams.endDate = params.endDate;
+        oParams.qsetId = params.qsetId;
+
+        let slides = params.slides;
+        let orgs = params.orgs;
+
+        let result;
+
+        if (slides && slides.length > 0) {
+
+        }
+        else {
+
+        }
+
+        result = {
+            data: null,
+            errors: { hasError: false, errNum: 0, errMsg: '' },
+            out: {}
+        }
+        // set to result.
+        result.data = data;
+
+        return result;
+    }
+    static parseSlides(db, params, data, slides, orgs) {
+
+    }
+}
+
+//#region Implement - Get
+
+api.Get = class {
+    static prepare(req, res) {
+       let params = WebServer.parseReq(req).data;
+       rptAPI.question.checkLanguageId(params)
+       let customerId = secure.getCustomerId(req, res);
+       if (customerId) params.customerId = customerId;
+       params.deviceId = null;
+       params.userId = null;
+
+        return params;
+    }
+    static async call(db, params) { 
+        return await api.votesummary.load(db, params);
     }
     static parse(db, data, callback) {
         //let result = api.question.parse(db, params, data)
