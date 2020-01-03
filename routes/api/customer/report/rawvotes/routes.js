@@ -137,55 +137,6 @@ api.Get = class {
 
 //#endregion
 
-//#region Implement - Save
-
-api.Save = class {
-    static prepare(req, res) {
-        let params = WebServer.parseReq(req).data;
-        /*
-        let customerId = secure.getCustomerId(req, res);
-        if (customerId) params.customerId = customerId;
-        params.langId = null; // force null.
-        params.branchId = null;
-        params.enabled = true;
-        */
-        return params;
-    }
-    static async call(db, params) { 
-        return null;
-    }
-    static parse(db, data, callback) {
-        let dbResult = validate(db, data);
-        let result = {}        
-        result.data = null
-        //result.src = dbResult.data
-        result.errors = dbResult.errors
-        //result.multiple = dbResult.multiple
-        //result.datasets = dbResult.datasets
-        result.out = dbResult.out
-
-        let records = dbResult.data;
-        let ret = {};
-
-        // set to result.
-        result.data = ret;
-
-        callback(result);
-    }
-    static entry(req, res) {
-        let db = new sqldb();
-        let params = api.Save.prepare(req, res);
-        let fn = async () => { return api.Save.call(db, params); }
-        exec(db, fn).then(data => {
-            api.Save.parse(db, data, (result) => {
-                WebServer.sendJson(req, res, result);
-            });
-        })
-    }
-}
-
-//#endregion
-
 //#region Implement - Delete
 
 api.Delete = class {
@@ -238,7 +189,6 @@ api.Delete = class {
 router.use(secure.checkAccess);
 // routes for raw votes
 router.all('/report/rawvotes/search', api.Get.entry);
-//router.post('/report/rawvotes/save', api.Save.entry);
 //router.post('/report/rawvotes/delete', api.Delete.entry);
 
 const init_routes = (svr) => {
