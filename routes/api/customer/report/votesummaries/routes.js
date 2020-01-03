@@ -152,7 +152,9 @@ api.votesummary = class {
         let orgs = params.orgs;
         return (orgs && orgs.length > 0)
     }
+    static async load(db, params) {
 
+    }
     static parse(db, params, data) {
         let oParams = {}
         oParams.langId = params.langId;
