@@ -50,6 +50,96 @@ const api = class {
         let idx = maps.indexOf(value)
         return idx;
     }
+
+    static CreateVoteSummaries(obj, qset, results) {
+        if (results && results.length > 0) {
+            for (let i = 0; i < results.length; i++) {
+                let row = results[i];
+                let landId = row.LangId;
+                if (!obj[landId]) {
+                    obj[landId] = {
+                        slides: []
+                    }
+                }
+                let cLangObj = obj[landId];
+                let cQSet = qset[landId]
+                cLangObj.customerId = row.CustomerId;
+                cLangObj.CustomerName = row.CustomerName;
+                cLangObj.qsetId = row.QSetId;
+                cLangObj.desc = cQSet.desc;
+                cLangObj.beginDate = cQSet.beginDate;
+                cLangObj.endDate = cQSet.endDate;
+                let slidemaps = cLangObj.slides.map(slide => { return slide.qseq })
+                let slideidx = slidemaps.indexOf(row.QSeq);
+                let currSlide;
+                let cqslidemap = cQSet.slides.map(qslide => { return qslide.qseq })
+                let cqslideidx = cqslidemap.indexOf(row.QSeq);
+                let cQSlide = (cqslideidx !== -1) ? cQSet.slides[cqslideidx] : null;
+
+                if (slideidx === -1) {
+                    currSlide = { 
+                        qseq: row.QSeq,
+                        text: (cQSlide) ? cQSlide.text : '',
+                        maxChoice: row.MaxChoice,
+                        choices: [],
+                        orgs: []
+                    }
+                    // setup choices
+                    cQSlide.items.forEach(item => {
+                        let choice = {
+                            choice: item.choice,
+                            text: item.text,
+                        }
+                        currSlide.choices.push(choice)
+                    })
+                    cLangObj.slides.push(currSlide)
+                }
+                else { 
+                    currSlide = cLangObj.slides[slideidx];
+                }
+
+                let orgmaps = currSlide.orgs.map(org => { return org.orgId });
+                let orgidx = orgmaps.indexOf(row.OrgId);
+                let currOrg;
+                if (orgidx === -1) {
+                    currOrg = { 
+                        orgId: row.OrgId,
+                        OrgName: row.OrgName,
+                        parentId: row.ParentId,
+                        branchId: row.BranchId,
+                        BranchName: row.BranchName,
+                        TotCnt: row.TotCnt,
+                        AvgPct: row.AvgPct,
+                        AvgTot: row.AvgTot,
+                        choices: []
+                    }
+                    currSlide.orgs.push(currOrg)
+                }
+                else { 
+                    currOrg = currSlide.orgs[orgidx];
+                }
+
+                let choicemaps = currOrg.choices.map(item => { return item.choice });
+                let choiceidx = choicemaps.indexOf(row.Choice);
+                let currChoice;
+
+                let cQItemmaps = (cQSlide) ? cQSlide.items.map(item => { return item.choice }) : null
+                let cQItemidx = (cQItemmaps) ? cQItemmaps.indexOf(row.Choice) : -1;
+                if (choiceidx === -1) {
+                    currChoice = {
+                        choice: row.Choice,
+                        text: (cQItemmaps && cQItemidx !== -1) ? cQSlide.items[cQItemidx].text : '',
+                        Cnt: row.Cnt,
+                        Pct: row.Pct,
+                    }
+                    currOrg.choices.push(currChoice)
+                }
+                else {
+                    currChoice = currOrg.choices[choiceidx];
+                }
+            }
+        }
+    }
 }
 
 api.question = class {
@@ -214,6 +304,113 @@ api.question.qsets = class {
             langObj.beginDate = row.BeginDate;
             langObj.endDate = row.EndDate;
         }
+    }
+}
+api.votesummary = class {
+    static hasSlides(params) {
+        let slides = params.slides
+        return (slides && slides.length > 0)
+    }
+    static hasOrgs(params) {
+        let orgs = params.orgs;
+        return (orgs && orgs.length > 0)
+    }
+    static async GetVoteSummaries(db, params) {
+        let ret, dbresult;
+        ret = await db.GetVoteSummaries(params);
+        dbresult = validate(db, ret);
+        return dbresult;
+    }
+
+    static async load(db, params) {
+        let oParams = {};
+        oParams.langId = params.langId;
+        oParams.customerId = params.customerId;
+        oParams.beginDate = params.beginDate;
+        oParams.endDate = params.endDate;
+        oParams.qsetId = params.qsetId;
+
+        let qset = await api.question.load(db, params);
+
+        let slides = params.slides;
+        let orgs = params.orgs;
+        let dbresult;
+        let result = {};
+        // loop selected slide
+        if (api.votesummary.hasSlides(params)) {
+            for (let i = 0; i < slides.length; i++) {
+                oParams.qSeq = slides[i].qSeq;
+                if (api.votesummary.hasOrgs(params)) {
+                    for (let j = 0; j < orgs.length; j++) {
+                        oParams.orgId = orgs[j].orgId;
+                        // execute
+                        dbresult = await api.votesummary.GetVoteSummaries(db, oParams);
+                        api.CreateVoteSummaries(result, qset, dbresult.data)
+                    }
+                }
+                else {
+                    // no org specificed
+                    oParams.orgId = null;
+                    // execute
+                    dbresult = await api.votesummary.GetVoteSummaries(db, oParams);
+                    api.CreateVoteSummaries(result, qset, dbresult.data)
+                }
+            }
+        }
+        else {
+            // no slide specificed
+            oParams.qSeq = null;
+            if (api.votesummary.hasOrgs(params)) {
+                for (let j = 0; j < orgs.length; j++) {
+                    oParams.orgId = orgs[j].orgId;
+                    // execute
+                    dbresult = await api.votesummary.GetVoteSummaries(db, oParams);
+                    api.CreateVoteSummaries(result, qset, dbresult.data)
+                }
+            }
+            else {
+                // no org specificed
+                oParams.orgId = null;
+                // execute
+                dbresult = await api.votesummary.GetVoteSummaries(db, oParams);
+                api.CreateVoteSummaries(result, qset, dbresult.data)
+            }
+        }
+
+        return result;
+    }
+    static parse(db, params, data) {
+        let oParams = {}
+        oParams.langId = params.langId;
+        oParams.customerId = params.customerId;
+        oParams.beginDate = params.beginDate;
+        oParams.endDate = params.endDate;
+        oParams.qsetId = params.qsetId;
+
+        let slides = params.slides;
+        let orgs = params.orgs;
+
+        let result;
+
+        if (slides && slides.length > 0) {
+
+        }
+        else {
+
+        }
+
+        result = {
+            data: null,
+            errors: { hasError: false, errNum: 0, errMsg: '' },
+            out: {}
+        }
+        // set to result.
+        result.data = data;
+
+        return result;
+    }
+    static parseSlides(db, params, data, slides, orgs) {
+
     }
 }
 
