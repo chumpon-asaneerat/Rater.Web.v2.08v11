@@ -7,6 +7,8 @@ const nlib = require(path.join(rootPath, 'nlib', 'nlib'));
 const sqldb = require(path.join(nlib.paths.root, 'RaterWebv2x08r9.db'));
 const secure = require(path.join(rootPath, 'edl', 'rater-secure')).RaterSecure;
 
+const rptAPI = require('../report-api').api;
+
 const WebServer = require(path.join(rootPath, 'nlib', 'nlib-express'));
 const WebRouter = WebServer.WebRouter;
 const router = new WebRouter();
