@@ -311,8 +311,7 @@ api.votesummary = class {
         let slides = params.slides
         return (slides && slides.length > 0)
     }
-    static hasOrgs(params) {
-        let orgs = params.orgs;
+    static hasOrgs(orgs) {
         return (orgs && orgs.length > 0)
     }
     static async GetVoteSummaries(db, params) {
@@ -320,6 +319,47 @@ api.votesummary = class {
         ret = await db.GetVoteSummaries(params);
         dbresult = validate(db, ret);
         return dbresult;
+    }
+    static async processSlides(db, params, slides, orgs, result, qset) {
+        let dbresult;
+        for (let i = 0; i < slides.length; i++) {
+            params.qSeq = slides[i].qSeq;
+            if (api.votesummary.hasOrgs(orgs)) {
+                await api.votesummary.processOrgs(db, params, orgs, result, qset)
+            }
+            else {
+                // no org specificed
+                await api.votesummary.processNoOrg(db, params, result, qset)
+            }
+        }
+    }
+    static async processNoSlide(db, params, orgs, result, qset) {
+        // no slide specificed
+        params.qSeq = null;
+        if (api.votesummary.hasOrgs(orgs)) {
+            await api.votesummary.processOrgs(db, params, orgs, result, qset)
+        }
+        else {
+            // no org specificed
+            await api.votesummary.processNoOrg(db, params, result, qset)
+        }
+    }
+    static async processOrgs(db, params, orgs, result, qset) {
+        let dbresult;
+        for (let j = 0; j < orgs.length; j++) {
+            params.orgId = orgs[j].orgId;
+            // execute
+            dbresult = await api.votesummary.GetVoteSummaries(db, params);
+            api.CreateVoteSummaries(result, qset, dbresult.data)
+        }
+    }
+    static async processNoOrg(db, params, result, qset) {
+        // no org specificed
+        let dbresult;
+        params.orgId = null;
+        // execute
+        dbresult = await api.votesummary.GetVoteSummaries(db, params);
+        api.CreateVoteSummaries(result, qset, dbresult.data)
     }
 
     static async load(db, params) {
@@ -334,47 +374,13 @@ api.votesummary = class {
 
         let slides = params.slides;
         let orgs = params.orgs;
-        let dbresult;
         let result = {};
         // loop selected slide
         if (api.votesummary.hasSlides(params)) {
-            for (let i = 0; i < slides.length; i++) {
-                oParams.qSeq = slides[i].qSeq;
-                if (api.votesummary.hasOrgs(params)) {
-                    for (let j = 0; j < orgs.length; j++) {
-                        oParams.orgId = orgs[j].orgId;
-                        // execute
-                        dbresult = await api.votesummary.GetVoteSummaries(db, oParams);
-                        api.CreateVoteSummaries(result, qset, dbresult.data)
-                    }
-                }
-                else {
-                    // no org specificed
-                    oParams.orgId = null;
-                    // execute
-                    dbresult = await api.votesummary.GetVoteSummaries(db, oParams);
-                    api.CreateVoteSummaries(result, qset, dbresult.data)
-                }
-            }
+            await api.votesummary.processSlides(db, params, slides, orgs, result, qset)
         }
         else {
-            // no slide specificed
-            oParams.qSeq = null;
-            if (api.votesummary.hasOrgs(params)) {
-                for (let j = 0; j < orgs.length; j++) {
-                    oParams.orgId = orgs[j].orgId;
-                    // execute
-                    dbresult = await api.votesummary.GetVoteSummaries(db, oParams);
-                    api.CreateVoteSummaries(result, qset, dbresult.data)
-                }
-            }
-            else {
-                // no org specificed
-                oParams.orgId = null;
-                // execute
-                dbresult = await api.votesummary.GetVoteSummaries(db, oParams);
-                api.CreateVoteSummaries(result, qset, dbresult.data)
-            }
+            await api.votesummary.processNoSlide(db, params, orgs, result, qset)
         }
 
         return result;
