@@ -415,7 +415,6 @@ api.votesummary = class {
         return result;
     }
 }
-
 api.staffsummary = class {
     static async processSlides(db, params, slides, orgs, result, qset) {
         let oParams = {};
@@ -490,9 +489,9 @@ api.staffsummary = class {
         let cqslideidx = api.findIndex(cQSet.slides, 'qseq', row.QSeq) 
         let cQSlide = (cqslideidx !== -1) ? cQSet.slides[cqslideidx] : null;
 
-        let cLangObj = api.votesummary.GetLangObj(obj, row, cQSlide)
-        let currSlide = api.votesummary.GetCurrentSlide(row, cLangObj, cQSlide)
-        let currOrg = api.votesummary.GetCurrentOrg(row, currSlide)
+        let cLangObj = api.staffsummary.GetLangObj(obj, row, cQSlide)
+        let currSlide = api.staffsummary.GetCurrentSlide(row, cLangObj, cQSlide)
+        let currOrg = api.staffsummary.GetCurrentOrg(row, currSlide)
         api.staffsummary.GetOrgChoice(row, cQSlide, currOrg)
     }
     static GetLangObj(obj, row, cQSet) {
