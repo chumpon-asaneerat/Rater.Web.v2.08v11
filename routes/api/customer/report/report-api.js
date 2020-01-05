@@ -608,5 +608,198 @@ api.staffsummary = class {
         return result;
     }
 }
+api.rawvote = class {
+    static async processSlides(db, params, slides, orgs, result, qset) {
+        let oParams = {};
+        oParams.langId = params.langId;
+        oParams.customerId = params.customerId;
+        oParams.beginDate = params.beginDate;
+        oParams.endDate = params.endDate;
+        oParams.qsetId = params.qsetId;
+
+        for (let i = 0; i < slides.length; i++) {
+            oParams.qSeq = slides[i].qSeq;
+            if (api.isEmpty(orgs)) {
+                await api.rawvote.processOrgs(db, oParams, orgs, result, qset)
+            }
+            else {
+                // no org specificed
+                await api.rawvote.processNoOrg(db, oParams, result, qset)
+            }
+        }
+    }
+    static async processNoSlide(db, params, orgs, result, qset) {
+        let oParams = {};
+        oParams.langId = params.langId;
+        oParams.customerId = params.customerId;
+        oParams.beginDate = params.beginDate;
+        oParams.endDate = params.endDate;
+        oParams.qsetId = params.qsetId;
+
+        // no slide specificed
+        oParams.qSeq = null;
+        if (api.isEmpty(orgs)) {
+            await api.rawvote.processOrgs(db, oParams, orgs, result, qset)
+        }
+        else {
+            // no org specificed
+            await api.rawvote.processNoOrg(db, oParams, result, qset)
+        }
+    }
+    static async processOrgs(db, params, orgs, result, qset) {
+        let dbresult;
+        for (let j = 0; j < orgs.length; j++) {
+            params.orgId = orgs[j].orgId;
+            // execute
+            dbresult = await api.rawvote.GetVoteSummaries(db, params);
+            api.rawvote.CreateStaffSummaries(result, qset, dbresult.data)
+        }
+    }
+    static async processNoOrg(db, params, result, qset) {
+        // no org specificed
+        let dbresult;
+        params.orgId = null;
+        // execute
+        dbresult = await api.rawvote.GetRawVotes(db, params);
+        api.rawvote.CreateGetRawVotes(result, qset, dbresult.data)
+    }
+    static async GetRawVotes(db, params) {
+        let ret, dbresult;
+        ret = await db.GetRawVote(params);
+        dbresult = validate(db, ret);
+        return dbresult;
+    }
+    static CreateGetRawVotes(obj, qset, results) {
+        if (results && results.length > 0) {
+            for (let i = 0; i < results.length; i++) {
+                let row = results[i];
+                api.rawvote.ParseRawVoteRow(obj, qset, row)
+            }
+        }
+    }
+    static ParseRawVoteRow(obj, qset, row) {
+        let cQSet = qset[row.LangId]
+        let cqslideidx = api.findIndex(cQSet.slides, 'qseq', row.QSeq) 
+        let cQSlide = (cqslideidx !== -1) ? cQSet.slides[cqslideidx] : null;
+
+        let cLangObj = api.rawvote.GetLangObj(obj, row, cQSlide)
+        let currSlide = api.rawvote.GetCurrentSlide(row, cLangObj, cQSlide)
+        let currOrg = api.rawvote.GetCurrentOrg(row, currSlide)
+        api.rawvote.GetOrgChoice(row, cQSlide, currOrg)
+    }
+    static GetLangObj(obj, row, cQSet) {
+        let landId = row.LangId;
+        if (!obj[landId]) {
+            obj[landId] = {
+                slides: []
+            }
+        }
+        let ret = obj[landId]
+        ret.customerId = row.CustomerId;
+        ret.CustomerName = row.CustomerName;
+        ret.qsetId = row.QSetId;
+        ret.desc = cQSet.desc;
+        ret.beginDate = cQSet.beginDate;
+        ret.endDate = cQSet.endDate;
+        return ret;
+    }
+    static GetCurrentSlide(row, cLangObj, cQSlide) {
+        let ret;
+        let slideidx = api.findIndex(cLangObj.slides, 'qseq', row.QSeq)
+        if (slideidx === -1) {
+            ret = { 
+                qseq: row.QSeq,
+                text: (cQSlide) ? cQSlide.text : '',
+                maxChoice: row.MaxChoice,
+                choices: [],
+                orgs: []
+            }
+            // setup choices
+            api.rawvote.setupSlideChoices(ret, cQSlide)
+            cLangObj.slides.push(ret)
+        }
+        else {
+            ret = cLangObj.slides[slideidx];
+        }
+        return ret;
+    }
+    static setupSlideChoices(result, cQSlide) {
+        if (cQSlide && cQSlide.items.length > 0) {
+            for (let i = 0; i < cQSlide.items.length; i++) {
+                let item = cQSlide.items[i]
+                let choice = {
+                    choice: item.choice,
+                    text: item.text,
+                }
+                result.choices.push(choice)
+            }
+        }
+    }
+    static GetCurrentOrg(row, currSlide) {
+        let orgidx = api.findIndex(currSlide.orgs, 'orgId', row.OrgId)
+        let ret;
+        if (orgidx === -1) {
+            ret = { 
+                orgId: row.OrgId,
+                OrgName: row.OrgName,
+                parentId: row.ParentId,
+                branchId: row.BranchId,
+                BranchName: row.BranchName,
+                TotCnt: row.TotCnt,
+                AvgPct: row.AvgPct,
+                AvgTot: row.AvgTot,
+                choices: []
+            }
+            currSlide.orgs.push(ret)
+        }
+        else { 
+            ret = currSlide.orgs[orgidx];
+        }
+        return ret;
+    }
+    static GetOrgChoice(row, cQSlide, currOrg) {
+        let choiceidx = api.findIndex(currOrg.choices, 'choice', row.Choice)
+        let ret;
+        if (choiceidx === -1) {
+            ret = {
+                choice: row.Choice,
+                text: api.rawvote.getOrgChoiceText(row, cQSlide),
+                Cnt: row.Cnt,
+                Pct: row.Pct,
+            }
+            currOrg.choices.push(ret)
+        }
+        else {
+            ret = currOrg.choices[choiceidx];
+        }
+        return ret;
+    }
+    static getOrgChoiceText(row, cQSlide) {
+        let ret = ''
+        if (cQSlide && cQSlide.items.length > 0) {
+            let cQItemidx = api.findIndex(cQSlide.items, 'choice', row.Choice)
+            if (cQItemidx !== -1) {
+                ret = cQSlide.items[cQItemidx].text;
+            }
+        }
+        return ret
+    }
+    static async load(db, params) {
+        let qset = await api.question.load(db, params);
+
+        let slides = params.slides;
+        let orgs = params.orgs;
+        let result = {};
+        
+        if (api.isEmpty(slides)) {
+            await api.rawvote.processSlides(db, params, slides, orgs, result, qset)
+        }
+        else {
+            await api.rawvote.processNoSlide(db, params, orgs, result, qset)
+        }
+
+        return result;
+    }
+}
 
 module.exports.api = exports.api = api;
