@@ -24,9 +24,5 @@ content-type: application/json
     "slides": [
         { "qSeq": 3 }
     ],
-    "orgs": null,
-    "users": [
-        { "userId": "M00001" },
-        { "userId": "M00008" }
-    ]
+    "orgId": null
 }
