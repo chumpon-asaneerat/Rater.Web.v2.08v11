@@ -69,7 +69,7 @@
         .link-item .link-text {
             margin: 0 auto;
             min-width: 80px;
-            max-width: 120px;
+            max-width: 125px;
             display: inline-block;
         }
         .links-dropbox {
