@@ -1314,35 +1314,6 @@
             ]
         }
     },
-    "GetQSets": {
-        "type": "PROCEDURE",
-        "updated": "2019-10-10T16:23:27.940Z",
-        "parameter": {
-            "inputs": [
-                {
-                    "name": "langId",
-                    "type": "nvarchar(3)",
-                    "default": "NULL"
-                },
-                {
-                    "name": "customerId",
-                    "type": "nvarchar(30)",
-                    "default": "NULL"
-                },
-                {
-                    "name": "qSetId",
-                    "type": "nvarchar(30)",
-                    "default": "NULL"
-                },
-                {
-                    "name": "enabled",
-                    "type": "bit",
-                    "default": "NULL"
-                }
-            ],
-            "outputs": []
-        }
-    },
     "SaveQSlide": {
         "type": "PROCEDURE",
         "updated": "2019-10-10T16:23:27.947Z",
@@ -2085,94 +2056,6 @@
             ]
         }
     },
-    "FilterOrgs": {
-        "type": "PROCEDURE",
-        "updated": "2019-11-07T16:05:46.497Z",
-        "parameter": {
-            "inputs": [
-                {
-                    "name": "langId",
-                    "type": "nvarchar(3)"
-                },
-                {
-                    "name": "customerId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "qsetId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "qseq",
-                    "type": "int"
-                },
-                {
-                    "name": "beginDate",
-                    "type": "datetime"
-                },
-                {
-                    "name": "endDate",
-                    "type": "datetime"
-                }
-            ],
-            "outputs": [
-                {
-                    "name": "errNum",
-                    "type": "int"
-                },
-                {
-                    "name": "errMsg",
-                    "type": "nvarchar(100)"
-                }
-            ]
-        }
-    },
-    "FilterMembers": {
-        "type": "PROCEDURE",
-        "updated": "2019-11-07T18:56:47.853Z",
-        "parameter": {
-            "inputs": [
-                {
-                    "name": "langId",
-                    "type": "nvarchar(3)"
-                },
-                {
-                    "name": "customerId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "qsetId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "qseq",
-                    "type": "int"
-                },
-                {
-                    "name": "beginDate",
-                    "type": "datetime"
-                },
-                {
-                    "name": "endDate",
-                    "type": "datetime"
-                },
-                {
-                    "name": "orgId",
-                    "type": "nvarchar(30)"
-                }
-            ],
-            "outputs": [
-                {
-                    "name": "errNum",
-                    "type": "int"
-                },
-                {
-                    "name": "errMsg",
-                    "type": "nvarchar(100)"
-                }
-            ]
-        }
-    },
     "DeleteMemberInfo": {
         "type": "PROCEDURE",
         "updated": "2019-12-16T07:21:56.487Z",
@@ -2589,9 +2472,38 @@
             ]
         }
     },
+    "GetQSets": {
+        "type": "PROCEDURE",
+        "updated": "2020-01-07T11:42:34.340Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "qSetId",
+                    "type": "nvarchar(30)",
+                    "default": "NULL"
+                },
+                {
+                    "name": "enabled",
+                    "type": "bit",
+                    "default": "NULL"
+                }
+            ],
+            "outputs": []
+        }
+    },
     "GetQSetByDate": {
         "type": "PROCEDURE",
-        "updated": "2019-12-26T15:27:44.537Z",
+        "updated": "2020-01-07T11:46:40.370Z",
         "parameter": {
             "inputs": [
                 {
@@ -2623,6 +2535,94 @@
                 {
                     "name": "errMsg",
                     "type": "nvarchar(max)"
+                }
+            ]
+        }
+    },
+    "FilterVoteMembers": {
+        "type": "PROCEDURE",
+        "updated": "2020-01-07T11:54:54.233Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qsetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qseq",
+                    "type": "int"
+                },
+                {
+                    "name": "beginDate",
+                    "type": "datetime"
+                },
+                {
+                    "name": "endDate",
+                    "type": "datetime"
+                },
+                {
+                    "name": "orgId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(100)"
+                }
+            ]
+        }
+    },
+    "FilterVoteOrgs": {
+        "type": "PROCEDURE",
+        "updated": "2020-01-07T11:57:50.600Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qsetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qseq",
+                    "type": "int"
+                },
+                {
+                    "name": "beginDate",
+                    "type": "datetime"
+                },
+                {
+                    "name": "endDate",
+                    "type": "datetime"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(100)"
                 }
             ]
         }

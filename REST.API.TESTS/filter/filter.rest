@@ -1,0 +1,26 @@
+#### FilterVoteOrgs
+POST http://localhost:3000/customer/api/filter/vote-orgs
+content-type: application/json
+
+{
+    "langId": null,
+    "customerId": "EDL-C2019100003",
+    "qsetId": "QS00001",
+    "qseq": 1,
+    "beginDate": "2019-10-01",
+    "endDate": "2019-11-01"
+}
+
+#### FilterVoteMembers
+POST http://localhost:3000/customer/api/filter/vote-members
+content-type: application/json
+
+{
+    "langId": null,
+    "customerId": "EDL-C2019100003",
+    "qsetId": "QS00001",
+    "qseq": 1,
+    "beginDate": "2019-10-01",
+    "endDate": "2019-11-01",
+    "orgId": null
+}

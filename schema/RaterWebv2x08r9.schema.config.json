@@ -101,8 +101,6 @@
     "ExtendLicense": true,
     "SetDeviceOrg": true,
     "SetDeviceUser": true,
-    "FilterOrgs": true,
-    "FilterMembers": true,
     "DeleteMemberInfo": true,
     "DeleteBranch": true,
     "DeleteOrg": true,
@@ -114,5 +112,7 @@
     "GetTopLevelOrgs": true,
     "ChangeCustomer": true,
     "SetAccessDevice": true,
-    "GetQSetByDate": true
+    "GetQSetByDate": true,
+    "FilterVoteMembers": true,
+    "FilterVoteOrgs": true
 }

@@ -51,7 +51,7 @@ const checkForError = (data) => {
 
 const api = class {}
 api.filter = class {}
-api.filter.FindVoteMembers = class {
+api.filter.FilterVoteOrgs = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
         // force langId to null;
@@ -62,7 +62,7 @@ api.filter.FindVoteMembers = class {
         return params;
     }
     static async call(db, params) {
-        return db.GetOrgs(params);
+        return db.FilterVoteOrgs(params);
     }
     static parse(db, data, callback) {
         let dbResult = validate(db, data);
@@ -94,9 +94,10 @@ api.filter.FindVoteMembers = class {
             else {
                 nobj = ret[rec.langId][idx];
             }
-            nobj.parentId = rec.parentId;
-            nobj.branchId = rec.branchId;
+            nobj.customerId = rec.customerId;
+            nobj.orgId = rec.orgId;
             nobj.OrgName = rec.OrgName;
+            nobj.branchId = rec.BranchId;
             nobj.BranchName = rec.BranchName;
         })
         // set to result.
@@ -106,10 +107,77 @@ api.filter.FindVoteMembers = class {
     }
     static entry(req, res) {
         let db = new sqldb();
-        let params = api.filter.FindVoteMembers.prepare(req, res);
-        let fn = async () => { return api.filter.FindVoteMembers.call(db, params); }
+        let params = api.filter.FilterVoteOrgs.prepare(req, res);
+        let fn = async () => { return api.filter.FilterVoteOrgs.call(db, params); }
         exec(db, fn).then(data => {
-            api.Get.parse(db, data, (result) => {
+            api.filter.FilterVoteOrgs.parse(db, data, (result) => {
+                WebServer.sendJson(req, res, result);
+            });
+        })
+    }
+}
+api.filter.FilterVoteMembers = class {
+    static prepare(req, res) {
+        let params = WebServer.parseReq(req).data;
+        // force langId to null;
+        params.langId = null;
+        let customerId = secure.getCustomerId(req, res);
+        if (customerId) params.customerId = customerId;
+
+        return params;
+    }
+    static async call(db, params) {
+        return db.FilterVoteMembers(params);
+    }
+    static parse(db, data, callback) {
+        let dbResult = validate(db, data);
+
+        let result = {
+            data : null,
+            //src: dbResult.data,
+            errors: dbResult.errors,
+            //multiple: dbResult.multiple,
+            //datasets: dbResult.datasets,
+            out: dbResult.out
+        }
+        let records = dbResult.data;
+        let ret = {};
+
+        records.forEach(rec => {
+            if (!ret[rec.langId]) {
+                ret[rec.langId] = []
+            }
+            let map = ret[rec.langId].map(c => c.orgId);
+            let idx = map.indexOf(rec.orgId);
+            let nobj;
+            if (idx === -1) {
+                // set id
+                nobj = { orgId: rec.orgId }
+                // init lang properties list.
+                ret[rec.langId].push(nobj)
+            }
+            else {
+                nobj = ret[rec.langId][idx];
+            }
+            nobj.customerId = rec.customerId;
+            nobj.orgId = rec.orgId;
+            nobj.OrgName = rec.OrgName;
+            nobj.branchId = rec.BranchId;
+            nobj.BranchName = rec.BranchName;
+            nobj.memberId = rec.UserId;
+            nobj.FullName = rec.FullName;
+        })
+        // set to result.
+        result.data = ret;
+
+        callback(result);
+    }
+    static entry(req, res) {
+        let db = new sqldb();
+        let params = api.filter.FilterVoteMembers.prepare(req, res);
+        let fn = async () => { return api.filter.FilterVoteMembers.call(db, params); }
+        exec(db, fn).then(data => {
+            api.filter.FilterVoteMembers.parse(db, data, (result) => {
                 WebServer.sendJson(req, res, result);
             });
         })
@@ -126,7 +194,7 @@ api.filter.QSetByDate = class {
         return params;
     }
     static async call(db, params) {
-        return db.GetOrgs(params);
+        return db.QSetByDate(params);
     }
     static parse(db, data, callback) {
         let dbResult = validate(db, data);
@@ -173,7 +241,7 @@ api.filter.QSetByDate = class {
         let params = api.filter.QSetByDate.prepare(req, res);
         let fn = async () => { return api.filter.QSetByDate.call(db, params); }
         exec(db, fn).then(data => {
-            api.Get.parse(db, data, (result) => {
+            api.filter.QSetByDate.parse(db, data, (result) => {
                 WebServer.sendJson(req, res, result);
             });
         })
@@ -182,7 +250,8 @@ api.filter.QSetByDate = class {
 
 router.use(secure.checkAccess);
 // routes for staff summaries
-router.all('/filter/votemembers', api.filter.FindVoteMembers.entry);
+router.all('/filter/vote-orgs', api.filter.FilterVoteOrgs.entry);
+router.all('/filter/vote-members', api.filter.FilterVoteMembers.entry);
 router.all('/filter/qsetbydate', api.filter.QSetByDate.entry);
 
 const init_routes = (svr) => {

@@ -35,7 +35,7 @@ CREATE PROCEDURE [dbo].[FilterVoteOrgs]
 AS
 BEGIN
 	BEGIN TRY
-		SELECT DISTINCT L.LangId
+		SELECT DISTINCT L.langId
 		              , A.customerId
 					  , A.orgId
 					  , O.OrgName
@@ -43,7 +43,7 @@ BEGIN
 					  , B.BranchName
 		  FROM VOTE A
 			   INNER JOIN LanguageView L ON (
-						  L.LangId = @langId
+						  UPPER(LTRIM(RTRIM(L.LangId))) = UPPER(LTRIM(RTRIM(COALESCE(@langId, L.LangId))))
 			   )
 			   INNER JOIN OrgMLView O ON (
 						  O.OrgId = A.OrgId 

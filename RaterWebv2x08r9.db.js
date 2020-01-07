@@ -279,12 +279,6 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
-    async GetQSets(pObj) {
-        let name = 'GetQSets';
-        let proc = schema[name];
-        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
-    }
-
     async SaveQSlide(pObj) {
         let name = 'SaveQSlide';
         let proc = schema[name];
@@ -399,18 +393,6 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
-    async FilterOrgs(pObj) {
-        let name = 'FilterOrgs';
-        let proc = schema[name];
-        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
-    }
-
-    async FilterMembers(pObj) {
-        let name = 'FilterMembers';
-        let proc = schema[name];
-        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
-    }
-
     async DeleteMemberInfo(pObj) {
         let name = 'DeleteMemberInfo';
         let proc = schema[name];
@@ -495,8 +477,26 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
+    async GetQSets(pObj) {
+        let name = 'GetQSets';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
     async GetQSetByDate(pObj) {
         let name = 'GetQSetByDate';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async FilterVoteMembers(pObj) {
+        let name = 'FilterVoteMembers';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async FilterVoteOrgs(pObj) {
+        let name = 'FilterVoteOrgs';
         let proc = schema[name];
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
