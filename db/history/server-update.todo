@@ -20,6 +20,10 @@ EDL Database Server:
         ✔ Generate script. @done(19-12-25 19:38)
         ☐ Update to production server.
     Script for 2019-12-26:
+        ✔ Verify and checks correction. @done(20-01-07 10:03)
+        ✔ Generate script. @done(20-01-07 10:03)
+        ☐ Update to production server.
+    Script for 2020-01-07:
         ☐ Verify and checks correction.
         ☐ Generate script.
         ☐ Update to production server.
