@@ -105,6 +105,8 @@ api.Get = class {
             }
             nobj.BeginDate = rec.BeginDate;
             nobj.EndDate = rec.EndDate;
+            nobj.minVoteDate = rec.MinVoteDate;
+            nobj.maxVoteDate = rec.MaxVoteDate;            
             nobj.desc = rec.QSetDescription;
         })
         // set to result.

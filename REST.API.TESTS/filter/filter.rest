@@ -24,3 +24,26 @@ content-type: application/json
     "endDate": "2019-11-01",
     "orgId": null
 }
+
+#### GetQSetByDate
+POST http://localhost:3000/customer/api/filter/qsetbydate
+content-type: application/json
+
+{
+    "langId": null,
+    "customerId": "EDL-C2019100004",
+    "beginDate": "2019-01-15",
+    "endDate": "2019-02-15"
+}
+
+#### GetQSetByDate2
+POST http://localhost:3000/customer/api/filter/qsetbydate
+content-type: application/json
+
+{
+    "langId": null,
+    "customerId": "EDL-C2019100003",
+    "beginDate": "2019-10-01",
+    "endDate": "2019-11-01"
+}
+

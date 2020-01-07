@@ -95,7 +95,6 @@ api.filter.FilterVoteOrgs = class {
                 nobj = ret[rec.langId][idx];
             }
             nobj.customerId = rec.customerId;
-            nobj.orgId = rec.orgId;
             nobj.OrgName = rec.OrgName;
             nobj.branchId = rec.BranchId;
             nobj.BranchName = rec.BranchName;
@@ -160,7 +159,6 @@ api.filter.FilterVoteMembers = class {
                 nobj = ret[rec.langId][idx];
             }
             nobj.customerId = rec.customerId;
-            nobj.orgId = rec.orgId;
             nobj.OrgName = rec.OrgName;
             nobj.branchId = rec.BranchId;
             nobj.BranchName = rec.BranchName;
@@ -194,7 +192,7 @@ api.filter.QSetByDate = class {
         return params;
     }
     static async call(db, params) {
-        return db.QSetByDate(params);
+        return db.GetQSetByDate(params);
     }
     static parse(db, data, callback) {
         let dbResult = validate(db, data);
@@ -214,22 +212,23 @@ api.filter.QSetByDate = class {
             if (!ret[rec.langId]) {
                 ret[rec.langId] = []
             }
-            let map = ret[rec.langId].map(c => c.orgId);
-            let idx = map.indexOf(rec.orgId);
+            let map = ret[rec.langId].map(c => c.qSetId);
+            let idx = map.indexOf(rec.qSetId);
             let nobj;
             if (idx === -1) {
                 // set id
-                nobj = { orgId: rec.orgId }
+                nobj = { qSetId: rec.qSetId }
                 // init lang properties list.
                 ret[rec.langId].push(nobj)
             }
             else {
                 nobj = ret[rec.langId][idx];
             }
-            nobj.parentId = rec.parentId;
-            nobj.branchId = rec.branchId;
-            nobj.OrgName = rec.OrgName;
-            nobj.BranchName = rec.BranchName;
+            nobj.BeginDate = rec.BeginDate;
+            nobj.EndDate = rec.EndDate;
+            nobj.minVoteDate = rec.MinVoteDate;
+            nobj.maxVoteDate = rec.MaxVoteDate;
+            nobj.desc = rec.Description;
         })
         // set to result.
         result.data = ret;
