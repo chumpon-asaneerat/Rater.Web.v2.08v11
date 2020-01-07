@@ -15,6 +15,8 @@ GO
 --	- Stored Procedure Changes.
 --    - Remove QSetDescriptionNative column.
 --    - Rename QSetDescriptionEN column to QSetDescription.
+-- <2020-01-07> :
+--    - Add MinVoteDate, MaxVoteDate
 --
 -- [== Example ==]
 --
@@ -25,7 +27,7 @@ GO
 --EXEC GetQSets NULL, N'EDL-C2018050001', N'QS00001', 1;
 --EXEC GetQSets N'EN', N'EDL-C2018050001', N'QS00001', 1;
 -- =============================================
-CREATE PROCEDURE [dbo].[GetQSets]
+ALTER PROCEDURE [dbo].[GetQSets]
 (
   @langId nvarchar(3) = NULL
 , @customerId nvarchar(30) = NULL
@@ -34,24 +36,36 @@ CREATE PROCEDURE [dbo].[GetQSets]
 )
 AS
 BEGIN
-	SELECT langId
-		 , customerId
-		 , qSetId
-		 , BeginDate
-		 , EndDate
-		 , QSetDescription
-		 , DisplayMode
-		 , HasRemark
-		 , IsDefault
-		 , QSetStatus
-		 , SortOrder
-		 , Enabled 
-	  FROM QSetMLView
-	 WHERE [ENABLED] = COALESCE(@enabled, [ENABLED])
-	   AND UPPER(LTRIM(RTRIM(LangId))) = UPPER(LTRIM(RTRIM(COALESCE(@langId, LangId))))
-	   AND UPPER(LTRIM(RTRIM(CustomerId))) = UPPER(LTRIM(RTRIM(COALESCE(@customerId, CustomerId))))
-	   AND UPPER(LTRIM(RTRIM(QSetId))) = UPPER(LTRIM(RTRIM(COALESCE(@qSetId, QSetId))))
-	 ORDER BY SortOrder, CustomerId, QSetId
+	SELECT A.langId
+		 , A.customerId
+		 , A.qSetId
+		 , A.BeginDate
+		 , A.EndDate
+		 , (
+			SELECT MIN(VoteDate) 
+			  FROM Vote 
+			 WHERE UPPER(LTRIM(RTRIM(CustomerId))) = UPPER(LTRIM(RTRIM(COALESCE(@customerId, CustomerId))))
+			   AND UPPER(LTRIM(RTRIM(QSetId))) = UPPER(LTRIM(RTRIM(COALESCE(@qSetId, QSetId))))
+		   ) AS MinVoteDate
+		 , (
+			SELECT MAX(VoteDate) 
+			  FROM Vote 
+			 WHERE UPPER(LTRIM(RTRIM(CustomerId))) = UPPER(LTRIM(RTRIM(COALESCE(@customerId, CustomerId))))
+			   AND UPPER(LTRIM(RTRIM(QSetId))) = UPPER(LTRIM(RTRIM(COALESCE(@qSetId, QSetId))))
+		   ) AS MaxVoteDate
+		 , A.QSetDescription
+		 , A.DisplayMode
+		 , A.HasRemark
+		 , A.IsDefault
+		 , A.QSetStatus
+		 , A.SortOrder
+		 , A.Enabled 
+	  FROM QSetMLView A
+	 WHERE A.[ENABLED] = COALESCE(@enabled, A.[ENABLED])
+	   AND UPPER(LTRIM(RTRIM(A.LangId))) = UPPER(LTRIM(RTRIM(COALESCE(@langId, A.LangId))))
+	   AND UPPER(LTRIM(RTRIM(A.CustomerId))) = UPPER(LTRIM(RTRIM(COALESCE(@customerId, A.CustomerId))))
+	   AND UPPER(LTRIM(RTRIM(A.QSetId))) = UPPER(LTRIM(RTRIM(COALESCE(@qSetId, A.QSetId))))
+	 ORDER BY A.SortOrder, A.CustomerId, A.QSetId
 END
 
 GO

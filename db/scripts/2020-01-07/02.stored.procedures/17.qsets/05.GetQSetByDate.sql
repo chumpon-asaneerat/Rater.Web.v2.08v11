@@ -10,6 +10,8 @@ GO
 -- [== History ==]
 -- <2019-12-26> :
 --	- Stored Procedure Created.
+-- <2020-01-07> :
+--    - Add MinVoteDate, MaxVoteDate
 --
 -- [== Example ==]
 --
@@ -17,7 +19,7 @@ GO
 --EXEC GetQSetByDate N'EN', N'EDL-C2018050001', N'2019-12-01'
 --EXEC GetQSetByDate NULL, N'EDL-C2018050001', N'2019-01-15', N'2019-02-15'
 -- =============================================
-CREATE PROCEDURE [dbo].[GetQSetByDate]
+ALTER PROCEDURE [dbo].[GetQSetByDate]
 (
   @langId nvarchar(3) = NULL
 , @customerId nvarchar(30) = NULL
@@ -142,6 +144,18 @@ DECLARE @iCase int;
 					, qSetId
 					, BeginDate
 					, EndDate
+					, (
+						SELECT MIN(VoteDate) 
+						  FROM Vote 
+						 WHERE UPPER(LTRIM(RTRIM(CustomerId))) = UPPER(LTRIM(RTRIM(COALESCE(@customerId, CustomerId))))
+						   AND UPPER(LTRIM(RTRIM(QSetId))) = UPPER(LTRIM(RTRIM(COALESCE(@qSetId, QSetId))))
+					  ) AS MinVoteDate
+					, (
+						SELECT MAX(VoteDate) 
+						  FROM Vote 
+						 WHERE UPPER(LTRIM(RTRIM(CustomerId))) = UPPER(LTRIM(RTRIM(COALESCE(@customerId, CustomerId))))
+						   AND UPPER(LTRIM(RTRIM(QSetId))) = UPPER(LTRIM(RTRIM(COALESCE(@qSetId, QSetId))))
+					  ) AS MaxVoteDate
 					, QSetDescription as [Description]
 					, DisplayMode
 					, HasRemark
