@@ -6,12 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Aspect Ratio Sample.</title>
     <style>
+        #grid {
+            /* width: 240px; */
+            width: 100%;
+            background: grey;
+        }
+        .aspectRatioSizer {
+            display: grid;
+        }
+        .aspectRatioSizer:before {
+            content:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 9"></svg>');
+        }
+        .aspectRatioSizer:before,
+        .aspectRatioSizer > * {
+            grid-area: 1 / 1 / 2 / 2;
+        }
+        #content {
+            background: green;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
-    <div>
-        <h2>Aspect Ratio Sample.</h2>
-    </div>
+    <div class="aspectRatioSizer" id="grid">
+        <svg viewBox="0 0 3 2"></svg>
+        <div id="content">
+            In this example ratio is 16:9
+        </div>
+      </div>
 
     <script>
     </script>

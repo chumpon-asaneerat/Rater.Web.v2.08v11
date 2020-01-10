@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Aspect Ratio Sample.</title>
+    <style>
+        #grid {
+            background-color: lightpink;
+            resize: horizontal;
+            overflow: hidden;
+            width: 1000px;
+            height: auto;
+        }
+        #svg-container {
+            display: flex;
+            align-items: center;
+            background-color: red;
+            height: 100%;
+        }
+        #svg-1 {
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="grid">
+        <div id="svg-container">
+            <svg id="svg-1" width="100%" viewBox="113 128 972 600" 
+                preserveAspectRatio="xMidYMid meet"></svg>
+            <div id="content">
+                In this example ratio is 16:9
+            </div>
+        </div>
+    </div>
+
+    <script>
+    </script>
+</body>
+</html>
