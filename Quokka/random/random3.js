@@ -672,6 +672,72 @@ DateTime.LocaleSettings = {
 
 //#endregion
 
-let year = 2020
-let month = 2
-console.log('days:', DateTime.daysInMonth(year, month))
+//#region int (random)
+
+let int = (max, min, include) => {
+    let imax = max || 0
+    let imin = min || 0;
+    let ret;
+    //return 
+    if (include) {
+        if (include.min && include.max) {
+            // [min, max] - OK.
+            ret = imin + Math.floor(Math.random() * (imax - imin + 1));
+        }
+        else if (!include.min && include.max) {
+            // (min, max] - OK.
+            ret = imin + Math.ceil(Math.random() * (imax - imin));
+        }
+        else if (include.min && !include.max) {
+            // [min, max) - OK.
+            ret = imin + Math.floor(Math.random() * (imax - imin));
+        }
+        else {
+            // (min, max) - OK.
+            ret = imin + Math.ceil(Math.random() * (imax - imin - 1));
+        }
+    }
+    else {
+        // default [min, max]
+        ret = imin + Math.floor(Math.random() * (imax - imin + 1));
+    }
+    return ret
+}
+
+//#endregion
+
+let getDateArray = (beginDate, endDate) => {
+    let ret = [];
+    let dt1 = new DateTime(beginDate)
+    let dt2 = new DateTime(endDate)
+    let yr, mt, dayInMonth, dy, hr, mn, sc, ms;
+    let dt;
+    // get random year
+    yr = int(dt2.year, dt1.year, { min: true, max: true })
+    // get random month
+    mt = int(12, 1, { min: true, max: true })
+    // get random day (in year-month)
+    dayInMonth = DateTime.daysInMonth(yr, mt)
+    dy = int(dayInMonth, 1, { min: true, max: true })
+    // get random time.
+    hr = int(23, 0, { min: true, max: true })
+    mn = int(59, 0, { min: true, max: true })
+    sc = int(59, 0, { min: true, max: true })
+    ms = int(999, 0, { min: true, max: true })
+    console.log('random year:', yr)
+    console.log('random month:', mt)
+    console.log('random day:', dy)
+    console.log('random hour:', hr)
+    console.log('random minute:', mn)
+    console.log('random second:', sc)
+    console.log('random milisecond:', ms)
+    dt = new Date(yr, mt - 1, dy, hr, mn, sc, ms)
+    console.log('Generate date:', dt)
+    return ret;
+}
+
+let beginDate = new Date('2020-01-01')
+console.log(beginDate)
+let endDate = new Date('2020-12-31')
+console.log(endDate)
+getDateArray(beginDate, endDate)
