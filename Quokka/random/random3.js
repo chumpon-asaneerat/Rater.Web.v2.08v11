@@ -737,6 +737,9 @@ let getDateArray = (beginDate, endDate, maxLoop) => {
         console.log('Generate date:', dt.toJSON())
         ret.push(dt)
     }
+    // sort array
+    ret.sort((a, b) => a - b)
+    console.log(ret)
     return ret;
 }
 
