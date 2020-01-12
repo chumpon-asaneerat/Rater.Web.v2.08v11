@@ -95,6 +95,8 @@ Project:
                 ✔ tabheader tag. @done(19-12-16 18:04)
                 ✔ tabpages tag. @done(19-12-16 18:04)
                 ✔ tabpage tag. @done(19-12-16 18:04)
+            Dialog:
+                ☐ dialog tag.
             Special controls:
                 ☐ Slide preview (Intro Slide [video, image, animation], Question Slide [all], End Slide [audio]).
                 Slide:
