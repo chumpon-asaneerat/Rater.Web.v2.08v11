@@ -709,11 +709,14 @@ let int = (max, min, include) => {
 let getDateArray = (beginDate, endDate, maxLoop) => {
     let ret = [];
     let imax = (maxLoop) ? maxLoop : 1;
-    let dt1 = new DateTime(beginDate)
-    let dt2 = new DateTime(endDate)
+    //let dt1 = new DateTime(beginDate)
+    //let dt2 = new DateTime(endDate)
+    let dt1 = new Date(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate())
+    let dt2 = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59, 999)
     let yr, mt, dayInMonth, dy, hr, mn, sc, ms;
     let dt;
     for (let i = 0; i < imax; i++) {
+        /*
         // get random year
         yr = int(dt2.year, dt1.year, { min: true, max: true })
         // get random month
@@ -727,6 +730,8 @@ let getDateArray = (beginDate, endDate, maxLoop) => {
         sc = int(59, 0, { min: true, max: true })
         ms = int(999, 0, { min: true, max: true })
         dt = new Date(yr, mt - 1, dy, hr, mn, sc, ms)
+        */
+        dt = new Date(int(dt2.getTime(), dt1.getTime(), { min: true, max: true }))
         //console.log('random year:', yr)
         //console.log('random month:', mt)
         //console.log('random day:', dy)
@@ -745,7 +750,7 @@ let getDateArray = (beginDate, endDate, maxLoop) => {
 
 let beginDate = new Date('2020-01-01')
 //console.log(beginDate)
-let endDate = new Date('2020-12-31')
+let endDate = new Date('2020-01-01')
 //console.log(endDate)
 let ret = getDateArray(beginDate, endDate, 3)
 console.log(JSON.stringify(ret))

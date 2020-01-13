@@ -2629,7 +2629,7 @@
     },
     "FilterVoteDevices": {
         "type": "PROCEDURE",
-        "updated": "2020-01-13T11:35:47.817Z",
+        "updated": "2020-01-13T12:18:51.943Z",
         "parameter": {
             "inputs": [
                 {
@@ -2659,6 +2659,56 @@
                 {
                     "name": "orgId",
                     "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(100)"
+                }
+            ]
+        }
+    },
+    "FilterVoteDeviceMembers": {
+        "type": "PROCEDURE",
+        "updated": "2020-01-13T13:12:31.313Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qsetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qseq",
+                    "type": "int"
+                },
+                {
+                    "name": "orgId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "deviceId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "beginDate",
+                    "type": "datetime"
+                },
+                {
+                    "name": "endDate",
+                    "type": "datetime"
                 }
             ],
             "outputs": [

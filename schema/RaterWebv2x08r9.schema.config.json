@@ -115,5 +115,6 @@
     "GetQSetByDate": true,
     "FilterVoteMembers": true,
     "FilterVoteOrgs": true,
-    "FilterVoteDevices": true
+    "FilterVoteDevices": true,
+    "FilterVoteDeviceMembers": true
 }

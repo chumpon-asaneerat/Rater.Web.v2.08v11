@@ -458,17 +458,27 @@ api.staffsummary = class {
         for (let j = 0; j < orgs.length; j++) {
             params.orgId = orgs[j].orgId;
             // execute
-            dbresult = await api.staffsummary.GetVoteSummaries(db, params);
-            api.staffsummary.CreateStaffSummaries(result, qset, dbresult.data)
+            await api.staffsummary.ProcessVoteDevices(db, params, result, qset);
         }
     }
     static async processNoOrg(db, params, result, qset) {
         // no org specificed
-        let dbresult;
         params.orgId = null;
         // execute
-        dbresult = await api.staffsummary.GetVoteSummaries(db, params);
-        api.staffsummary.CreateStaffSummaries(result, qset, dbresult.data)
+        await api.staffsummary.ProcessVoteDevices(db, params, result, qset);
+    }
+    static async ProcessVoteDevices(db, params, result, qset) {
+        let ret, dbresult;
+        ret = await db.FilterVoteDeviceMembers(params);
+        dbresult = validate(db, ret);
+        let records = dbresult.data;
+        for (let i = 0; i < records.length; i++) {
+            params.orgId = records[i].orgId
+            params.deviceId = records[i].DeviceId
+            params.userId = records[i].MemberId
+            let dbresult = await api.staffsummary.GetVoteSummaries(db, params)
+            api.staffsummary.CreateStaffSummaries(result, qset, dbresult.data)
+        }
     }
     static async GetVoteSummaries(db, params) {
         let ret, dbresult;
@@ -492,7 +502,9 @@ api.staffsummary = class {
         let cLangObj = api.staffsummary.GetLangObj(obj, row, cQSlide)
         let currSlide = api.staffsummary.GetCurrentSlide(row, cLangObj, cQSlide)
         let currOrg = api.staffsummary.GetCurrentOrg(row, currSlide)
-        api.staffsummary.GetOrgChoice(row, cQSlide, currOrg)
+        let currDevice = api.staffsummary.GetCurrentDevice(row, currOrg)
+        let currMember = api.staffsummary.GetCurrentMember(row, currDevice)
+        api.staffsummary.GetMemberChoice(row, cQSlide, currMember)
     }
     static GetLangObj(obj, row, cQSet) {
         let landId = row.LangId;
@@ -548,14 +560,11 @@ api.staffsummary = class {
         if (orgidx === -1) {
             ret = { 
                 orgId: row.OrgId,
-                OrgName: row.OrgName,
-                parentId: row.ParentId,
-                branchId: row.BranchId,
-                BranchName: row.BranchName,
-                TotCnt: row.TotCnt,
-                AvgPct: row.AvgPct,
-                AvgTot: row.AvgTot,
-                choices: []
+                //OrgName: row.OrgName,
+                //parentId: row.ParentId,
+                //branchId: row.BranchId,
+                //BranchName: row.BranchName,
+                devices: []
             }
             currSlide.orgs.push(ret)
         }
@@ -564,24 +573,67 @@ api.staffsummary = class {
         }
         return ret;
     }
-    static GetOrgChoice(row, cQSlide, currOrg) {
-        let choiceidx = api.findIndex(currOrg.choices, 'choice', row.Choice)
+    static GetCurrentDevice(row, currOrg) {
+        let deviceidx = api.findIndex(currOrg.devices, 'deviceId', row.DeviceId)
+        let ret;
+        if (deviceidx === -1) {
+            ret = { 
+                //orgId: row.OrgId,
+                deviceId: row.DeviceId,
+                //Location: row.Location,
+                members: []
+            }
+            currOrg.devices.push(ret)
+        }
+        else { 
+            ret = currOrg.devices[deviceidx];
+        }
+        return ret;
+    }
+    static GetCurrentMember(row, currDevice) {
+        let idx = api.findIndex(currDevice.members, 'memberId', row.UserId)
+        let ret;
+        if (idx === -1) {
+            ret = { 
+                //orgId: row.OrgId,
+                //OrgName: row.OrgName,
+                //parentId: row.ParentId,
+                //branchId: row.BranchId,
+                //BranchName: row.BranchName,
+                deviceId: row.DeviceId,
+                //Location: row.Location,
+                memberId: row.UserId,
+                FullName: row.FullName,
+                TotCnt: row.TotCnt,
+                AvgPct: row.AvgPct,
+                AvgTot: row.AvgTot,
+                choices: []
+            }
+            currDevice.members.push(ret)
+        }
+        else { 
+            ret = currDevice.members[idx];
+        }
+        return ret;
+    }
+    static GetMemberChoice(row, cQSlide, currMember) {
+        let choiceidx = api.findIndex(currMember.choices, 'choice', row.Choice)
         let ret;
         if (choiceidx === -1) {
             ret = {
                 choice: row.Choice,
-                text: api.staffsummary.getOrgChoiceText(row, cQSlide),
+                text: api.staffsummary.getMemberChoiceText(row, cQSlide),
                 Cnt: row.Cnt,
                 Pct: row.Pct,
             }
-            currOrg.choices.push(ret)
+            currMember.choices.push(ret)
         }
         else {
-            ret = currOrg.choices[choiceidx];
+            ret = currMember.choices[choiceidx];
         }
         return ret;
     }
-    static getOrgChoiceText(row, cQSlide) {
+    static getMemberChoiceText(row, cQSlide) {
         let ret = ''
         if (cQSlide && cQSlide.items.length > 0) {
             let cQItemidx = api.findIndex(cQSlide.items, 'choice', row.Choice)

@@ -1,0 +1,88 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author: Chumpon Asaneerat
+-- Name: FilterVoteDeviceMembers.
+-- Description:	Filter Members from vote table that match date range, orgId and deviceId.
+-- [== History ==]
+-- <2020-01-13> :
+--	- Stored Procedure Created.
+--
+-- [== Example ==]
+--
+--exec FilterVoteDeviceMembers N'TH', N'EDL-C2019100004', N'QS00004', 1, N'O0002', N'D0004', N'2019-10-01', N'2021-11-01'
+-- =============================================
+CREATE PROCEDURE [dbo].[FilterVoteDeviceMembers] 
+(
+  @langId as nvarchar(3)
+, @customerId as nvarchar(30)
+, @qsetId as nvarchar(30)
+, @qseq as int
+, @orgId as nvarchar(30)
+, @deviceId as nvarchar(30)
+, @beginDate As DateTime = null
+, @endDate As DateTime = null
+, @errNum as int = 0 out
+, @errMsg as nvarchar(100) = N'' out
+)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT DISTINCT L.langId
+		              , A.customerId
+					  , A.orgId
+					  , O.OrgName
+					  , A.BranchId
+					  , B.BranchName
+					  , A.DeviceId
+					  , M.DeviceName
+					  , M.Location
+					  , M.DeviceTypeId
+					  , A.UserId AS MemberId
+					  , N.FullName
+		  FROM VOTE A
+			   INNER JOIN LanguageView L ON (
+						  UPPER(LTRIM(RTRIM(L.LangId))) = UPPER(LTRIM(RTRIM(COALESCE(@langId, L.LangId))))
+			   )
+			   INNER JOIN OrgMLView O ON (
+						  O.OrgId = A.OrgId 
+					  AND O.CustomerId = A.CustomerId
+					  AND O.LangId = L.LangId
+			   )
+			   INNER JOIN BranchMLView B ON (
+						  B.BranchId = A.BranchId 
+				      AND B.CustomerId = A.CustomerId
+					  AND B.LangId = L.LangId
+			   )
+			   LEFT OUTER JOIN DeviceMLView M ON (
+						  M.DeviceId = A.DeviceId 
+					  AND M.CustomerId = A.CustomerId
+					  AND M.LangId = L.LangId
+			   )
+			   LEFT OUTER JOIN MemberInfoMLView N ON (
+						  N.MemberId = A.UserId 
+					  AND N.CustomerId = A.CustomerId
+					  AND N.LangId = L.LangId
+			   )
+		 WHERE A.ObjectStatus = 1
+		   AND LOWER(A.CustomerId) = LOWER(RTRIM(LTRIM(@customerId)))
+		   AND LOWER(A.QSetId) = LOWER(RTRIM(LTRIM(@qsetId)))
+		   AND A.QSeq = @qseq
+		   AND UPPER(LTRIM(RTRIM(A.OrgId))) = UPPER(LTRIM(RTRIM(COALESCE(@orgId, A.OrgId))))
+		   AND UPPER(LTRIM(RTRIM(A.DeviceId))) = UPPER(LTRIM(RTRIM(COALESCE(@deviceId, A.DeviceId))))
+		   AND A.VoteDate >= @beginDate
+		   AND A.VoteDate <= @endDate
+
+		-- success
+		EXEC GetErrorMsg 0, @errNum out, @errMsg out
+	END TRY
+	BEGIN CATCH
+		SET @errNum = ERROR_NUMBER();
+		SET @errMsg = ERROR_MESSAGE();
+	END CATCH
+END
+
+GO

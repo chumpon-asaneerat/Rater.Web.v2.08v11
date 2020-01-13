@@ -1336,25 +1336,14 @@ const NRandom = class {
     static date(begin, end, sampleSize) {
         let ret = [];
         let imax = (sampleSize) ? sampleSize : 1;
-        let dt1 = new DateTime(begin)
-        let dt2 = new DateTime(end)
-        let yr, mt, dayInMonth, dy, hr, mn, sc, ms;
+        let dt1 = new Date(begin.getFullYear(), begin.getMonth(), begin.getDate(), 0, 0, 0)
+        let dt2 = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999)
+        let v1 = dt1.getTime()
+        let v2 = dt2.getTime()
         let dt;
         let opts = { min: true, max: true }
-        for (let i = 0; i < imax; i++) {
-            // get random year
-            yr = NRandom.int(dt2.year, dt1.year, opts)
-            // get random month
-            mt = NRandom.int(12, 1, opts)
-            // get random day (in year-month)
-            dayInMonth = DateTime.daysInMonth(yr, mt)
-            dy = NRandom.int(dayInMonth, 1, opts)
-            // get random time.
-            hr = NRandom.int(23, 0, opts)
-            mn = NRandom.int(59, 0, opts)
-            sc = NRandom.int(59, 0, opts)
-            ms = NRandom.int(999, 0, opts)
-            dt = new Date(yr, mt - 1, dy, hr, mn, sc, ms)
+        for (let i = 0; i < imax; i++) {            
+            dt = new Date(NRandom.int(v2, v1, opts))
             ret.push(dt)
         }
         // sort date.
