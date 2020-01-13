@@ -2539,9 +2539,51 @@
             ]
         }
     },
+    "FilterVoteOrgs": {
+        "type": "PROCEDURE",
+        "updated": "2020-01-07T12:50:23.110Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qsetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qseq",
+                    "type": "int"
+                },
+                {
+                    "name": "beginDate",
+                    "type": "datetime"
+                },
+                {
+                    "name": "endDate",
+                    "type": "datetime"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(100)"
+                }
+            ]
+        }
+    },
     "FilterVoteMembers": {
         "type": "PROCEDURE",
-        "updated": "2020-01-07T11:54:54.233Z",
+        "updated": "2020-01-07T12:52:06.833Z",
         "parameter": {
             "inputs": [
                 {
@@ -2585,9 +2627,9 @@
             ]
         }
     },
-    "FilterVoteOrgs": {
+    "FilterVoteDevices": {
         "type": "PROCEDURE",
-        "updated": "2020-01-07T11:57:50.600Z",
+        "updated": "2020-01-13T11:35:47.817Z",
         "parameter": {
             "inputs": [
                 {
@@ -2613,6 +2655,10 @@
                 {
                     "name": "endDate",
                     "type": "datetime"
+                },
+                {
+                    "name": "orgId",
+                    "type": "nvarchar(30)"
                 }
             ],
             "outputs": [

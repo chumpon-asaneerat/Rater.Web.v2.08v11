@@ -114,5 +114,6 @@
     "SetAccessDevice": true,
     "GetQSetByDate": true,
     "FilterVoteMembers": true,
-    "FilterVoteOrgs": true
+    "FilterVoteOrgs": true,
+    "FilterVoteDevices": true
 }
