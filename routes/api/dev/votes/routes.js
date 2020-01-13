@@ -53,23 +53,78 @@ const checkForError = (data) => {
 //#endregion
 
 const api = class {}
+api.vote = class {
+    static async generateVotes(db, params) {
+        let customerId = params.customerId
+        let qSetId = params.qSetId
+        let beginDate = params.beginDate
+        let endDate = params.endDate
+        let questions = await api.vote.getQuestions(db, params)
+        for (let i = 0; i < questions.length; i++) {
+            await api.vote.getQuestionItems(db, questions[i])
+        }
+        console.log(questions)
+    }
+    static async getQuestions(db, params) {
+        // get the question slide.
+        let oParams = {
+            'langId': 'EN',
+            'customerId': params.customerId,
+            'qSetId': params.qSetId,
+            'qSeq': null
+        }        
+        let dbret = await db.GetQSlides(oParams)
+        let results = [];
+        if (dbret.data) {
+            for (let i = 0; i < dbret.data.length; i++) {
+                let ques = dbret.data[i]
+                let obj = {
+                    customerId: ques.customerId,
+                    qSetId: ques.qSetId,
+                    qSeq: ques.qSeq,
+                    text: ques.QSlideText,
+                    items: []
+                }
+                results.push(obj)
+            }
+        }
+        return results
+    }
+    static async getQuestionItems(db, question) {
+        //qSSeq
+        // get the question slide.
+        let oParams = {
+            'langId': 'EN',
+            'customerId': question.customerId,
+            'qSetId': question.qSetId,
+            'qSeq': question.qSeq,
+            'qSSeq': null
+        }        
+        let dbret = await db.GetQSlideItems(oParams)
+        if (dbret.data) {
+            for (let i = 0; i < dbret.data.length; i++) {
+                let item = dbret.data[i]
+                let obj = {
+                    qSSeq: item.qSSeq,
+                    text: item.QItemText
+                }
+                question.items.push(obj)
+            }
+        }
+    }
+}
 
 //#region Implement - Save
 
 api.Save = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
-        /*
         let customerId = secure.getCustomerId(req, res);
         if (customerId) params.customerId = customerId;
-        params.langId = null; // force null.
-        params.branchId = null;
-        params.enabled = true;
-        */
         return params;
     }
     static async call(db, params) { 
-        return null;
+        return await api.vote.generateVotes(db, params);
     }
     static parse(db, data, callback) {
         let dbResult = validate(db, data);
