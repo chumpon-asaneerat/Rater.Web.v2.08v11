@@ -519,6 +519,12 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
+    async GetImage(pObj) {
+        let name = 'GetImage';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
 }
 
 module.exports = exports = RaterWebv2x08r9;

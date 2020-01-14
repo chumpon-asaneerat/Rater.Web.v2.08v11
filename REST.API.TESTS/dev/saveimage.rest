@@ -1,8 +1,0 @@
-### Save image
-POST http://localhost:3000/dev/api/images/save
-content-type: application/json
-
-{
-    "imageId": "1",
-    "url": "public/favicon.ico"
-}

@@ -1,0 +1,107 @@
+### Save file
+POST http://localhost:3000/dev/api/images/save
+content-type: application/json
+
+{
+    "imageId": "1",
+    "url": "public/test/test.md"
+}
+
+### load file
+POST http://localhost:3000/dev/api/images/load
+content-type: application/json
+
+{
+    "imageId": "1",
+    "url": "public/test/new_test.md"
+}
+
+### Save image (ico)
+POST http://localhost:3000/dev/api/images/save
+content-type: application/json
+
+{
+    "imageId": "2",
+    "url": "public/test/favicon.ico"
+}
+
+### load image (ico)
+POST http://localhost:3000/dev/api/images/load
+content-type: application/json
+
+{
+    "imageId": "2",
+    "url": "public/test/new_favicon.ico"
+}
+
+### Save video
+POST http://localhost:3000/dev/api/images/save
+content-type: application/json
+
+{
+    "imageId": "3",
+    "url": "public/test/video-05.mp4"
+}
+
+### load video
+POST http://localhost:3000/dev/api/images/load
+content-type: application/json
+
+{
+    "imageId": "3",
+    "url": "public/test/new_video-05.mp4"
+}
+
+### Save image (gif)
+POST http://localhost:3000/dev/api/images/save
+content-type: application/json
+
+{
+    "imageId": "4",
+    "url": "public/test/emo-nt-01.gif"
+}
+
+### load image (gif)
+POST http://localhost:3000/dev/api/images/load
+content-type: application/json
+
+{
+    "imageId": "4",
+    "url": "public/test/new_emo-nt-01.gif"
+}
+
+### Save image (png background)
+POST http://localhost:3000/dev/api/images/save
+content-type: application/json
+
+{
+    "imageId": "5",
+    "url": "public/test/bg-07.png"
+}
+
+### load image (png background)
+POST http://localhost:3000/dev/api/images/load
+content-type: application/json
+
+{
+    "imageId": "5",
+    "url": "public/test/new_bg-07.png"
+}
+
+### Save image (png 5MB)
+POST http://localhost:3000/dev/api/images/save
+content-type: application/json
+
+{
+    "imageId": "6",
+    "url": "public/test/book1.png"
+}
+
+### load image (png 5MB)
+POST http://localhost:3000/dev/api/images/load
+content-type: application/json
+
+{
+    "imageId": "6",
+    "url": "public/test/new_book1.png"
+}

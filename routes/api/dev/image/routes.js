@@ -61,7 +61,7 @@ api.Save = class {
         let reqObj = WebServer.parseReq(req).data;
         let url = reqObj.url;
         let targetFile = path.join(rootPath, url)
-        let binaryData = fs.readFileSync(targetFile, { encoding: 'utf8' })
+        let binaryData = fs.readFileSync(targetFile)
         let params = {}
         params.imageId = reqObj.imageId;   
         params.data =  binaryData;
@@ -106,7 +106,7 @@ api.Load = class {
         return params;
     }
     static async call(db, params) { 
-        return await db.SaveImage(params);
+        return await db.GetImage(params);
     }
     static parse(db, data, callback) {
         let dbResult = validate(db, data);
@@ -118,7 +118,7 @@ api.Load = class {
         //result.datasets = dbResult.datasets
         result.out = dbResult.out
         // set to result.
-        result.data = dbResult.data;
+        result.data = dbResult.data
 
         callback(result);
     }
@@ -128,6 +128,16 @@ api.Load = class {
         let fn = async () => { return api.Load.call(db, params); }
         exec(db, fn).then(data => {
             api.Load.parse(db, data, (result) => {
+                // write to file.
+                let targetFile = path.join(rootPath, params.url)
+                if (result.data && result.data.length > 0) {                    
+                    let row = result.data[0];
+                    let buff = Buffer.from(row.data)
+                    fs.writeFileSync(targetFile, buff)
+                }
+                // set data to null because is to large when used with image.
+                result.data = null;
+                
                 WebServer.sendJson(req, res, result);
             });
         })

@@ -2748,5 +2748,27 @@
                 }
             ]
         }
+    },
+    "GetImage": {
+        "type": "PROCEDURE",
+        "updated": "2020-01-14T17:37:48.500Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "imageId",
+                    "type": "int"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
+                }
+            ]
+        }
     }
 }
