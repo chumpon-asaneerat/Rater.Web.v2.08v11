@@ -114,8 +114,8 @@ Project:
         Web Server:
             ✔ Add supports read port from command line arguments. @done(19-12-27 20:01)
         MS SQL:
-            ✘ Save binary field. @cancelled(19-12-17 09:21)
-            ✘ Load binary field. @cancelled(19-12-17 09:21)
+            ✔ Save binary field. @done(20-01-14 18:17)
+            ✔ Load binary field. @done(20-01-14 18:17)
             ✘ Binary Field Caching (in local file storage. Auto clear when start server). @cancelled(19-12-17 09:21)
     Socket.io:
         ✔ Server side code (basic). @done(19-12-10 10:19)
