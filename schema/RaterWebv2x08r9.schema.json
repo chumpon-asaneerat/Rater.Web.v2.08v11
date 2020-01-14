@@ -1990,72 +1990,6 @@
             ]
         }
     },
-    "GetRawVotes": {
-        "type": "PROCEDURE",
-        "updated": "2019-11-07T13:02:13.180Z",
-        "parameter": {
-            "inputs": [
-                {
-                    "name": "langId",
-                    "type": "nvarchar(3)"
-                },
-                {
-                    "name": "customerId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "qsetId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "qseq",
-                    "type": "int"
-                },
-                {
-                    "name": "beginDate",
-                    "type": "datetime"
-                },
-                {
-                    "name": "endDate",
-                    "type": "datetime"
-                },
-                {
-                    "name": "orgId",
-                    "type": "nvarchar(30)"
-                },
-                {
-                    "name": "memberId",
-                    "type": "nvarchar(30)"
-                }
-            ],
-            "outputs": [
-                {
-                    "name": "pageNum",
-                    "type": "int"
-                },
-                {
-                    "name": "rowsPerPage",
-                    "type": "int"
-                },
-                {
-                    "name": "totalRecords",
-                    "type": "int"
-                },
-                {
-                    "name": "maxPage",
-                    "type": "int"
-                },
-                {
-                    "name": "errNum",
-                    "type": "int"
-                },
-                {
-                    "name": "errMsg",
-                    "type": "nvarchar(100)"
-                }
-            ]
-        }
-    },
     "DeleteMemberInfo": {
         "type": "PROCEDURE",
         "updated": "2019-12-16T07:21:56.487Z",
@@ -2719,6 +2653,98 @@
                 {
                     "name": "errMsg",
                     "type": "nvarchar(100)"
+                }
+            ]
+        }
+    },
+    "GetRawVotes": {
+        "type": "PROCEDURE",
+        "updated": "2020-01-14T14:33:55.300Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "langId",
+                    "type": "nvarchar(3)"
+                },
+                {
+                    "name": "customerId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qsetId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "qseq",
+                    "type": "int"
+                },
+                {
+                    "name": "beginDate",
+                    "type": "datetime"
+                },
+                {
+                    "name": "endDate",
+                    "type": "datetime"
+                },
+                {
+                    "name": "orgId",
+                    "type": "nvarchar(30)"
+                },
+                {
+                    "name": "memberId",
+                    "type": "nvarchar(30)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "pageNum",
+                    "type": "int"
+                },
+                {
+                    "name": "rowsPerPage",
+                    "type": "int"
+                },
+                {
+                    "name": "totalRecords",
+                    "type": "int"
+                },
+                {
+                    "name": "maxPage",
+                    "type": "int"
+                },
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(100)"
+                }
+            ]
+        }
+    },
+    "SaveImage": {
+        "type": "PROCEDURE",
+        "updated": "2020-01-14T16:47:59.777Z",
+        "parameter": {
+            "inputs": [
+                {
+                    "name": "imageId",
+                    "type": "int"
+                },
+                {
+                    "name": "data",
+                    "type": "varbinary(max)"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "errNum",
+                    "type": "int"
+                },
+                {
+                    "name": "errMsg",
+                    "type": "nvarchar(max)"
                 }
             ]
         }

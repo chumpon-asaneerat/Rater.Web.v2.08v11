@@ -387,12 +387,6 @@ const RaterWebv2x08r9 = class extends SqlServer {
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }
 
-    async GetRawVotes(pObj) {
-        let name = 'GetRawVotes';
-        let proc = schema[name];
-        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
-    }
-
     async DeleteMemberInfo(pObj) {
         let name = 'DeleteMemberInfo';
         let proc = schema[name];
@@ -509,6 +503,18 @@ const RaterWebv2x08r9 = class extends SqlServer {
 
     async FilterVoteDeviceMembers(pObj) {
         let name = 'FilterVoteDeviceMembers';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async GetRawVotes(pObj) {
+        let name = 'GetRawVotes';
+        let proc = schema[name];
+        return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
+    }
+
+    async SaveImage(pObj) {
+        let name = 'SaveImage';
         let proc = schema[name];
         return await this.execute(name, pObj, proc.parameter.inputs, proc.parameter.outputs);
     }

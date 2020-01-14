@@ -116,5 +116,6 @@
     "FilterVoteMembers": true,
     "FilterVoteOrgs": true,
     "FilterVoteDevices": true,
-    "FilterVoteDeviceMembers": true
+    "FilterVoteDeviceMembers": true,
+    "SaveImage": true
 }
