@@ -39,3 +39,21 @@ content-type: application/json
     "userId": null
 }
 
+#### GetVoteSummaries 3
+POST http://localhost:3000/customer/api/report/votesummaries/search
+content-type: application/json
+
+{
+    "langId": "EN",
+    "customerId": "EDL-C2019100004",
+    "beginDate": "2020-01-14",
+    "endDate": "2020-01-14",
+    "qsetId": "QS00004",
+    "slides": [
+        { "qSeq": 1 }
+    ],
+    "orgs": [ 
+        { "orgId": "O0004" }
+    ],
+    "userId": ""
+}
