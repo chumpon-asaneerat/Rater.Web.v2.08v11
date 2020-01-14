@@ -1338,11 +1338,12 @@ const NRandom = class {
         let imax = (sampleSize) ? sampleSize : 1;
         let dt1 = new Date(begin.getFullYear(), begin.getMonth(), begin.getDate(), 0, 0, 0)
         let dt2 = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999)
-        let v1 = dt1.getTime()
-        let v2 = dt2.getTime()
+        // remove timezone part.
+        let v1 = dt1.getTime() - (dt1.getTimezoneOffset() * 60 * 1000)
+        let v2 = dt2.getTime() - (dt2.getTimezoneOffset() * 60 * 1000)
         let dt;
         let opts = { min: true, max: true }
-        for (let i = 0; i < imax; i++) {            
+        for (let i = 0; i < imax; i++) {
             dt = new Date(NRandom.int(v2, v1, opts))
             ret.push(dt)
         }

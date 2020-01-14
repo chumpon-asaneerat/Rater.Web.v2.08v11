@@ -713,6 +713,10 @@ let getDateArray = (beginDate, endDate, maxLoop) => {
     //let dt2 = new DateTime(endDate)
     let dt1 = new Date(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate())
     let dt2 = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59, 999)
+    let v1 = dt1.getTime() - (dt1.getTimezoneOffset() * 60 * 1000)
+    let v2 = dt2.getTime() - (dt2.getTimezoneOffset() * 60 * 1000)
+    //console.log(v1, v2)
+    let v3;
     let yr, mt, dayInMonth, dy, hr, mn, sc, ms;
     let dt;
     for (let i = 0; i < imax; i++) {
@@ -731,7 +735,9 @@ let getDateArray = (beginDate, endDate, maxLoop) => {
         ms = int(999, 0, { min: true, max: true })
         dt = new Date(yr, mt - 1, dy, hr, mn, sc, ms)
         */
-        dt = new Date(int(dt2.getTime(), dt1.getTime(), { min: true, max: true }))
+        v3 = int(v2, v1, { min: true, max: true })
+        //console.log(v3)
+        dt = new Date(v3)
         //console.log('random year:', yr)
         //console.log('random month:', mt)
         //console.log('random day:', dy)
@@ -739,12 +745,12 @@ let getDateArray = (beginDate, endDate, maxLoop) => {
         //console.log('random minute:', mn)
         //console.log('random second:', sc)
         //console.log('random milisecond:', ms)
-        console.log('Generate date:', dt.toJSON())
+        //console.log('Generate date:', dt.toJSON())
         ret.push(dt)
     }
     // sort array
     ret.sort((a, b) => a - b)
-    console.log(ret)
+    //console.log(ret)
     return ret;
 }
 
