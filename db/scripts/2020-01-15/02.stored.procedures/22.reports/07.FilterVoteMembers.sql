@@ -81,7 +81,7 @@ DECLARE @vEndDate as DateTime;
 		END
 		ELSE
 		BEGIN
-			SET @sql = @sql + '				  UPPER(LTRIM(RTRIM(L.LangId))) = UPPER(LTRIM(RTRIM(A.LangId)))' + CHAR(13);
+			SET @sql = @sql + '				  UPPER(LTRIM(RTRIM(L.LangId))) = UPPER(LTRIM(RTRIM(L.LangId)))' + CHAR(13);
 		END
 		SET @sql = @sql + '	   ) ' + CHAR(13);
 		SET @sql = @sql + '	   LEFT OUTER JOIN MemberInfoMLView M ON ( ' + CHAR(13);

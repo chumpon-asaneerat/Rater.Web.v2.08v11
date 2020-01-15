@@ -5108,7 +5108,7 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: (ret) => {
-                        console.log('Load Members:', ret);
+
                         memModel = ret.data;
                         updateMembers();
                     },
@@ -5187,7 +5187,6 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
             filter.endDate = String(ctrlEnd.value());
             filter.orgId = orgId
 
-            console.log(filter)
             loadMembers(filter)
         }
 
@@ -5202,13 +5201,19 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
                 slides.push({ qSeq: quesId })
             });
             let orgid = ctrlOrgTree.selectedItem();
+            let members = []
+            let memmap = ctrlMemberTree.selectedItems().map(item => item.id );
+            memmap.forEach(memId => {
+                members.push({ memberId: memId })
+            });
 
             let criteria = {
                 qsetId: qsetid,
                 beginDate: beginDT,
                 endDate: endDT,
                 slides: slides,
-                orgId: orgid
+                orgId: orgid,
+                members: members
             }
 
             events.raise(events.name.StaffCompareResult, criteria)
