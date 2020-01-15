@@ -13,14 +13,13 @@ GO
 --
 -- [== Example ==]
 --
---exec FilterVoteDeviceMembers N'TH', N'EDL-C2019100004', N'QS00004', 1, N'O0002', N'D0004', N'2019-10-01', N'2021-11-01'
+--exec FilterVoteDeviceMembers N'TH', N'EDL-C2019100004', N'QS00004', N'O0002', N'D0004', N'2019-10-01', N'2021-11-01'
 -- =============================================
 CREATE PROCEDURE [dbo].[FilterVoteDeviceMembers] 
 (
   @langId as nvarchar(3)
 , @customerId as nvarchar(30)
 , @qsetId as nvarchar(30)
-, @qseq as int
 , @orgId as nvarchar(30)
 , @deviceId as nvarchar(30)
 , @beginDate As DateTime = null
@@ -89,7 +88,6 @@ DECLARE @vEndDate as DateTime;
 		 WHERE A.ObjectStatus = 1
 		   AND LOWER(A.CustomerId) = LOWER(RTRIM(LTRIM(@customerId)))
 		   AND LOWER(A.QSetId) = LOWER(RTRIM(LTRIM(@qsetId)))
-		   AND A.QSeq = @qseq
 		   AND UPPER(LTRIM(RTRIM(A.OrgId))) = UPPER(LTRIM(RTRIM(COALESCE(@orgId, A.OrgId))))
 		   AND UPPER(LTRIM(RTRIM(A.DeviceId))) = UPPER(LTRIM(RTRIM(COALESCE(@deviceId, A.DeviceId))))
 		   AND A.VoteDate >= @vBeginDate

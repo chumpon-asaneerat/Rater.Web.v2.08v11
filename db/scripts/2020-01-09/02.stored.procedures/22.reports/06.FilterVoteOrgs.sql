@@ -18,15 +18,14 @@ GO
 --
 -- [== Example ==]
 --
---exec FilterVoteOrgs N'TH', N'EDL-C2019100003', N'QS00001', 1, N'2019-10-01', N'2019-11-01'
---exec FilterVoteOrgs N'EN', N'EDL-C2019100003', N'QS00001', 1, N'2019-10-01', N'2019-11-01'
+--exec FilterVoteOrgs N'TH', N'EDL-C2019100003', N'QS00001', N'2019-10-01', N'2019-11-01'
+--exec FilterVoteOrgs N'EN', N'EDL-C2019100003', N'QS00001', N'2019-10-01', N'2019-11-01'
 -- =============================================
 CREATE PROCEDURE [dbo].[FilterVoteOrgs] 
 (
   @langId as nvarchar(3)
 , @customerId as nvarchar(30)
 , @qsetId as nvarchar(30)
-, @qseq as int
 , @beginDate As DateTime = null
 , @endDate As DateTime = null
 , @errNum as int = 0 out
@@ -77,7 +76,6 @@ DECLARE @vEndDate as DateTime;
 		 WHERE A.ObjectStatus = 1
 		   AND LOWER(A.CustomerId) = LOWER(RTRIM(LTRIM(@customerId)))
 		   AND LOWER(A.QSetId) = LOWER(RTRIM(LTRIM(@qsetId)))
-		   AND A.QSeq = @qseq
 		   AND A.VoteDate >= @vBeginDate
 		   AND A.VoteDate <= @vEndDate
 

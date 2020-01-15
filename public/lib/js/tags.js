@@ -5179,17 +5179,10 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
         let reloadMembers = () => {
-            let slides = [];
-            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
-            quesmap.forEach(quesId => {
-                slides.push({ qSeq: quesId })
-            });
             let orgId = ctrlOrgTree.selectedItem()
 
             let filter = {}
             filter.qsetId = ctrlQSets.value()
-            filter.qseq = 1
-            filter.slides = slides
             filter.beginDate = String(ctrlBegin.value());
             filter.endDate = String(ctrlEnd.value());
             filter.orgId = orgId

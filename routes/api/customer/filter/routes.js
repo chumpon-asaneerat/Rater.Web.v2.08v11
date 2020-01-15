@@ -51,6 +51,7 @@ const checkForError = (data) => {
 
 const api = class {}
 api.filter = class {}
+
 api.filter.FilterVoteOrgs = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
@@ -146,23 +147,23 @@ api.filter.FilterVoteMembers = class {
             if (!ret[rec.langId]) {
                 ret[rec.langId] = []
             }
-            let map = ret[rec.langId].map(c => c.orgId);
-            let idx = map.indexOf(rec.orgId);
+            let map = ret[rec.langId].map(c => c.memberId);
+            let idx = map.indexOf(rec.UserId);
             let nobj;
             if (idx === -1) {
                 // set id
-                nobj = { orgId: rec.orgId }
+                nobj = { memberId: rec.UserId }
                 // init lang properties list.
                 ret[rec.langId].push(nobj)
             }
             else {
                 nobj = ret[rec.langId][idx];
             }
-            nobj.customerId = rec.customerId;
-            nobj.OrgName = rec.OrgName;
-            nobj.branchId = rec.BranchId;
-            nobj.BranchName = rec.BranchName;
-            nobj.memberId = rec.UserId;
+            //nobj.customerId = rec.customerId;
+            //nobj.OrgName = rec.OrgName;
+            //nobj.branchId = rec.BranchId;
+            //nobj.BranchName = rec.BranchName;
+            //nobj.memberId = rec.UserId;
             nobj.FullName = rec.FullName;
         })
         // set to result.

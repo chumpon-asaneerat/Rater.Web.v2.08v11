@@ -6,7 +6,6 @@ content-type: application/json
     "langId": null,
     "customerId": "EDL-C2019100003",
     "qsetId": "QS00001",
-    "qseq": 1,
     "beginDate": "2019-10-01",
     "endDate": "2019-11-01"
 }
@@ -19,10 +18,6 @@ content-type: application/json
     "langId": null,
     "customerId": "EDL-C2019100004",
     "qsetId": "QS00004",
-    "slides": [
-        { "qseq": 1 },
-        { "qseq": 2 }
-    ],
     "beginDate": "2020-01-15",
     "endDate": "2020-01-15",
     "orgId": null

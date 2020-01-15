@@ -13,18 +13,17 @@ GO
 --
 -- [== Example ==]
 --
---exec FilterVoteDevices N'TH', N'EDL-C2019100004', N'QS00004', 1, N'2019-10-01', N'2021-11-01'
---exec FilterVoteDevices N'TH', N'EDL-C2019100004', N'QS00004', 1, N'2019-10-01', N'2021-11-01', N'O0010'
+--exec FilterVoteDevices N'TH', N'EDL-C2019100004', N'QS00004', NULL, N'2019-10-01', N'2021-11-01'
+--exec FilterVoteDevices N'TH', N'EDL-C2019100004', N'QS00004', N'O0010', N'2019-10-01', N'2021-11-01'
 -- =============================================
 CREATE PROCEDURE [dbo].[FilterVoteDevices] 
 (
   @langId as nvarchar(3)
 , @customerId as nvarchar(30)
 , @qsetId as nvarchar(30)
-, @qseq as int
+, @orgId as nvarchar(30) = null
 , @beginDate As DateTime = null
 , @endDate As DateTime = null
-, @orgId as nvarchar(30) = null
 , @errNum as int = 0 out
 , @errMsg as nvarchar(100) = N'' out
 )
@@ -82,7 +81,6 @@ DECLARE @vEndDate as DateTime;
 		 WHERE A.ObjectStatus = 1
 		   AND LOWER(A.CustomerId) = LOWER(RTRIM(LTRIM(@customerId)))
 		   AND LOWER(A.QSetId) = LOWER(RTRIM(LTRIM(@qsetId)))
-		   AND A.QSeq = @qseq
 		   AND UPPER(LTRIM(RTRIM(A.OrgId))) = UPPER(LTRIM(RTRIM(COALESCE(@orgId, A.OrgId))))
 		   AND A.VoteDate >= @vBeginDate
 		   AND A.VoteDate <= @vEndDate

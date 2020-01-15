@@ -18,18 +18,17 @@ GO
 --
 -- [== Example ==]
 --
---exec FilterVoteMembers N'TH', N'EDL-C2019100003', N'QS00001', 1, N'2019-10-01', N'2019-11-01'
---exec FilterVoteMembers N'EN', N'EDL-C2019100003', N'QS00001', 1, N'2019-10-01', N'2019-11-01'
+--exec FilterVoteMembers N'TH', N'EDL-C2019100003', N'QS00001', NULL, N'2019-10-01', N'2019-11-01'
+--exec FilterVoteMembers N'EN', N'EDL-C2019100003', N'QS00001', N'O0010', N'2019-10-01', N'2019-11-01'
 -- =============================================
 CREATE PROCEDURE [dbo].[FilterVoteMembers] 
 (
   @langId as nvarchar(3)
 , @customerId as nvarchar(30)
 , @qsetId as nvarchar(30)
-, @qseq as int
+, @orgId as nvarchar(30) = null
 , @beginDate As DateTime = null
 , @endDate As DateTime = null
-, @orgId as nvarchar(30) = null
 , @errNum as int = 0 out
 , @errMsg as nvarchar(100) = N'' out
 )
@@ -56,17 +55,18 @@ DECLARE @vEndDate as DateTime;
 		SET @vEndDate = CAST(@vEndDateStr AS datetime)
 
 		SELECT DISTINCT L.langId
-		              , A.customerId
-					  , A.orgId
-					  , O.OrgName
-					  , A.BranchId
-					  , B.BranchName
+		              --, A.customerId
+					  --, A.orgId
+					  --, O.OrgName
+					  --, A.BranchId
+					  --, B.BranchName
 					  , A.UserId
 					  , M.FullName
 		  FROM VOTE A
 			   INNER JOIN LanguageView L ON (
 						  UPPER(LTRIM(RTRIM(L.LangId))) = UPPER(LTRIM(RTRIM(COALESCE(@langId, L.LangId))))
 			   )
+               /*
 			   INNER JOIN OrgMLView O ON (
 						  O.OrgId = A.OrgId 
 					  AND O.CustomerId = A.CustomerId
@@ -77,6 +77,7 @@ DECLARE @vEndDate as DateTime;
 				      AND B.CustomerId = A.CustomerId
 					  AND B.LangId = L.LangId
 			   )
+               */
 			   LEFT OUTER JOIN MemberInfoMLView M ON (
 						  M.MemberId = A.UserId 
 					  AND M.CustomerId = A.CustomerId
@@ -85,7 +86,6 @@ DECLARE @vEndDate as DateTime;
 		 WHERE A.ObjectStatus = 1
 		   AND LOWER(A.CustomerId) = LOWER(RTRIM(LTRIM(@customerId)))
 		   AND LOWER(A.QSetId) = LOWER(RTRIM(LTRIM(@qsetId)))
-		   AND A.QSeq = @qseq
 		   AND UPPER(LTRIM(RTRIM(A.OrgId))) = UPPER(LTRIM(RTRIM(COALESCE(@orgId, A.OrgId))))
 		   AND A.VoteDate >= @vBeginDate
 		   AND A.VoteDate <= @vEndDate
