@@ -12,6 +12,8 @@ GO
 --	- Stored Procedure Created.
 -- <2020-01-07> :
 --	- Rename SP name from FilterMembers to FilterVoteMembers.
+-- <2020-01-15> :
+--	- Supports include sub org(s).
 --
 -- [== Example ==]
 --
@@ -31,11 +33,21 @@ ALTER PROCEDURE [dbo].[FilterVoteMembers]
 )
 AS
 BEGIN
+DECLARE @showOutput as int = 0;
+DECLARE @objectStatus as int = 1;
+DECLARE @includeSubOrg bit = 1;
+DECLARE @inClause as nvarchar(MAX);
+DECLARE @sql as nvarchar(MAX)
 DECLARE @vBeginDateStr nvarchar(40);
 DECLARE @vEndDateStr nvarchar(40); 
 DECLARE @vBeginDate as DateTime;
 DECLARE @vEndDate as DateTime;
 	BEGIN TRY
+		IF (dbo.IsNullOrEmpty(@orgId) = 0) -- OrgId Exist.
+		BEGIN
+			EXEC GenerateSubOrgInClause @customerId, @orgId, @includeSubOrg, @showOutput, @inClause output
+		END
+
 		-- CONVERT DATE
 		SET @vBeginDateStr = (CONVERT(nvarchar(4), DatePart(yyyy, @beginDate)) + '-' +
 							  CONVERT(nvarchar(2), DatePart(mm, @beginDate)) + '-' +
@@ -51,42 +63,45 @@ DECLARE @vEndDate as DateTime;
 		--SET @vEndDate = CONVERT(datetime, @vEndDateStr, 121);
 		SET @vEndDate = CAST(@vEndDateStr AS datetime)
 
-		SELECT DISTINCT L.langId
-		              --, A.customerId
-					  --, A.orgId
-					  --, O.OrgName
-					  --, A.BranchId
-					  --, B.BranchName
-					  , A.UserId
-					  , M.FullName
-		  FROM VOTE A
-			   INNER JOIN LanguageView L ON (
-						  UPPER(LTRIM(RTRIM(L.LangId))) = UPPER(LTRIM(RTRIM(COALESCE(@langId, L.LangId))))
-			   )
-               /*
-			   INNER JOIN OrgMLView O ON (
-						  O.OrgId = A.OrgId 
-					  AND O.CustomerId = A.CustomerId
-					  AND O.LangId = L.LangId
-			   )
-			   INNER JOIN BranchMLView B ON (
-						  B.BranchId = A.BranchId 
-				      AND B.CustomerId = A.CustomerId
-					  AND B.LangId = L.LangId
-			   )
-               */
-			   LEFT OUTER JOIN MemberInfoMLView M ON (
-						  M.MemberId = A.UserId 
-					  AND M.CustomerId = A.CustomerId
-					  AND M.LangId = L.LangId
-			   )
-		 WHERE A.ObjectStatus = 1
-		   AND LOWER(A.CustomerId) = LOWER(RTRIM(LTRIM(@customerId)))
-		   AND LOWER(A.QSetId) = LOWER(RTRIM(LTRIM(@qsetId)))
-		   AND UPPER(LTRIM(RTRIM(A.OrgId))) = UPPER(LTRIM(RTRIM(COALESCE(@orgId, A.OrgId))))
-		   AND A.VoteDate >= @vBeginDate
-		   AND A.VoteDate <= @vEndDate
+		SET @sql = N'';
+		SET @sql = @sql + '';
+		SET @sql = @sql + 'SELECT DISTINCT L.langId ' + CHAR(13);
+		SET @sql = @sql + '              --, A.customerId ' + CHAR(13);
+		SET @sql = @sql + '			  --, A.orgId ' + CHAR(13);
+		SET @sql = @sql + '			  --, O.OrgName ' + CHAR(13);
+		SET @sql = @sql + '			  --, A.BranchId ' + CHAR(13);
+		SET @sql = @sql + '			  --, B.BranchName ' + CHAR(13);
+		SET @sql = @sql + '			  , A.UserId ' + CHAR(13);
+		SET @sql = @sql + '			  , M.FullName ' + CHAR(13);
+		SET @sql = @sql + '  FROM VOTE A ' + CHAR(13);
+		SET @sql = @sql + '	   INNER JOIN LanguageView L ON ( ' + CHAR(13);
+		IF (dbo.IsNullOrEmpty(@langId) = 0) -- LangId Exist.
+		BEGIN
+			SET @sql = @sql + '				  UPPER(LTRIM(RTRIM(L.LangId))) = UPPER(LTRIM(RTRIM(N''' + @langId + ''')))' + CHAR(13);
+		END
+		ELSE
+		BEGIN
+			SET @sql = @sql + '				  UPPER(LTRIM(RTRIM(L.LangId))) = UPPER(LTRIM(RTRIM(A.LangId)))' + CHAR(13);
+		END
+		SET @sql = @sql + '	   ) ' + CHAR(13);
+		SET @sql = @sql + '	   LEFT OUTER JOIN MemberInfoMLView M ON ( ' + CHAR(13);
+		SET @sql = @sql + '				  M.MemberId = A.UserId ' + CHAR(13);
+		SET @sql = @sql + '			  AND M.CustomerId = A.CustomerId ' + CHAR(13);
+		SET @sql = @sql + '			  AND M.LangId = L.LangId ' + CHAR(13);
+		SET @sql = @sql + '	   ) ' + CHAR(13);
+		SET @sql = @sql + ' WHERE A.ObjectStatus = 1 ' + CHAR(13);
+		SET @sql = @sql + '   AND LOWER(A.CustomerId) = LOWER(RTRIM(LTRIM(N''' + @customerId + '''))) ' + CHAR(13);
+		SET @sql = @sql + '   AND LOWER(A.QSetId) = LOWER(RTRIM(LTRIM(N''' + @qsetId + '''))) ' + CHAR(13);
+		IF (dbo.IsNullOrEmpty(@orgId) = 0) -- OrgId Exist.
+		BEGIN
+			SET @sql = @sql + '   AND A.OrgId IN (' + @inClause + ') ' + CHAR(13);
+		END
 
+		SET @sql = @sql + '   AND A.VoteDate >= ''' + @vBeginDateStr + ''' ' + CHAR(13);
+		SET @sql = @sql + '   AND A.VoteDate <= ''' + @vEndDateStr + ''' ' + CHAR(13);
+
+		--SELECT @sql
+		EXECUTE sp_executesql @sql
 		-- success
 		EXEC GetErrorMsg 0, @errNum out, @errMsg out
 	END TRY
