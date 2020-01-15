@@ -3315,11 +3315,11 @@ riot.tag2('bar-votesummary-result', '<date-result caption="Date" begin="{current
 
                 if (result && result[lang.langId]) {
                     self.current = result[lang.langId]
-                    console.log(self.current)
-                    self.current.begin = search_opts.beginDate;
-                    self.current.end = search_opts.endDate;
 
                 }
+                self.current.begin = search_opts.beginDate;
+                self.current.end = search_opts.endDate;
+
                 self.update();
             }
         }
@@ -3969,10 +3969,11 @@ riot.tag2('pie-votesummary-result', '<date-result caption="Date" begin="{current
 
                 if (result && result[lang.langId]) {
                     self.current = result[lang.langId]
-                    self.current.begin = search_opts.beginDate;
-                    self.current.end = search_opts.endDate;
 
                 }
+                self.current.begin = search_opts.beginDate;
+                self.current.end = search_opts.endDate;
+
                 self.update();
             }
         }
@@ -4374,13 +4375,14 @@ riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}"
 
                 if (result) {
                     self.current = result;
-                    self.current.begin = search_opts.beginDate;
-                    self.current.end = search_opts.endDate;
                     console.log(self.current)
                 }
                 else {
                     console.log('No result found.')
                 }
+                self.current.begin = search_opts.beginDate;
+                self.current.end = search_opts.endDate;
+
                 self.update();
             }
         }
@@ -4441,7 +4443,7 @@ riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}"
         }
 
         this.setup = (criteria) => {
-
+            console.log('criteria:', criteria)
             search_opts = criteria;
             shown = true;
             refresh();
@@ -4665,8 +4667,7 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
                 beginDate: beginDT,
                 endDate: endDT,
                 slides: slides,
-                qseq: 1,
-                orgs: orgid
+                orgId: orgid
             }
 
             events.raise(events.name.RawVoteResult, criteria)
@@ -4836,13 +4837,14 @@ riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.b
             if (shown && screenId === scrId) {
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
-                console.log(result)
+
                 if (result && result[lang.langId]) {
                     self.current = result[lang.langId]
-                    self.current.begin = search_opts.beginDate;
-                    self.current.end = search_opts.endDate;
 
                 }
+                self.current.begin = search_opts.beginDate;
+                self.current.end = search_opts.endDate;
+
                 self.update();
             }
         }
@@ -4850,6 +4852,7 @@ riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.b
             let scrId = screens.current.screenId;
             if (!shown || screenId !== scrId) return;
 
+            updatecontent();
         }
 
         let initCtrls = () => {}
@@ -4888,19 +4891,20 @@ riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.b
         }
 
         this.setup = (criteria) => {
-
+            console.log('criteria:', criteria)
             search_opts = criteria;
             shown = true;
             refresh();
         }
 });
-riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff Compare.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'staff-compare-search,[data-is="staff-compare-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } staff-compare-search .input-block,[data-is="staff-compare-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-search .input-block.center,[data-is="staff-compare-search"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-search .input-block span,[data-is="staff-compare-search"] .input-block span,staff-compare-search .input-block button,[data-is="staff-compare-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } staff-compare-search .input-block span.label,[data-is="staff-compare-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block span input,[data-is="staff-compare-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block .tree,[data-is="staff-compare-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff Compare.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'staff-compare-search,[data-is="staff-compare-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } staff-compare-search .input-block,[data-is="staff-compare-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-search .input-block.center,[data-is="staff-compare-search"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-search .input-block span,[data-is="staff-compare-search"] .input-block span,staff-compare-search .input-block button,[data-is="staff-compare-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } staff-compare-search .input-block span.label,[data-is="staff-compare-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block span input,[data-is="staff-compare-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block .tree,[data-is="staff-compare-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
 
 
         let self = this;
         let screenId = 'staff-compare-manage';
         let qsetModel;
         let quesModel;
+        let orgModel;
 
         let defaultContent = {
             title: ''
@@ -4914,7 +4918,7 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
                 self.content = scrContent ? scrContent : defaultContent;
                 updateQSets();
                 updateQuestions();
-
+                updateOrgs();
                 self.update();
             }
         }
@@ -4943,7 +4947,6 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
                 ctrlQSets.value(lastValue);
             }
         }
-
         let loadQSets = () => {
             let criteria = {}
             if (ctrlQSets) {
@@ -5008,18 +5011,58 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
             }
         }
 
-        let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree;
+        let clearOrgs = () => {
+            if (ctrlOrgTree) {
+                ctrlOrgTree.clear();
+            }
+        }
+
+        let updateOrgs = () => {
+            if (ctrlOrgTree && orgModel) {
+                let lastValue = ctrlOrgTree.selectedItem();
+
+                let values = orgModel[lang.langId];
+
+                let fldmap = { valueField: 'orgId', textField: 'OrgName', parentField: 'parentId' }
+                ctrlOrgTree.setup(values, fldmap);
+
+            }
+        }
+
+        let loadOrgs = (qsetid) => {
+            let criteria = { }
+            if (ctrlOrgTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/org/search",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+
+                        orgModel = ret.data;
+                        updateOrgs();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree, ctrlOrgTree;
         let initCtrls = () => {
             ctrlQSets = self.refs['ctrlQSets']
             ctrlBegin = self.refs['ctrlBegin']
             ctrlEnd = self.refs['ctrlEnd']
             ctrlQuesTree = self.refs['ctrlQuesTree']
-
+            ctrlOrgTree = self.refs['ctrlOrgTree']
             loadQSets();
 
+            loadOrgs();
         }
         let freeCtrls = () => {
-
+            ctrlOrgTree = null;
             ctrlQuesTree = null;
             ctrlEnd = null;
             ctrlBegin = null;
@@ -5054,8 +5097,24 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
         let onScreenChanged = (e) => { updatecontent(); }
 
         this.onseach = () => {
+            let qsetid = ctrlQSets.value();
+            let beginDT = String(ctrlBegin.value());
+            let endDT = String(ctrlEnd.value());
 
-            let criteria = { }
+            let slides = [];
+            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
+            quesmap.forEach(quesId => {
+                slides.push({ qSeq: quesId })
+            });
+            let orgid = ctrlOrgTree.selectedItem();
+
+            let criteria = {
+                qsetId: qsetid,
+                beginDate: beginDT,
+                endDate: endDT,
+                slides: slides,
+                orgId: orgid
+            }
 
             events.raise(events.name.StaffCompareResult, criteria)
         }
@@ -5162,13 +5221,14 @@ riot.tag2('staff-perf-result', '<date-result caption="Date" begin="{current.begi
             if (shown && screenId === scrId) {
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
-                console.log(result)
+
                 if (result && result[lang.langId]) {
                     self.current = result[lang.langId]
-                    self.current.begin = search_opts.beginDate;
-                    self.current.end = search_opts.endDate;
 
                 }
+                self.current.begin = search_opts.beginDate;
+                self.current.end = search_opts.endDate;
+
                 self.update();
             }
         }
@@ -5493,10 +5553,11 @@ riot.tag2('votesummary-result', '<date-result caption="Date" begin="{current.beg
 
                 if (result && result[lang.langId]) {
                     self.current = result[lang.langId]
-                    self.current.begin = search_opts.beginDate;
-                    self.current.end = search_opts.endDate;
 
                 }
+                self.current.begin = search_opts.beginDate;
+                self.current.end = search_opts.endDate;
+
                 self.update();
             }
         }

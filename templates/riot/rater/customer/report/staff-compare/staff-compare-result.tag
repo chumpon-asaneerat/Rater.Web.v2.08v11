@@ -66,13 +66,14 @@
             if (shown && screenId === scrId) {
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
-                console.log(result)
+                //console.log(result)
                 if (result && result[lang.langId]) {
                     self.current = result[lang.langId]
-                    self.current.begin = search_opts.beginDate;
-                    self.current.end = search_opts.endDate;
                     //console.log(self.current)
                 }
+                self.current.begin = search_opts.beginDate;
+                self.current.end = search_opts.endDate;
+
                 self.update();
             }
         }
@@ -97,6 +98,7 @@
                 }
             })
             */
+            updatecontent();
         }
 
         //#region controls variables and methods
@@ -160,7 +162,7 @@
         }
 
         this.setup = (criteria) => {
-            //console.log('criteria:', criteria)
+            console.log('criteria:', criteria)
             search_opts = criteria;
             shown = true;
             refresh();

@@ -314,7 +314,7 @@
             quesmap.forEach(quesId => {
                 slides.push({ qSeq: quesId })
             });
-            let orgid = ctrlOrgTree.selectedItem();            
+            let orgid = ctrlOrgTree.selectedItem();
 
             let criteria = {
                 langId: lang.langId,
@@ -322,8 +322,7 @@
                 beginDate: beginDT,
                 endDate: endDT,
                 slides: slides,
-                qseq: 1,
-                orgs: orgid
+                orgId: orgid
             }
             //console.log(criteria)
 

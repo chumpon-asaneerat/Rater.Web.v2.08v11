@@ -74,11 +74,11 @@
                 //console.log(result)
                 if (result && result[lang.langId]) {
                     self.current = result[lang.langId]
-                    console.log(self.current)
-                    self.current.begin = search_opts.beginDate;
-                    self.current.end = search_opts.endDate;
                     //console.log(self.current)
                 }
+                self.current.begin = search_opts.beginDate;
+                self.current.end = search_opts.endDate;
+                
                 self.update();
             }
         }
