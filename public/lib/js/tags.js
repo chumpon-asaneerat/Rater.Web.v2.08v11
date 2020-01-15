@@ -429,6 +429,7 @@ riot.tag2('ncheckedtree', '<div class="ntree-container"> <div ref="tree" class="
 
         let self = this;
         let fldmap = { valueField:'id', textField:'text', parentField: '#' }
+        let selectItemsCallback;
 
         let tree, clear;
 
@@ -518,11 +519,27 @@ riot.tag2('ncheckedtree', '<div class="ntree-container"> <div ref="tree" class="
                     "plugins" : [ "wholerow", "checkbox", "json_data" ]
                 }).on('ready.jstree', () => {
                     $(tree).jstree("open_all");
+                    $(tree).on('changed.jstree', (e, data) => {
+                        let i, j, r = [];
+                        for (i = 0, j = data.selected.length; i < j; i++) {
+
+                            r.push(data.instance.get_node(data.selected[i]));
+                        }
+
+                        if (selectItemsCallback && r.length > 0) {
+                            selectItemsCallback(r)
+                        }
+                    });
                 });
             }
             self.update();
         }
 
+        this.onSelectItems = (callback) => {
+
+            selectItemsCallback = callback
+
+        }
 });
 
 riot.tag2('ntree', '<div class="ntree-container"> <div ref="tree" class="tree"></div> </div> <label>{opts.title}</label>', 'ntree,[data-is="ntree"]{ margin: 0; margin-top: 5px; padding: 10px; font-size: 14px; display: inline-block; position: relative; height: auto; width: 100%; background: transparent; box-shadow: 0 5px 10px solid rgba(0, 0, 0, .2); } ntree .ntree-container,[data-is="ntree"] .ntree-container{ display: block; padding: 20px 0 10px 0; margin-bottom: 0px; width: calc(100% - 25px); background-color: whitesmoke; box-sizing: border-box; box-shadow: none; outline: none; border: none; font-size: 14px; box-shadow: 0 0 0px 1000px white inset; border-radius: 2px; border-bottom: 2px solid cornflowerblue; overflow: hidden; } ntree .ntree-container .tree,[data-is="ntree"] .ntree-container .tree{ width: 100%; border: 1px solid silver; border-radius: 2px; height: 100px; min-height: 100px; max-height: 100px; overflow: auto; } ntree label,[data-is="ntree"] label{ position: absolute; top: 5px; left: 10px; transition: .2s; pointer-events: none; color: cornflowerblue; font-weight: bold; }', '', function(opts) {
@@ -530,6 +547,7 @@ riot.tag2('ntree', '<div class="ntree-container"> <div ref="tree" class="tree"><
 
         let self = this;
         let fldmap = { valueField:'id', textField:'text', parentField: '#' }
+        let selectItemCallback;
 
         let tree, clear;
 
@@ -626,11 +644,27 @@ riot.tag2('ntree', '<div class="ntree-container"> <div ref="tree" class="tree"><
                     "plugins" : [ "wholerow", "json_data" ]
                 }).on('ready.jstree', () => {
                     $(tree).jstree("open_all");
+                    $(tree).on('changed.jstree', (e, data) => {
+                        let i, j, r = [];
+                        for (i = 0, j = data.selected.length; i < j; i++) {
+
+                            r.push(data.instance.get_node(data.selected[i]));
+                        }
+
+                        if (selectItemCallback && r.length > 0) {
+                            selectItemCallback(r[0])
+                        }
+                    });
                 });
             }
             self.update();
         }
 
+        this.onSelectItem = (callback) => {
+
+            selectItemCallback = callback
+
+        }
 });
 
 riot.tag2('collapse-panel', '<div class="panel-container"> <div class="panel-header"> <div class="collapse-button" onclick="{collapseClick}"> <virtual if="{!collapsed}"> <span class="fas fa-sort-down" style="padding-left: 2px; transform: translate(0px, -3px);"></span> </virtual> <virtual if="{collapsed}"> <span class="fas fa-caret-right" style="padding-left: 4px;"></span> </virtual> </div> <div class="header-block"> <label>{opts.caption}</label> </div> <virtual if="{\'removable\' in opts}"> <div class="close-button" onclick="{closeClick}"> <span class="far fa-times-circle" style="transform: translate(5px, 0);"></span> </div> </virtual> </div> <div ref="content" class="panel-body"> <yield></yield> </div> </div>', 'collapse-panel,[data-is="collapse-panel"]{ margin: 0 auto; padding: 0; width: 100%; font-size: smaller; } collapse-panel .panel-container,[data-is="collapse-panel"] .panel-container{ margin: 0; padding: 2px; width: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr; grid-template-areas: \'panel-header\' \'panel-body\'; } collapse-panel .panel-header,[data-is="collapse-panel"] .panel-header{ grid-area: panel-header; display: grid; margin: 0; padding: 0; padding-left: 3px; padding-right: 3px; width: 100%; grid-template-columns: 22px 1fr 20px; grid-template-rows: 1fr; grid-template-areas: \'collapse-button header-block close-button\'; color: white; align-self: center; border-radius: 5px 5px 0 0; background-color: cornflowerblue; } collapse-panel .panel-header .collapse-button,[data-is="collapse-panel"] .panel-header .collapse-button{ grid-area: collapse-button; align-self: center; margin: 0; padding: 0; width: 100%; cursor: pointer; } collapse-panel .panel-header .collapse-button:hover,[data-is="collapse-panel"] .panel-header .collapse-button:hover{ color: yellow; } collapse-panel .panel-header .header-block,[data-is="collapse-panel"] .panel-header .header-block{ grid-area: header-block; align-self: center; align-content: center; margin: 0; padding: 0; width: 100%; cursor: none; } collapse-panel .panel-header .header-block:hover,[data-is="collapse-panel"] .panel-header .header-block:hover{ color: yellow; } collapse-panel .panel-header .header-block label,[data-is="collapse-panel"] .panel-header .header-block label{ margin: 0; margin-bottom: 1px; padding: 0; width: 100%; user-select: none; } collapse-panel .panel-header .close-button,[data-is="collapse-panel"] .panel-header .close-button{ grid-area: close-button; align-self: center; margin: 0; padding: 0; width: 100%; cursor: pointer; } collapse-panel .panel-header .close-button:hover,[data-is="collapse-panel"] .panel-header .close-button:hover{ color: orangered; } collapse-panel .panel-body,[data-is="collapse-panel"] .panel-body{ grid-area: panel-body; display: inline-block; margin: 0; padding: 3px; padding-top: 3px; padding-bottom: 3px; width: 100%; background-color: white; border: 1px solid cornflowerblue; } collapse-panel .panel-container .panel-body.collapsed,[data-is="collapse-panel"] .panel-container .panel-body.collapsed{ display: none; }', '', function(opts) {
@@ -4609,13 +4643,25 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
             ctrlBegin = self.refs['ctrlBegin']
             ctrlEnd = self.refs['ctrlEnd']
             ctrlQuesTree = self.refs['ctrlQuesTree']
+            if (ctrlQuesTree) {
+                ctrlQuesTree.onSelectItems(reloadMembers)
+            }
             ctrlOrgTree = self.refs['ctrlOrgTree']
+            if (ctrlOrgTree) {
+                ctrlOrgTree.onSelectItem(reloadMembers)
+            }
             loadQSets();
 
             loadOrgs();
         }
         let freeCtrls = () => {
+            if (ctrlOrgTree) {
+                ctrlOrgTree.onSelectItem(null)
+            }
             ctrlOrgTree = null;
+            if (ctrlQuesTree) {
+                ctrlQuesTree.onSelectItems(null)
+            }
             ctrlQuesTree = null;
             ctrlEnd = null;
             ctrlBegin = null;
@@ -4648,6 +4694,21 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
         let onContentChanged = (e) => { updatecontent(); }
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
+        let reloadMembers = () => {
+            let slides = [];
+            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
+            quesmap.forEach(quesId => {
+                slides.push({ qSeq: quesId })
+            });
+            let orgId = ctrlOrgTree.selectedItem()
+
+            let filter = {}
+            filter.qsetId = ctrlQSets.value();
+            filter.slides = slides
+            filter.orgId = orgId
+
+            console.log(filter)
+        }
 
         this.onseach = () => {
             let qsetid = ctrlQSets.value();
@@ -5056,13 +5117,25 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
             ctrlBegin = self.refs['ctrlBegin']
             ctrlEnd = self.refs['ctrlEnd']
             ctrlQuesTree = self.refs['ctrlQuesTree']
+            if (ctrlQuesTree) {
+                ctrlQuesTree.onSelectItems(reloadMembers)
+            }
             ctrlOrgTree = self.refs['ctrlOrgTree']
+            if (ctrlOrgTree) {
+                ctrlOrgTree.onSelectItem(reloadMembers)
+            }
             loadQSets();
 
             loadOrgs();
         }
         let freeCtrls = () => {
+            if (ctrlOrgTree) {
+                ctrlOrgTree.onSelectItem(null)
+            }
             ctrlOrgTree = null;
+            if (ctrlQuesTree) {
+                ctrlQuesTree.onSelectItems(null)
+            }
             ctrlQuesTree = null;
             ctrlEnd = null;
             ctrlBegin = null;
@@ -5095,6 +5168,21 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
         let onContentChanged = (e) => { updatecontent(); }
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
+        let reloadMembers = () => {
+            let slides = [];
+            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
+            quesmap.forEach(quesId => {
+                slides.push({ qSeq: quesId })
+            });
+            let orgId = ctrlOrgTree.selectedItem()
+
+            let filter = {}
+            filter.qsetId = ctrlQSets.value();
+            filter.slides = slides
+            filter.orgId = orgId
+
+            console.log(filter)
+        }
 
         this.onseach = () => {
             let qsetid = ctrlQSets.value();

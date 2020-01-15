@@ -65,6 +65,7 @@
 
         let self = this;
         let fldmap = { valueField:'id', textField:'text', parentField: '#' }
+        let selectItemCallback;
 
         //#endregion
 
@@ -166,15 +167,6 @@
                         data.push(item);
                     });
                 }
-                /*
-                $(tree).on('changed.jstree', (e, data) => {
-                    let i, j, r = [];
-                    for (i = 0, j = data.selected.length; i < j; i++) {
-                        r.push(data.instance.get_node(data.selected[i]).text);
-                    }
-                    console.log('selected items:', r)
-                });
-                */
                 //console.log(data)
                 $(tree).jstree("destroy");
                 $(tree).jstree({
@@ -187,11 +179,29 @@
                     "plugins" : [ "wholerow", "json_data" ]
                 }).on('ready.jstree', () => {
                     $(tree).jstree("open_all");
+                    $(tree).on('changed.jstree', (e, data) => {
+                        let i, j, r = [];
+                        for (i = 0, j = data.selected.length; i < j; i++) {
+                            //r.push(data.instance.get_node(data.selected[i]).text);
+                            r.push(data.instance.get_node(data.selected[i]));
+                        }
+                        //console.log('selected items:', r)
+                        //console.log('has callback:', selectItemCallback ? 'yes' : 'no')
+                        if (selectItemCallback && r.length > 0) { 
+                            selectItemCallback(r[0])
+                        }
+                    });
                 });
             }
             self.update();
         }
 
         //#endregion
+
+        this.onSelectItem = (callback) => { 
+            //console.log('set callback: ', callback)
+            selectItemCallback = callback
+            //console.log('has callback:', selectItemCallback ? 'yes' : 'no')
+        }
     </script>
 </ntree>

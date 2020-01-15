@@ -65,6 +65,7 @@
 
         let self = this;
         let fldmap = { valueField:'id', textField:'text', parentField: '#' }
+        let selectItemsCallback;
 
         //#endregion
 
@@ -179,11 +180,29 @@
                     "plugins" : [ "wholerow", "checkbox", "json_data" ]           
                 }).on('ready.jstree', () => {
                     $(tree).jstree("open_all");
+                    $(tree).on('changed.jstree', (e, data) => {
+                        let i, j, r = [];
+                        for (i = 0, j = data.selected.length; i < j; i++) {
+                            //r.push(data.instance.get_node(data.selected[i]).text);
+                            r.push(data.instance.get_node(data.selected[i]));
+                        }
+                        //console.log('selected items:', r)
+                        //console.log('has callback:', selectItemsCallback ? 'yes' : 'no')
+                        if (selectItemsCallback && r.length > 0) { 
+                            selectItemsCallback(r)
+                        }
+                    });
                 });
             }
             self.update();
         }
 
         //#endregion
+
+        this.onSelectItems = (callback) => { 
+            //console.log('set callback: ', callback)
+            selectItemsCallback = callback
+            //console.log('has callback:', selectItemsCallback ? 'yes' : 'no')
+        }
     </script>
 </ncheckedtree>
