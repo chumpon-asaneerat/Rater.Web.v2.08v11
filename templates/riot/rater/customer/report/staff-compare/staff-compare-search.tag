@@ -16,6 +16,9 @@
         <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree>
     </div>
     <div class="input-block center">
+        <ncheckedtree ref="ctrlMemberTree" title="Staff" class="tree"></ncheckedtree>
+    </div>
+    <div class="input-block center">
         <button onclick="{ onseach }">Search</button>
     </div>
     <br>
@@ -76,6 +79,7 @@
         let qsetModel;
         let quesModel;
         let orgModel;
+        let memModel;
 
         let defaultContent = {
             title: ''
@@ -152,7 +156,6 @@
                 ctrlQuesTree.clear();
             }
         }
-
         let updateQuestions = () => {
             if (ctrlQuesTree && quesModel) {
                 let lastValues = ctrlQuesTree.selectedItems(); // remember
@@ -167,7 +170,6 @@
                 ctrlQuesTree.selectedItems(lastValues); // restore
             }
         }
-
         let loadQuestions = (qsetid) => {
             let criteria = {
                 qSetId: qsetid
@@ -200,7 +202,6 @@
                 ctrlOrgTree.clear();
             }
         }
-
         let updateOrgs = () => {
             if (ctrlOrgTree && orgModel) {
                 let lastValue = ctrlOrgTree.selectedItem(); // remember
@@ -236,6 +237,55 @@
 
         //#endregion
 
+        //#region Member Methods
+
+        let clearMembers = () => {
+            if (ctrlMemberTree) {
+                ctrlMemberTree.clear();
+            }
+        }
+        let updateMembers = () => {
+            if (ctrlMemberTree && memModel) {
+                let lastValues = ctrlMemberTree.selectedItems(); // remember
+                //console.log('last selected values:', lastValues)
+                let values = memModel[lang.langId];
+
+                let fldmap = { valueField: 'memberId', textField: 'FullName', parentField: null }
+                ctrlMemberTree.setup(values, fldmap);                
+                ctrlMemberTree.selectedItems(lastValues); // restore
+            }
+        }
+        let loadMembers = (criteria) => {
+            /*
+            let criteria = {
+                qsetId: qsetid,
+                qseq: 1,
+                beginDate: begin,
+                endDate: end,
+                orgId: orgId
+            }
+            */
+            if (ctrlMemberTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/filter/vote-members",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+                        console.log('Load Members:', ret);
+                        memModel = ret.data;
+                        updateMembers();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
+        //#endregion
+
         //#region controls variables and methods
 
         let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree, ctrlOrgTree;
@@ -251,11 +301,13 @@
             if (ctrlOrgTree) {
                 ctrlOrgTree.onSelectItem(reloadMembers)
             }
+            ctrlMemberTree = self.refs['ctrlMemberTree']
             loadQSets();
             //loadQuestions();
             loadOrgs();
         }
         let freeCtrls = () => {
+            ctrlMemberTree = null;
             if (ctrlOrgTree) {
                 ctrlOrgTree.onSelectItem(null)
             }
@@ -320,11 +372,15 @@
             let orgId = ctrlOrgTree.selectedItem()
 
             let filter = {}
-            filter.qsetId = ctrlQSets.value();
+            filter.qsetId = ctrlQSets.value()
+            filter.qseq = 1
             filter.slides = slides
+            filter.beginDate = String(ctrlBegin.value());
+            filter.endDate = String(ctrlEnd.value());
             filter.orgId = orgId
 
             console.log(filter)
+            loadMembers(filter)
         }
 
         //#endregion

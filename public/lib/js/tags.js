@@ -4643,25 +4643,13 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
             ctrlBegin = self.refs['ctrlBegin']
             ctrlEnd = self.refs['ctrlEnd']
             ctrlQuesTree = self.refs['ctrlQuesTree']
-            if (ctrlQuesTree) {
-                ctrlQuesTree.onSelectItems(reloadMembers)
-            }
             ctrlOrgTree = self.refs['ctrlOrgTree']
-            if (ctrlOrgTree) {
-                ctrlOrgTree.onSelectItem(reloadMembers)
-            }
             loadQSets();
 
             loadOrgs();
         }
         let freeCtrls = () => {
-            if (ctrlOrgTree) {
-                ctrlOrgTree.onSelectItem(null)
-            }
             ctrlOrgTree = null;
-            if (ctrlQuesTree) {
-                ctrlQuesTree.onSelectItems(null)
-            }
             ctrlQuesTree = null;
             ctrlEnd = null;
             ctrlBegin = null;
@@ -4694,21 +4682,6 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
         let onContentChanged = (e) => { updatecontent(); }
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
-        let reloadMembers = () => {
-            let slides = [];
-            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
-            quesmap.forEach(quesId => {
-                slides.push({ qSeq: quesId })
-            });
-            let orgId = ctrlOrgTree.selectedItem()
-
-            let filter = {}
-            filter.qsetId = ctrlQSets.value();
-            filter.slides = slides
-            filter.orgId = orgId
-
-            console.log(filter)
-        }
 
         this.onseach = () => {
             let qsetid = ctrlQSets.value();
@@ -4958,7 +4931,7 @@ riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.b
             refresh();
         }
 });
-riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff Compare.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'staff-compare-search,[data-is="staff-compare-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } staff-compare-search .input-block,[data-is="staff-compare-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-search .input-block.center,[data-is="staff-compare-search"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-search .input-block span,[data-is="staff-compare-search"] .input-block span,staff-compare-search .input-block button,[data-is="staff-compare-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } staff-compare-search .input-block span.label,[data-is="staff-compare-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block span input,[data-is="staff-compare-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block .tree,[data-is="staff-compare-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff Compare.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree> </div> <div class="input-block center"> <ncheckedtree ref="ctrlMemberTree" title="Staff" class="tree"></ncheckedtree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'staff-compare-search,[data-is="staff-compare-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } staff-compare-search .input-block,[data-is="staff-compare-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-search .input-block.center,[data-is="staff-compare-search"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-search .input-block span,[data-is="staff-compare-search"] .input-block span,staff-compare-search .input-block button,[data-is="staff-compare-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } staff-compare-search .input-block span.label,[data-is="staff-compare-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block span input,[data-is="staff-compare-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } staff-compare-search .input-block .tree,[data-is="staff-compare-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
 
 
         let self = this;
@@ -4966,6 +4939,7 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
         let qsetModel;
         let quesModel;
         let orgModel;
+        let memModel;
 
         let defaultContent = {
             title: ''
@@ -5034,7 +5008,6 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
                 ctrlQuesTree.clear();
             }
         }
-
         let updateQuestions = () => {
             if (ctrlQuesTree && quesModel) {
                 let lastValues = ctrlQuesTree.selectedItems();
@@ -5048,7 +5021,6 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
                 ctrlQuesTree.selectedItems(lastValues);
             }
         }
-
         let loadQuestions = (qsetid) => {
             let criteria = {
                 qSetId: qsetid
@@ -5077,7 +5049,6 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
                 ctrlOrgTree.clear();
             }
         }
-
         let updateOrgs = () => {
             if (ctrlOrgTree && orgModel) {
                 let lastValue = ctrlOrgTree.selectedItem();
@@ -5111,6 +5082,43 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
             }
         }
 
+        let clearMembers = () => {
+            if (ctrlMemberTree) {
+                ctrlMemberTree.clear();
+            }
+        }
+        let updateMembers = () => {
+            if (ctrlMemberTree && memModel) {
+                let lastValues = ctrlMemberTree.selectedItems();
+
+                let values = memModel[lang.langId];
+
+                let fldmap = { valueField: 'memberId', textField: 'FullName', parentField: null }
+                ctrlMemberTree.setup(values, fldmap);
+                ctrlMemberTree.selectedItems(lastValues);
+            }
+        }
+        let loadMembers = (criteria) => {
+
+            if (ctrlMemberTree) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/api/filter/vote-members",
+                    data: JSON.stringify(criteria),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (ret) => {
+                        console.log('Load Members:', ret);
+                        memModel = ret.data;
+                        updateMembers();
+                    },
+                    failure: (errMsg) => {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        }
+
         let ctrlQSets, ctrlBegin, ctrlEnd, ctrlQuesTree, ctrlOrgTree;
         let initCtrls = () => {
             ctrlQSets = self.refs['ctrlQSets']
@@ -5124,11 +5132,13 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
             if (ctrlOrgTree) {
                 ctrlOrgTree.onSelectItem(reloadMembers)
             }
+            ctrlMemberTree = self.refs['ctrlMemberTree']
             loadQSets();
 
             loadOrgs();
         }
         let freeCtrls = () => {
+            ctrlMemberTree = null;
             if (ctrlOrgTree) {
                 ctrlOrgTree.onSelectItem(null)
             }
@@ -5177,11 +5187,15 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
             let orgId = ctrlOrgTree.selectedItem()
 
             let filter = {}
-            filter.qsetId = ctrlQSets.value();
+            filter.qsetId = ctrlQSets.value()
+            filter.qseq = 1
             filter.slides = slides
+            filter.beginDate = String(ctrlBegin.value());
+            filter.endDate = String(ctrlEnd.value());
             filter.orgId = orgId
 
             console.log(filter)
+            loadMembers(filter)
         }
 
         this.onseach = () => {

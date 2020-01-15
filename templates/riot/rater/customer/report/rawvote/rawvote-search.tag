@@ -245,25 +245,13 @@
             ctrlBegin = self.refs['ctrlBegin']
             ctrlEnd = self.refs['ctrlEnd']
             ctrlQuesTree = self.refs['ctrlQuesTree']
-            if (ctrlQuesTree) {
-                ctrlQuesTree.onSelectItems(reloadMembers)
-            }
             ctrlOrgTree = self.refs['ctrlOrgTree']
-            if (ctrlOrgTree) {
-                ctrlOrgTree.onSelectItem(reloadMembers)
-            }
             loadQSets();
             //loadQuestions();
             loadOrgs();
         }
         let freeCtrls = () => {
-            if (ctrlOrgTree) {
-                ctrlOrgTree.onSelectItem(null)
-            }
             ctrlOrgTree = null;
-            if (ctrlQuesTree) {
-                ctrlQuesTree.onSelectItems(null)
-            }
             ctrlQuesTree = null;
             ctrlEnd = null;
             ctrlBegin = null;
@@ -312,21 +300,6 @@
         let onContentChanged = (e) => { updatecontent(); }
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
-        let reloadMembers = () => {
-            let slides = [];
-            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
-            quesmap.forEach(quesId => {
-                slides.push({ qSeq: quesId })
-            });
-            let orgId = ctrlOrgTree.selectedItem()
-
-            let filter = {}
-            filter.qsetId = ctrlQSets.value();
-            filter.slides = slides
-            filter.orgId = orgId
-
-            console.log(filter)
-        }
 
         //#endregion
 

@@ -30,7 +30,26 @@ CREATE PROCEDURE [dbo].[FilterVoteDevices]
 )
 AS
 BEGIN
+DECLARE @vBeginDateStr nvarchar(40);
+DECLARE @vEndDateStr nvarchar(40); 
+DECLARE @vBeginDate as DateTime;
+DECLARE @vEndDate as DateTime;
 	BEGIN TRY
+		-- CONVERT DATE
+		SET @vBeginDateStr = (CONVERT(nvarchar(4), DatePart(yyyy, @beginDate)) + '-' +
+							  CONVERT(nvarchar(2), DatePart(mm, @beginDate)) + '-' +
+							  CONVERT(nvarchar(2), DatePart(dd, @beginDate)) + ' ' +
+							  N'00:00:00');
+		--SET @vBeginDate = CONVERT(datetime, @vBeginDateStr, 121);
+		SET @vBeginDate = CAST(@vBeginDateStr AS datetime)
+
+		SET @vEndDateStr = (CONVERT(nvarchar(4), DatePart(yyyy, @endDate)) + '-' +
+							CONVERT(nvarchar(2), DatePart(mm, @endDate)) + '-' +
+							CONVERT(nvarchar(2), DatePart(dd, @endDate)) + ' ' +
+							N'23:59:59');
+		--SET @vEndDate = CONVERT(datetime, @vEndDateStr, 121);
+		SET @vEndDate = CAST(@vEndDateStr AS datetime)
+
 		SELECT DISTINCT L.langId
 		              , A.customerId
 					  , A.orgId
@@ -65,8 +84,8 @@ BEGIN
 		   AND LOWER(A.QSetId) = LOWER(RTRIM(LTRIM(@qsetId)))
 		   AND A.QSeq = @qseq
 		   AND UPPER(LTRIM(RTRIM(A.OrgId))) = UPPER(LTRIM(RTRIM(COALESCE(@orgId, A.OrgId))))
-		   AND A.VoteDate >= @beginDate
-		   AND A.VoteDate <= @endDate
+		   AND A.VoteDate >= @vBeginDate
+		   AND A.VoteDate <= @vEndDate
 
 		-- success
 		EXEC GetErrorMsg 0, @errNum out, @errMsg out
