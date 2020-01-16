@@ -415,7 +415,7 @@ api.votesummary = class {
         return result;
     }
 }
-api.staffsummary = class {
+api.staffcompare = class {
     static async processSlides(db, params, slides, members, result, qset) {
         let oParams = {};
         oParams.langId = params.langId;
@@ -428,11 +428,11 @@ api.staffsummary = class {
         for (let i = 0; i < slides.length; i++) {
             oParams.qSeq = slides[i].qSeq;
             if (api.isEmpty(members)) {
-                await api.staffsummary.processMembers(db, oParams, members, result, qset)
+                await api.staffcompare.processMembers(db, oParams, members, result, qset)
             }
             else {
                 // no org specificed
-                await api.staffsummary.processNoMember(db, oParams, result, qset)
+                await api.staffcompare.processNoMember(db, oParams, result, qset)
             }
         }
     }
@@ -448,18 +448,18 @@ api.staffsummary = class {
         // no slide specificed
         oParams.qSeq = null;
         if (api.isEmpty(members)) {
-            await api.staffsummary.processMembers(db, oParams, members, result, qset)
+            await api.staffcompare.processMembers(db, oParams, members, result, qset)
         }
         else {
             // no members specificed
-            await api.staffsummary.processNoMember(db, oParams, result, qset)
+            await api.staffcompare.processNoMember(db, oParams, result, qset)
         }
     }
     static async processMembers(db, params, members, result, qset) {
         for (let j = 0; j < members.length; j++) {
             params.userId = members[j].memberId;
             // execute
-            await api.staffsummary.ProcessVoteSummaries(db, params, result, qset);
+            await api.staffcompare.ProcessVoteSummaries(db, params, result, qset);
         }
     }
     static async processNoMember(db, params, result, qset) {
@@ -474,12 +474,12 @@ api.staffsummary = class {
             //params.deviceId = records[i].DeviceId
             params.userId = records[i].MemberId
             // execute
-            await api.staffsummary.ProcessVoteSummaries(db, params, result, qset);
+            await api.staffcompare.ProcessVoteSummaries(db, params, result, qset);
         }
     }
     static async ProcessVoteSummaries(db, params, result, qset) {
-        let dbresult = await api.staffsummary.GetVoteSummaries(db, params)
-        api.staffsummary.CreateStaffSummaries(result, qset, dbresult.data)
+        let dbresult = await api.staffcompare.GetVoteSummaries(db, params)
+        api.staffcompare.CreateStaffSummaries(result, qset, dbresult.data)
     }
     static async GetVoteSummaries(db, params) {
         let ret, dbresult;
@@ -491,7 +491,7 @@ api.staffsummary = class {
         if (results && results.length > 0) {
             for (let i = 0; i < results.length; i++) {
                 let row = results[i];
-                api.staffsummary.ParseVoteSummaryRow(obj, qset, row)
+                api.staffcompare.ParseVoteSummaryRow(obj, qset, row)
             }
         }
     }
@@ -500,10 +500,10 @@ api.staffsummary = class {
         let cqslideidx = api.findIndex(cQSet.slides, 'qseq', row.QSeq) 
         let cQSlide = (cqslideidx !== -1) ? cQSet.slides[cqslideidx] : null;
 
-        let cLangObj = api.staffsummary.GetLangObj(obj, row, cQSlide)
-        let currSlide = api.staffsummary.GetCurrentSlide(row, cLangObj, cQSlide)
-        let currMember = api.staffsummary.GetCurrentMember(row, currSlide)
-        api.staffsummary.GetMemberChoice(row, cQSlide, currMember)
+        let cLangObj = api.staffcompare.GetLangObj(obj, row, cQSlide)
+        let currSlide = api.staffcompare.GetCurrentSlide(row, cLangObj, cQSlide)
+        let currMember = api.staffcompare.GetCurrentMember(row, currSlide)
+        api.staffcompare.GetMemberChoice(row, cQSlide, currMember)
     }
     static GetLangObj(obj, row, cQSet) {
         let landId = row.LangId;
@@ -533,7 +533,7 @@ api.staffsummary = class {
                 members: []
             }
             // setup choices
-            api.staffsummary.setupSlideChoices(ret, cQSlide)
+            api.staffcompare.setupSlideChoices(ret, cQSlide)
             cLangObj.slides.push(ret)
         }
         else {
@@ -578,7 +578,7 @@ api.staffsummary = class {
         if (choiceidx === -1) {
             ret = {
                 choice: row.Choice,
-                text: api.staffsummary.getMemberChoiceText(row, cQSlide),
+                text: api.staffcompare.getMemberChoiceText(row, cQSlide),
                 Cnt: row.Cnt,
                 Pct: row.Pct,
             }
@@ -607,10 +607,10 @@ api.staffsummary = class {
         let result = {};
         
         if (api.isEmpty(slides)) {
-            await api.staffsummary.processSlides(db, params, slides, members, result, qset)
+            await api.staffcompare.processSlides(db, params, slides, members, result, qset)
         }
         else {
-            await api.staffsummary.processNoSlide(db, params, members, result, qset)
+            await api.staffcompare.processNoSlide(db, params, members, result, qset)
         }
 
         return result;

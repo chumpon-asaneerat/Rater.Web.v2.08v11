@@ -4972,7 +4972,7 @@ riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.b
 
             $.ajax({
                 type: "POST",
-                url: "/customer/api/report/staffsummaries/search",
+                url: "/customer/api/report/staffcompare/search",
                 data: JSON.stringify(search_opts),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",

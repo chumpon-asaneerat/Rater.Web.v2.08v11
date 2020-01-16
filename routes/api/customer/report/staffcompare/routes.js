@@ -65,7 +65,7 @@ api.Get = class {
         return params;
     }
     static async call(db, params) { 
-        return await rptAPI.staffsummary.load(db, params);
+        return await rptAPI.staffcompare.load(db, params);
     }
     static parse(db, data, callback) {
         let result = {
@@ -97,7 +97,7 @@ api.Get = class {
 
 router.use(secure.checkAccess);
 // routes for staff summaries
-router.all('/report/staffsummaries/search', api.Get.entry);
+router.all('/report/staffcompare/search', api.Get.entry);
 
 const init_routes = (svr) => {
     svr.route('/customer/api/', router);
