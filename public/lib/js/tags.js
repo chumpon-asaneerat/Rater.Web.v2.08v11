@@ -4843,7 +4843,9 @@ riot.tag2('staff-compare-manage', '<flip-screen ref="flipper"> <yield to="viewer
 
 });
 
-riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'staff-compare-result,[data-is="staff-compare-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } staff-compare-result .input-block,[data-is="staff-compare-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-result .input-block.center,[data-is="staff-compare-result"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-result .input-block button,[data-is="staff-compare-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+riot.tag2('staff-compare-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> </div> </div>', '@media (min-width: 620px) { staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ max-width: 550px; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ max-width: 850px; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } staff-compare-question-slide .question-box,[data-is="staff-compare-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } staff-compare-question-slide .question-box .caption,[data-is="staff-compare-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } staff-compare-question-slide .question-box .content-box .item,[data-is="staff-compare-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
+});
+riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <staff-compare-question-slide slide="{slide}"></staff-compare-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'staff-compare-result,[data-is="staff-compare-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } staff-compare-result .input-block,[data-is="staff-compare-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-result .input-block.center,[data-is="staff-compare-result"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-result .input-block button,[data-is="staff-compare-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
 
 
         let self = this;
@@ -4886,6 +4888,21 @@ riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.b
             let scrId = screens.current.screenId;
             if (!shown || screenId !== scrId) return;
 
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/report/staffsummaries/search",
+                data: JSON.stringify(search_opts),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+                    console.log(ret);
+                    result = ret.data;
+                    updatecontent();
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
             updatecontent();
         }
 
@@ -5099,7 +5116,6 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
             }
         }
         let loadMembers = (criteria) => {
-
             if (ctrlMemberTree) {
                 $.ajax({
                     type: "POST",
@@ -5293,7 +5309,9 @@ riot.tag2('staff-perf-manage', '<flip-screen ref="flipper"> <yield to="viewer"> 
 
 });
 
-riot.tag2('staff-perf-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'staff-perf-result,[data-is="staff-perf-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } staff-perf-result .input-block,[data-is="staff-perf-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-perf-result .input-block.center,[data-is="staff-perf-result"] .input-block.center{ margin: auto; margin-top: 10px; } staff-perf-result .input-block button,[data-is="staff-perf-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
+riot.tag2('staff-pefr-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> </div> </div>', '@media (min-width: 620px) { staff-pefr-question-slide,[data-is="staff-pefr-question-slide"]{ max-width: 550px; } staff-pefr-question-slide .question-box .content-box,[data-is="staff-pefr-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { staff-pefr-question-slide,[data-is="staff-pefr-question-slide"]{ max-width: 850px; } staff-pefr-question-slide .question-box .content-box,[data-is="staff-pefr-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } staff-pefr-question-slide,[data-is="staff-pefr-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } staff-pefr-question-slide .question-box,[data-is="staff-pefr-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } staff-pefr-question-slide .question-box .caption,[data-is="staff-pefr-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } staff-pefr-question-slide .question-box .content-box,[data-is="staff-pefr-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } staff-pefr-question-slide .question-box .content-box .item,[data-is="staff-pefr-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
+});
+riot.tag2('staff-perf-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <staff-perf-question-slide slide="{slide}"></staff-perf-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'staff-perf-result,[data-is="staff-perf-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } staff-perf-result .input-block,[data-is="staff-perf-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-perf-result .input-block.center,[data-is="staff-perf-result"] .input-block.center{ margin: auto; margin-top: 10px; } staff-perf-result .input-block button,[data-is="staff-perf-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
 
 
         let self = this;

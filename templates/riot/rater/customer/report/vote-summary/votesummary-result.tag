@@ -65,7 +65,6 @@
         this.content = this.defaultContent;
 
         //#endregion
-
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (shown && screenId === scrId) {
@@ -148,11 +147,6 @@
 
         //#region dom event handlers
 
-        /*
-        let onContentChanged = (e) => { refresh(); }
-        let onLanguageChanged = (e) => { }
-        let onScreenChanged = (e) => { }
-        */
         let onContentChanged = (e) => { updatecontent(); }
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }

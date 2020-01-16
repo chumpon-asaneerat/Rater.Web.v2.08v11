@@ -1,5 +1,10 @@
 <staff-compare-result>
     <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
+    <virtial if={ current.slides && current.slides.length > 0 }>
+        <virtial each={ slide in current.slides }>
+            <staff-compare-question-slide slide="{ slide }"></staff-compare-question-slide>
+        </virtial>
+    </virtial>
     <div class="input-block center">
         <button onclick="{ goback }">Close</button>
     </div>
@@ -60,7 +65,6 @@
         this.content = this.defaultContent;
 
         //#endregion
-
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (shown && screenId === scrId) {
@@ -80,16 +84,15 @@
         let refresh = () => {
             let scrId = screens.current.screenId;
             if (!shown || screenId !== scrId) return;
-            /*
             //search_opts.langId = lang.langId; // set langId
             $.ajax({
                 type: "POST",
-                url: "/customer/api/report/votesummaries/search",
+                url: "/customer/api/report/staffsummaries/search",
                 data: JSON.stringify(search_opts),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: (ret) => {
-                    //console.log(ret);
+                    console.log(ret);
                     result = ret.data;
                     updatecontent();
                 },
@@ -97,7 +100,6 @@
                     console.log(errMsg);
                 }
             })
-            */
             updatecontent();
         }
 
@@ -145,11 +147,6 @@
 
         //#region dom event handlers
 
-        /*
-        let onContentChanged = (e) => { refresh(); }
-        let onLanguageChanged = (e) => { }
-        let onScreenChanged = (e) => { }
-        */
         let onContentChanged = (e) => { updatecontent(); }
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }

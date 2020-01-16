@@ -256,15 +256,6 @@
             }
         }
         let loadMembers = (criteria) => {
-            /*
-            let criteria = {
-                qsetId: qsetid,
-                qseq: 1,
-                beginDate: begin,
-                endDate: end,
-                orgId: orgId
-            }
-            */
             if (ctrlMemberTree) {
                 $.ajax({
                     type: "POST",

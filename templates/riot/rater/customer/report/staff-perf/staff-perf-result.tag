@@ -1,5 +1,10 @@
 <staff-perf-result>
     <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
+    <virtial if={ current.slides && current.slides.length > 0 }>
+        <virtial each={ slide in current.slides }>
+            <staff-perf-question-slide slide="{ slide }"></staff-perf-question-slide>
+        </virtial>
+    </virtial>
     <div class="input-block center">
         <button onclick="{ goback }">Close</button>
     </div>
@@ -60,7 +65,6 @@
         this.content = this.defaultContent;
 
         //#endregion
-
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (shown && screenId === scrId) {
@@ -144,11 +148,6 @@
 
         //#region dom event handlers
 
-        /*
-        let onContentChanged = (e) => { refresh(); }
-        let onLanguageChanged = (e) => { }
-        let onScreenChanged = (e) => { }
-        */
         let onContentChanged = (e) => { updatecontent(); }
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
