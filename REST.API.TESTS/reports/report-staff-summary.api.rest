@@ -13,5 +13,10 @@ content-type: application/json
         { "qSeq": 2 },
         { "qSeq": 3 }
     ],
-    "orgs": null
+    "orgId": "O0008",
+    "members": [
+        { "memberId": "M00001" },
+        { "memberId": "M00005" },
+        { "memberId": "M00008" }
+    ]
 }

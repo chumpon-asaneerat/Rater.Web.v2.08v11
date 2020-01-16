@@ -19,7 +19,7 @@ Project:
                 ✔ Vote Summary (pie) @done(19-12-27 18:27)
                 ☐ Raw Vote (single org)
                 ☐ Staff Performance (single org filter members)
-                ☐ Staff Compare (single org filter members)
+                ✔ Staff Compare (single org filter members) @done(20-01-16 13:30)
                 ☐ Get Bar graph Vote Summary -> last 7 days (auto period).
                 ☐ Get Pie chart Vote Summary -> last 7 days (auto period).
                 ☐ Get Bar graph Vote Summary -> last month (auto period).

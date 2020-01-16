@@ -4843,7 +4843,89 @@ riot.tag2('staff-compare-manage', '<flip-screen ref="flipper"> <yield to="viewer
 
 });
 
-riot.tag2('staff-compare-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> </div> </div>', '@media (min-width: 620px) { staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ max-width: 550px; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ max-width: 850px; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } staff-compare-question-slide .question-box,[data-is="staff-compare-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } staff-compare-question-slide .question-box .caption,[data-is="staff-compare-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } staff-compare-question-slide .question-box .content-box .item,[data-is="staff-compare-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
+riot.tag2('staff-compare-org', '<div ref="chart" class="chart-box"></div>', 'staff-compare-org,[data-is="staff-compare-org"]{ display: block; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; } staff-compare-org .chart-box,[data-is="staff-compare-org"] .chart-box{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; }', '', function(opts) {
+        let self = this;
+
+        let updatecontent = () => {
+            let data = [];
+            console.log('opts', self.opts)
+            self.opts.member.choices.forEach(item => {
+                data.push({ name: item.text, y: item.Pct })
+            })
+            Highcharts.chart(chart, {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: self.opts.member.FullName
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.percentage:.2f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: false,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.2f} %'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Choice',
+                    colorByPoint: true,
+                    data: data
+                }]
+            });
+
+            self.update();
+        }
+
+        let chart;
+        let initCtrls = () => {
+            chart = self.refs['chart']
+            updatecontent();
+        }
+        let freeCtrls = () => {
+            chart = null;
+        }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+});
+riot.tag2('staff-compare-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="content-box"> <virtual each="{member in opts.slide.members}"> <staff-compare-org class="item" member="{member}"></staff-compare-org> </virtual> </div> </div>', '@media (min-width: 620px) { staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ max-width: 550px; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-gap: 5px; grid-auto-rows: 100px; } } @media (min-width: 960px) { staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ max-width: 850px; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-gap: 5px; grid-auto-rows: 150px; } } staff-compare-question-slide,[data-is="staff-compare-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } staff-compare-question-slide .question-box,[data-is="staff-compare-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } staff-compare-question-slide .question-box .caption,[data-is="staff-compare-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } staff-compare-question-slide .question-box .content-box,[data-is="staff-compare-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-gap: 5px; grid-auto-rows: 200px; } staff-compare-question-slide .question-box .content-box .item,[data-is="staff-compare-question-slide"] .question-box .content-box .item{ display: inline-block; margin: 3px auto; padding: 0; color: black; width: 100%; height: 100%; }', '', function(opts) {
 });
 riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <staff-compare-question-slide slide="{slide}"></staff-compare-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'staff-compare-result,[data-is="staff-compare-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } staff-compare-result .input-block,[data-is="staff-compare-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } staff-compare-result .input-block.center,[data-is="staff-compare-result"] .input-block.center{ margin: auto; margin-top: 10px; } staff-compare-result .input-block button,[data-is="staff-compare-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
 
@@ -4895,7 +4977,7 @@ riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.b
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: (ret) => {
-                    console.log(ret);
+
                     result = ret.data;
                     updatecontent();
                 },
@@ -4942,7 +5024,7 @@ riot.tag2('staff-compare-result', '<date-result caption="Date" begin="{current.b
         }
 
         this.setup = (criteria) => {
-            console.log('criteria:', criteria)
+
             search_opts = criteria;
             shown = true;
             refresh();

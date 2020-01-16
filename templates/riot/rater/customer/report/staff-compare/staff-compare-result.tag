@@ -92,7 +92,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: (ret) => {
-                    console.log(ret);
+                    //console.log(ret);
                     result = ret.data;
                     updatecontent();
                 },
@@ -159,7 +159,7 @@
         }
 
         this.setup = (criteria) => {
-            console.log('criteria:', criteria)
+            //console.log('criteria:', criteria)
             search_opts = criteria;
             shown = true;
             refresh();

@@ -416,69 +416,70 @@ api.votesummary = class {
     }
 }
 api.staffsummary = class {
-    static async processSlides(db, params, slides, orgs, result, qset) {
+    static async processSlides(db, params, slides, members, result, qset) {
         let oParams = {};
         oParams.langId = params.langId;
         oParams.customerId = params.customerId;
         oParams.beginDate = params.beginDate;
         oParams.endDate = params.endDate;
         oParams.qsetId = params.qsetId;
+        oParams.orgId = params.orgId;
 
         for (let i = 0; i < slides.length; i++) {
             oParams.qSeq = slides[i].qSeq;
-            if (api.isEmpty(orgs)) {
-                await api.staffsummary.processOrgs(db, oParams, orgs, result, qset)
+            if (api.isEmpty(members)) {
+                await api.staffsummary.processMembers(db, oParams, members, result, qset)
             }
             else {
                 // no org specificed
-                await api.staffsummary.processNoOrg(db, oParams, result, qset)
+                await api.staffsummary.processNoMember(db, oParams, result, qset)
             }
         }
     }
-    static async processNoSlide(db, params, orgs, result, qset) {
+    static async processNoSlide(db, params, members, result, qset) {
         let oParams = {};
         oParams.langId = params.langId;
         oParams.customerId = params.customerId;
         oParams.beginDate = params.beginDate;
         oParams.endDate = params.endDate;
         oParams.qsetId = params.qsetId;
+        oParams.orgId = params.orgId;
 
         // no slide specificed
         oParams.qSeq = null;
-        if (api.isEmpty(orgs)) {
-            await api.staffsummary.processOrgs(db, oParams, orgs, result, qset)
+        if (api.isEmpty(members)) {
+            await api.staffsummary.processMembers(db, oParams, members, result, qset)
         }
         else {
-            // no org specificed
-            await api.staffsummary.processNoOrg(db, oParams, result, qset)
+            // no members specificed
+            await api.staffsummary.processNoMember(db, oParams, result, qset)
         }
     }
-    static async processOrgs(db, params, orgs, result, qset) {
-        let dbresult;
-        for (let j = 0; j < orgs.length; j++) {
-            params.orgId = orgs[j].orgId;
+    static async processMembers(db, params, members, result, qset) {
+        for (let j = 0; j < members.length; j++) {
+            params.userId = members[j].memberId;
             // execute
-            await api.staffsummary.ProcessVoteDevices(db, params, result, qset);
+            await api.staffsummary.ProcessVoteSummaries(db, params, result, qset);
         }
     }
-    static async processNoOrg(db, params, result, qset) {
+    static async processNoMember(db, params, result, qset) {
         // no org specificed
-        params.orgId = null;
-        // execute
-        await api.staffsummary.ProcessVoteDevices(db, params, result, qset);
-    }
-    static async ProcessVoteDevices(db, params, result, qset) {
+        params.userId = null;
         let ret, dbresult;
         ret = await db.FilterVoteDeviceMembers(params);
         dbresult = validate(db, ret);
         let records = dbresult.data;
         for (let i = 0; i < records.length; i++) {
             params.orgId = records[i].orgId
-            params.deviceId = records[i].DeviceId
+            //params.deviceId = records[i].DeviceId
             params.userId = records[i].MemberId
-            let dbresult = await api.staffsummary.GetVoteSummaries(db, params)
-            api.staffsummary.CreateStaffSummaries(result, qset, dbresult.data)
+            // execute
+            await api.staffsummary.ProcessVoteSummaries(db, params, result, qset);
         }
+    }
+    static async ProcessVoteSummaries(db, params, result, qset) {
+        let dbresult = await api.staffsummary.GetVoteSummaries(db, params)
+        api.staffsummary.CreateStaffSummaries(result, qset, dbresult.data)
     }
     static async GetVoteSummaries(db, params) {
         let ret, dbresult;
@@ -501,9 +502,7 @@ api.staffsummary = class {
 
         let cLangObj = api.staffsummary.GetLangObj(obj, row, cQSlide)
         let currSlide = api.staffsummary.GetCurrentSlide(row, cLangObj, cQSlide)
-        let currOrg = api.staffsummary.GetCurrentOrg(row, currSlide)
-        let currDevice = api.staffsummary.GetCurrentDevice(row, currOrg)
-        let currMember = api.staffsummary.GetCurrentMember(row, currDevice)
+        let currMember = api.staffsummary.GetCurrentMember(row, currSlide)
         api.staffsummary.GetMemberChoice(row, cQSlide, currMember)
     }
     static GetLangObj(obj, row, cQSet) {
@@ -531,7 +530,7 @@ api.staffsummary = class {
                 text: (cQSlide) ? cQSlide.text : '',
                 maxChoice: row.MaxChoice,
                 choices: [],
-                orgs: []
+                members: []
             }
             // setup choices
             api.staffsummary.setupSlideChoices(ret, cQSlide)
@@ -554,54 +553,11 @@ api.staffsummary = class {
             }
         }
     }
-    static GetCurrentOrg(row, currSlide) {
-        let orgidx = api.findIndex(currSlide.orgs, 'orgId', row.OrgId)
+   static GetCurrentMember(row, currSlide) { 
+        let memidx = api.findIndex(currSlide.members, 'memberId', row.UserId)
         let ret;
-        if (orgidx === -1) {
+        if (memidx === -1) {
             ret = { 
-                orgId: row.OrgId,
-                //OrgName: row.OrgName,
-                //parentId: row.ParentId,
-                //branchId: row.BranchId,
-                //BranchName: row.BranchName,
-                devices: []
-            }
-            currSlide.orgs.push(ret)
-        }
-        else { 
-            ret = currSlide.orgs[orgidx];
-        }
-        return ret;
-    }
-    static GetCurrentDevice(row, currOrg) {
-        let deviceidx = api.findIndex(currOrg.devices, 'deviceId', row.DeviceId)
-        let ret;
-        if (deviceidx === -1) {
-            ret = { 
-                //orgId: row.OrgId,
-                deviceId: row.DeviceId,
-                //Location: row.Location,
-                members: []
-            }
-            currOrg.devices.push(ret)
-        }
-        else { 
-            ret = currOrg.devices[deviceidx];
-        }
-        return ret;
-    }
-    static GetCurrentMember(row, currDevice) {
-        let idx = api.findIndex(currDevice.members, 'memberId', row.UserId)
-        let ret;
-        if (idx === -1) {
-            ret = { 
-                //orgId: row.OrgId,
-                //OrgName: row.OrgName,
-                //parentId: row.ParentId,
-                //branchId: row.BranchId,
-                //BranchName: row.BranchName,
-                deviceId: row.DeviceId,
-                //Location: row.Location,
                 memberId: row.UserId,
                 FullName: row.FullName,
                 TotCnt: row.TotCnt,
@@ -609,10 +565,10 @@ api.staffsummary = class {
                 AvgTot: row.AvgTot,
                 choices: []
             }
-            currDevice.members.push(ret)
+            currSlide.members.push(ret)
         }
         else { 
-            ret = currDevice.members[idx];
+            ret = currSlide.members[memidx];
         }
         return ret;
     }
@@ -647,14 +603,14 @@ api.staffsummary = class {
         let qset = await api.question.load(db, params);
 
         let slides = params.slides;
-        let orgs = params.orgs;
+        let members = params.members;
         let result = {};
         
         if (api.isEmpty(slides)) {
-            await api.staffsummary.processSlides(db, params, slides, orgs, result, qset)
+            await api.staffsummary.processSlides(db, params, slides, members, result, qset)
         }
         else {
-            await api.staffsummary.processNoSlide(db, params, orgs, result, qset)
+            await api.staffsummary.processNoSlide(db, params, members, result, qset)
         }
 
         return result;
