@@ -1,5 +1,28 @@
-#### GetStaffSummaries
-POST http://localhost:3000/customer/api/report/staffsummaries/search
+#### Staff Compare
+POST http://localhost:3000/customer/api/report/staffcompare/search
+content-type: application/json
+
+{
+    "langId": "EN",
+    "customerId": "EDL-C2019100004",
+    "beginDate": "2019-10-01",
+    "endDate": "2020-11-01",
+    "qsetId": "QS00004",
+    "slides": [
+        { "qSeq": 1 },
+        { "qSeq": 2 },
+        { "qSeq": 3 }
+    ],
+    "orgId": "O0008",
+    "members": [
+        { "memberId": "M00001" },
+        { "memberId": "M00005" },
+        { "memberId": "M00008" }
+    ]
+}
+
+#### Staff Perf (not implements)
+POST http://localhost:3000/customer/api/report/staffperf/search
 content-type: application/json
 
 {
