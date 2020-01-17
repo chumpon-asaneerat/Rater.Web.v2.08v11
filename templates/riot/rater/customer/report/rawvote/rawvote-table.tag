@@ -31,9 +31,10 @@
             let data = self.opts.votes;
             //console.log('data:', data)
             let columns = [
-                { title: 'Date', field: 'VoteDate', headerSort:false },
+                { title: 'Date', field: 'VoteDateS', headerSort:false },
                 { title: 'Choice', field: 'VoteText', headerSort:false },
                 { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
+                { title: 'Organization', field: 'OrgName', align: 'left', headerSort:false },
                 { title: 'User', field: 'FullName', align: 'left', headerSort:false }
             ]
             // define table

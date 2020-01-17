@@ -4707,9 +4707,10 @@ riot.tag2('rawvote-table', '<div ref="grid" class="grid-box"></div>', 'rawvote-t
             let data = self.opts.votes;
 
             let columns = [
-                { title: 'Date', field: 'VoteDate', headerSort:false },
+                { title: 'Date', field: 'VoteDateS', headerSort:false },
                 { title: 'Choice', field: 'VoteText', headerSort:false },
                 { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
+                { title: 'Organization', field: 'OrgName', align: 'left', headerSort:false },
                 { title: 'User', field: 'FullName', align: 'left', headerSort:false }
             ]
 

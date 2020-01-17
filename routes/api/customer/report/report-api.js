@@ -692,6 +692,11 @@ api.rawvote = class {
         }
     }
     static CreateCurrentVote(row, currSlide) {
+        // format data column
+        // required to add time zone offset when read back.
+        let tz = row.VoteDate.getTimezoneOffset()
+        let t = row.VoteDate.getTime() + (tz * 60 * 1000)
+        row.VoteDateS = new nlib.DateTime(t).toString()
         currSlide.votes.push(row)
     }
     static GetVoteChoice(row, cQSlide) {
