@@ -54,7 +54,7 @@ const api = class {
         return idx;
     }
     static isEmpty(items) {
-        return (items && items.length > 0)
+        return !(items && items.length > 0)
     }
 }
 
@@ -233,7 +233,7 @@ api.votesummary = class {
 
         for (let i = 0; i < slides.length; i++) {
             oParams.qSeq = slides[i].qSeq;
-            if (api.isEmpty(orgs)) {
+            if (!api.isEmpty(orgs)) {
                 await api.votesummary.processOrgs(db, oParams, orgs, result, qset)
             }
             else {
@@ -252,7 +252,7 @@ api.votesummary = class {
 
         // no slide specificed
         oParams.qSeq = null;
-        if (api.isEmpty(orgs)) {
+        if (!api.isEmpty(orgs)) {
             await api.votesummary.processOrgs(db, oParams, orgs, result, qset)
         }
         else {
@@ -405,7 +405,7 @@ api.votesummary = class {
         let orgs = params.orgs;
         let result = {};
         
-        if (api.isEmpty(slides)) {
+        if (!api.isEmpty(slides)) {
             await api.votesummary.processSlides(db, params, slides, orgs, result, qset)
         }
         else {
@@ -427,7 +427,7 @@ api.staffcompare = class {
 
         for (let i = 0; i < slides.length; i++) {
             oParams.qSeq = slides[i].qSeq;
-            if (api.isEmpty(members)) {
+            if (!api.isEmpty(members)) {
                 await api.staffcompare.processMembers(db, oParams, members, result, qset)
             }
             else {
@@ -447,7 +447,7 @@ api.staffcompare = class {
 
         // no slide specificed
         oParams.qSeq = null;
-        if (api.isEmpty(members)) {
+        if (!api.isEmpty(members)) {
             await api.staffcompare.processMembers(db, oParams, members, result, qset)
         }
         else {
@@ -606,7 +606,7 @@ api.staffcompare = class {
         let members = params.members;
         let result = {};
         
-        if (api.isEmpty(slides)) {
+        if (!api.isEmpty(slides)) {
             await api.staffcompare.processSlides(db, params, slides, members, result, qset)
         }
         else {
@@ -617,63 +617,26 @@ api.staffcompare = class {
     }
 }
 api.rawvote = class {
-    static async processSlides(db, params, slides, orgs, result, qset) {
+    static async processSlides(db, params, slides, result, qset) {
         let oParams = {};
         oParams.langId = params.langId;
         oParams.customerId = params.customerId;
         oParams.beginDate = params.beginDate;
         oParams.endDate = params.endDate;
         oParams.qsetId = params.qsetId;
+        oParams.orgId = params.orgId;
 
+        let dbresult;
         for (let i = 0; i < slides.length; i++) {
             oParams.qSeq = slides[i].qSeq;
-            if (api.isEmpty(orgs)) {
-                await api.rawvote.processOrgs(db, oParams, orgs, result, qset)
-            }
-            else {
-                // no org specificed
-                await api.rawvote.processNoOrg(db, oParams, result, qset)
-            }
-        }
-    }
-    static async processNoSlide(db, params, orgs, result, qset) {
-        let oParams = {};
-        oParams.langId = params.langId;
-        oParams.customerId = params.customerId;
-        oParams.beginDate = params.beginDate;
-        oParams.endDate = params.endDate;
-        oParams.qsetId = params.qsetId;
-
-        // no slide specificed
-        oParams.qSeq = null;
-        if (api.isEmpty(orgs)) {
-            await api.rawvote.processOrgs(db, oParams, orgs, result, qset)
-        }
-        else {
-            // no org specificed
-            await api.rawvote.processNoOrg(db, oParams, result, qset)
-        }
-    }
-    static async processOrgs(db, params, orgs, result, qset) {
-        let dbresult;
-        for (let j = 0; j < orgs.length; j++) {
-            params.orgId = orgs[j].orgId;
             // execute
-            dbresult = await api.rawvote.GetVoteSummaries(db, params);
-            api.rawvote.CreateStaffSummaries(result, qset, dbresult.data)
+            dbresult = await api.rawvote.GetRawVotes(db, oParams);
+            api.rawvote.CreateGetRawVotes(result, qset, dbresult.data)
         }
-    }
-    static async processNoOrg(db, params, result, qset) {
-        // no org specificed
-        let dbresult;
-        params.orgId = null;
-        // execute
-        dbresult = await api.rawvote.GetRawVotes(db, params);
-        api.rawvote.CreateGetRawVotes(result, qset, dbresult.data)
     }
     static async GetRawVotes(db, params) {
         let ret, dbresult;
-        ret = await db.GetRawVote(params);
+        ret = await db.GetRawVotes(params);
         dbresult = validate(db, ret);
         return dbresult;
     }
@@ -692,8 +655,8 @@ api.rawvote = class {
 
         let cLangObj = api.rawvote.GetLangObj(obj, row, cQSlide)
         let currSlide = api.rawvote.GetCurrentSlide(row, cLangObj, cQSlide)
-        let currOrg = api.rawvote.GetCurrentOrg(row, currSlide)
-        api.rawvote.GetOrgChoice(row, cQSlide, currOrg)
+        let currVote = api.rawvote.CreateCurrentVote(row, currSlide)
+        api.rawvote.GetVoteChoice(row, cQSlide, currVote)
     }
     static GetLangObj(obj, row, cQSet) {
         let landId = row.LangId;
@@ -720,7 +683,7 @@ api.rawvote = class {
                 text: (cQSlide) ? cQSlide.text : '',
                 maxChoice: row.MaxChoice,
                 choices: [],
-                orgs: []
+                votes: []
             }
             // setup choices
             api.rawvote.setupSlideChoices(ret, cQSlide)
@@ -743,8 +706,10 @@ api.rawvote = class {
             }
         }
     }
-    static GetCurrentOrg(row, currSlide) {
-        let orgidx = api.findIndex(currSlide.orgs, 'orgId', row.OrgId)
+    static CreateCurrentVote(row, currSlide) {
+        currSlide.votes.push(row)
+        /*
+        let orgidx = api.findIndex(currSlide.votes, 'orgId', row.OrgId)
         let ret;
         if (orgidx === -1) {
             ret = { 
@@ -764,14 +729,16 @@ api.rawvote = class {
             ret = currSlide.orgs[orgidx];
         }
         return ret;
+        */
     }
-    static GetOrgChoice(row, cQSlide, currOrg) {
+    static GetVoteChoice(row, cQSlide, currOrg) {
+        /*
         let choiceidx = api.findIndex(currOrg.choices, 'choice', row.Choice)
         let ret;
         if (choiceidx === -1) {
             ret = {
                 choice: row.Choice,
-                text: api.rawvote.getOrgChoiceText(row, cQSlide),
+                text: api.rawvote.getVoteChoiceText(row, cQSlide),
                 Cnt: row.Cnt,
                 Pct: row.Pct,
             }
@@ -781,8 +748,9 @@ api.rawvote = class {
             ret = currOrg.choices[choiceidx];
         }
         return ret;
+        */
     }
-    static getOrgChoiceText(row, cQSlide) {
+    static getVoteChoiceText(row, cQSlide) {
         let ret = ''
         if (cQSlide && cQSlide.items.length > 0) {
             let cQItemidx = api.findIndex(cQSlide.items, 'choice', row.Choice)
@@ -796,14 +764,10 @@ api.rawvote = class {
         let qset = await api.question.load(db, params);
 
         let slides = params.slides;
-        let orgs = params.orgs;
         let result = {};
         
-        if (api.isEmpty(slides)) {
-            await api.rawvote.processSlides(db, params, slides, orgs, result, qset)
-        }
-        else {
-            await api.rawvote.processNoSlide(db, params, orgs, result, qset)
+        if (!api.isEmpty(slides)) {
+            await api.rawvote.processSlides(db, params, slides, result, qset)
         }
 
         return result;

@@ -16,13 +16,13 @@ POST http://localhost:3000/customer/api/report/rawvotes/search
 content-type: application/json
 
 {
-    "langId": null,
-    "customerId": "EDL-C2019100003",
-    "beginDate": "2019-10-01",
-    "endDate": "2019-11-01",
-    "qsetId": "QS00001",
+    "langId": "EN",
+    "customerId": "EDL-C2019100004",
+    "beginDate": "2020-01-16",
+    "endDate": "2020-01-16",
+    "qsetId": "QS00004",
     "slides": [
-        { "qSeq": 3 }
+        { "qSeq": 1 }
     ],
-    "orgId": null
+    "orgId": "O0001"
 }
