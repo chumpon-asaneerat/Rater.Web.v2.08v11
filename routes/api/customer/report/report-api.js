@@ -646,8 +646,8 @@ api.rawvote = class {
 
         let cLangObj = api.rawvote.GetLangObj(obj, row, cQSlide)
         let currSlide = api.rawvote.GetCurrentSlide(row, cLangObj, cQSlide)
-        let currVote = api.rawvote.CreateCurrentVote(row, currSlide)
-        api.rawvote.GetVoteChoice(row, cQSlide, currVote)
+        api.rawvote.CreateCurrentVote(row, currSlide)
+        api.rawvote.GetVoteChoice(row, cQSlide)
     }
     static GetLangObj(obj, row, cQSet) {
         let landId = row.LangId;
@@ -694,29 +694,13 @@ api.rawvote = class {
     static CreateCurrentVote(row, currSlide) {
         currSlide.votes.push(row)
     }
-    static GetVoteChoice(row, cQSlide, currOrg) {
-        /*
-        let choiceidx = api.findIndex(currOrg.choices, 'choice', row.Choice)
-        let ret;
-        if (choiceidx === -1) {
-            ret = {
-                choice: row.Choice,
-                text: api.rawvote.getVoteChoiceText(row, cQSlide),
-                Cnt: row.Cnt,
-                Pct: row.Pct,
-            }
-            currOrg.choices.push(ret)
-        }
-        else {
-            ret = currOrg.choices[choiceidx];
-        }
-        return ret;
-        */
+    static GetVoteChoice(row, cQSlide) {
+        row.VoteText = api.rawvote.getVoteChoiceText(row, cQSlide)
     }
     static getVoteChoiceText(row, cQSlide) {
         let ret = ''
         if (cQSlide && cQSlide.items.length > 0) {
-            let cQItemidx = api.findIndex(cQSlide.items, 'choice', row.Choice)
+            let cQItemidx = api.findIndex(cQSlide.items, 'choice', row.VoteValue)
             if (cQItemidx !== -1) {
                 ret = cQSlide.items[cQItemidx].text;
             }
