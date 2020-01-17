@@ -718,8 +718,9 @@ api.rawvote = class {
         let result = {};
         let dbresults = await db.GetLanguages({ enabled: true })
         let langs = dbresults.data
+        params.rowsPerPage = 5000 // set row per page
         for (let i = 0; i < langs.length; i++) {
-            params.langId = langs[i].langId
+            params.langId = langs[i].langId            
             await api.rawvote.processSlide(db, params, result, qset)
         }        
 
