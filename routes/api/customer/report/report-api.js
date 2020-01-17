@@ -617,22 +617,13 @@ api.staffcompare = class {
     }
 }
 api.rawvote = class {
-    static async processSlides(db, params, slides, result, qset) {
-        let oParams = {};
-        oParams.langId = params.langId;
-        oParams.customerId = params.customerId;
-        oParams.beginDate = params.beginDate;
-        oParams.endDate = params.endDate;
-        oParams.qsetId = params.qsetId;
-        oParams.orgId = params.orgId;
-
-        let dbresult;
-        for (let i = 0; i < slides.length; i++) {
-            oParams.qSeq = slides[i].qSeq;
-            // execute
-            dbresult = await api.rawvote.GetRawVotes(db, oParams);
-            api.rawvote.CreateGetRawVotes(result, qset, dbresult.data)
-        }
+    static async processSlide(db, params, result, qset) {
+        // execute
+        let dbresult = await api.rawvote.GetRawVotes(db, params);
+        result.data = result.data || {}
+        result.errors = dbresult.errors
+        result.out = dbresult.out
+        api.rawvote.CreateGetRawVotes(result.data, qset, dbresult.data)
     }
     static async GetRawVotes(db, params) {
         let ret, dbresult;
@@ -666,12 +657,6 @@ api.rawvote = class {
             }
         }
         let ret = obj[landId]
-        ret.customerId = row.CustomerId;
-        ret.CustomerName = row.CustomerName;
-        ret.qsetId = row.QSetId;
-        ret.desc = cQSet.desc;
-        ret.beginDate = cQSet.beginDate;
-        ret.endDate = cQSet.endDate;
         return ret;
     }
     static GetCurrentSlide(row, cLangObj, cQSlide) {
@@ -708,28 +693,6 @@ api.rawvote = class {
     }
     static CreateCurrentVote(row, currSlide) {
         currSlide.votes.push(row)
-        /*
-        let orgidx = api.findIndex(currSlide.votes, 'orgId', row.OrgId)
-        let ret;
-        if (orgidx === -1) {
-            ret = { 
-                orgId: row.OrgId,
-                OrgName: row.OrgName,
-                parentId: row.ParentId,
-                branchId: row.BranchId,
-                BranchName: row.BranchName,
-                TotCnt: row.TotCnt,
-                AvgPct: row.AvgPct,
-                AvgTot: row.AvgTot,
-                choices: []
-            }
-            currSlide.orgs.push(ret)
-        }
-        else { 
-            ret = currSlide.orgs[orgidx];
-        }
-        return ret;
-        */
     }
     static GetVoteChoice(row, cQSlide, currOrg) {
         /*
@@ -763,12 +726,13 @@ api.rawvote = class {
     static async load(db, params) {
         let qset = await api.question.load(db, params);
 
-        let slides = params.slides;
         let result = {};
-        
-        if (!api.isEmpty(slides)) {
-            await api.rawvote.processSlides(db, params, slides, result, qset)
-        }
+        let dbresults = await db.GetLanguages({ enabled: true })
+        let langs = dbresults.data
+        for (let i = 0; i < langs.length; i++) {
+            params.langId = langs[i].langId
+            await api.rawvote.processSlide(db, params, result, qset)
+        }        
 
         return result;
     }

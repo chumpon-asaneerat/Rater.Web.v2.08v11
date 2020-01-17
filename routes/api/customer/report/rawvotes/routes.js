@@ -62,9 +62,6 @@ const api = class { }
 api.Get = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
-        if (params.langId === undefined || params.langId === null || params.langId === '') {
-            params.langId =  'EN';
-        }
         let customerId = secure.getCustomerId(req, res);
         if (customerId) params.customerId = customerId;
 
@@ -83,7 +80,7 @@ api.Get = class {
             out: data.out
         }
         // set to result.
-        result.data = data;
+        result.data = data.data;
 
         callback(result);
     }
