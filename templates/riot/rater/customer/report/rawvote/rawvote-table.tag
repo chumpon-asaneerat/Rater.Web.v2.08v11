@@ -35,7 +35,7 @@
                 { title: 'Choice', field: 'VoteText', headerSort:false },
                 { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
                 { title: 'Organization', field: 'OrgName', align: 'left', headerSort:false },
-                { title: 'User', field: 'FullName', align: 'left', headerSort:false }
+                { title: 'Staff', field: 'FullName', align: 'left', headerSort:false }
             ]
             // define table
             if (grid) {
