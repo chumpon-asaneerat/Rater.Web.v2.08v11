@@ -8,7 +8,7 @@
             </virtual>
         </div>
         <div class="content-box">
-            <rawvote-table class="item" choices="{ opts.slide.choices }" orgs="{ opts.slide.orgs }"></rawvote-table>
+            <rawvote-table class="item" votes = { opts.slide.votes }></rawvote-table>
         </div>
     </div>
     <style>

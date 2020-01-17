@@ -10,7 +10,7 @@
         <ninput ref="ctrlEnd" type="date" title="End Date"></ninput>
     </div>
     <div class="input-block center">
-        <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree>
+        <ntree ref="ctrlQuesTree" title="Question" class="tree"></ntree>
     </div>
     <div class="input-block center">
         <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree>
@@ -156,7 +156,7 @@
 
         let updateQuestions = () => {
             if (ctrlQuesTree && quesModel) {
-                let lastValues = ctrlQuesTree.selectedItems(); // remember
+                let lastValue = ctrlQuesTree.selectedItem(); // remember
                 //console.log('last selected values:', lastValues)
 
                 let questions = quesModel[lang.langId];
@@ -165,7 +165,7 @@
                 let fldmap = { valueField: 'qSeq', textField: 'text', parentField: null }
                 ctrlQuesTree.setup(values, fldmap);
                 
-                ctrlQuesTree.selectedItems(lastValues); // restore
+                ctrlQuesTree.selectedItem(lastValue); // restore
             }
         }
 
@@ -302,26 +302,21 @@
         let onScreenChanged = (e) => { updatecontent(); }
 
         //#endregion
-
         this.onseach = () => {
             let qsetid = ctrlQSets.value();
             let beginDT = String(ctrlBegin.value());
             let endDT = String(ctrlEnd.value());
             //console.log('Begin:', String(beginDT))
             //console.log('End:', String(endDT))
-            let slides = [];
-            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
-            quesmap.forEach(quesId => {
-                slides.push({ qSeq: quesId })
-            });
+            let qseq = ctrlQuesTree.selectedItem();
             let orgid = ctrlOrgTree.selectedItem();
 
             let criteria = {
                 langId: lang.langId,
-                qsetId: qsetid,
                 beginDate: beginDT,
                 endDate: endDT,
-                slides: slides,
+                qsetId: qsetid,
+                qseq: qseq,
                 orgId: orgid
             }
             //console.log(criteria)

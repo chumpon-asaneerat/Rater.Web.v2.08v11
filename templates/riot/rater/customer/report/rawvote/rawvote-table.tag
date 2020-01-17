@@ -28,13 +28,13 @@
         let self = this;
 
         let updatecontent = () => {
-            let data = [];
+            let data = self.opts.votes;
+            //console.log('data:', data)
             let columns = [
-                { title: 'Org', field: 'OrgName', headerSort:false },
-                { title: 'Branch', field: 'BranchName', headerSort:false },
+                { title: 'Date', field: 'VoteDate', headerSort:false },
+                { title: 'Choice', field: 'VoteText', headerSort:false },
                 { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
-                { title: 'User', field: 'FullName', align: 'center', headerSort:false },
-                { title: 'Choice', field: 'VoteValue', align: 'center', headerSort:false }
+                { title: 'User', field: 'FullName', align: 'left', headerSort:false }
             ]
             // define table
             if (grid) {
@@ -42,7 +42,8 @@
                     layout: 'fitDataFill',
                     columnVertAlign: 'middle', //align header contents to middle of cell
                     data: data,
-                    columns: columns
+                    columns: columns,
+                    groupBy: "DeviceId",
                 });
             }
 
@@ -51,7 +52,7 @@
 
         //#region controls variables and methods
 
-        let chart;
+        let grid;
         let initCtrls = () => {
             grid = self.refs['grid']
             updatecontent();

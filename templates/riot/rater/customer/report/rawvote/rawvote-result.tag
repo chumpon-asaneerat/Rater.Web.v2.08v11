@@ -73,11 +73,8 @@
                 self.content = scrContent ? scrContent : defaultContent;
                 //console.log(result)
                 if (result) {
-                    self.current = result;
-                    console.log(self.current)
-                }
-                else {
-                    console.log('No result found.')
+                    self.current = result[lang.langId];
+                    //console.log(self.current)
                 }
                 self.current.begin = search_opts.beginDate;
                 self.current.end = search_opts.endDate;
@@ -167,7 +164,7 @@
         }
 
         this.setup = (criteria) => {
-            console.log('criteria:', criteria)
+            //console.log('criteria:', criteria)
             search_opts = criteria;
             shown = true;
             refresh();

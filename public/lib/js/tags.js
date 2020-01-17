@@ -4376,7 +4376,7 @@ riot.tag2('rawvote-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <ra
 
 });
 
-riot.tag2('rawvote-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="choice-box"> <virtual each="{choice in opts.slide.choices}"> <span class="choiceNo">{choice.choice}</span> <span class="choiceText">{choice.text}</span> </virtual> </div> <div class="content-box"> <rawvote-table class="item" choices="{opts.slide.choices}" orgs="{opts.slide.orgs}"></rawvote-table> </div> </div>', '@media (min-width: 620px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 550px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 850px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } rawvote-question-slide,[data-is="rawvote-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } rawvote-question-slide .question-box,[data-is="rawvote-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } rawvote-question-slide .question-box .caption,[data-is="rawvote-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } rawvote-question-slide .question-box .choice-box,[data-is="rawvote-question-slide"] .question-box .choice-box{ display: grid; margin: 5px; margin-bottom: 0; padding: 5px; grid-template-columns: 30px 1fr; grid-gap: 5px; background: white; border: 1px solid silver; } rawvote-question-slide .question-box .choice-box .choiceNo,[data-is="rawvote-question-slide"] .question-box .choice-box .choiceNo{ display: inline-block; overflow: hidden; white-space: normal; text-align: right; color: black; height: auto; } rawvote-question-slide .question-box .choice-box .choiceText,[data-is="rawvote-question-slide"] .question-box .choice-box .choiceText{ display: inline-block; overflow: hidden; white-space: normal; text-align: left; color: black; height: auto; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } rawvote-question-slide .question-box .content-box .item,[data-is="rawvote-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
+riot.tag2('rawvote-question-slide', '<div class="question-box"> <span class="caption">{(opts.slide) ? opts.slide.text : \'\'}</span> <div class="choice-box"> <virtual each="{choice in opts.slide.choices}"> <span class="choiceNo">{choice.choice}</span> <span class="choiceText">{choice.text}</span> </virtual> </div> <div class="content-box"> <rawvote-table class="item" votes="{opts.slide.votes}"></rawvote-table> </div> </div>', '@media (min-width: 620px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 550px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 200px; } } @media (min-width: 960px) { rawvote-question-slide,[data-is="rawvote-question-slide"]{ max-width: 850px; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 250px; } } rawvote-question-slide,[data-is="rawvote-question-slide"]{ display: block; margin: 0 auto; margin-bottom: 3px; padding: 5px; max-width: 1000px; white-space: nowrap; } rawvote-question-slide .question-box,[data-is="rawvote-question-slide"] .question-box{ margin: 0 auto; display: block; color: white; border: 1px solid cornflowerblue; border-radius: 3px; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } rawvote-question-slide .question-box .caption,[data-is="rawvote-question-slide"] .question-box .caption{ display: block; margin: 0 auto; padding: 5px; background-color: cornflowerblue; } rawvote-question-slide .question-box .choice-box,[data-is="rawvote-question-slide"] .question-box .choice-box{ display: grid; margin: 5px; margin-bottom: 0; padding: 5px; grid-template-columns: 30px 1fr; grid-gap: 5px; background: white; border: 1px solid silver; } rawvote-question-slide .question-box .choice-box .choiceNo,[data-is="rawvote-question-slide"] .question-box .choice-box .choiceNo{ display: inline-block; overflow: hidden; white-space: normal; text-align: right; color: black; height: auto; } rawvote-question-slide .question-box .choice-box .choiceText,[data-is="rawvote-question-slide"] .question-box .choice-box .choiceText{ display: inline-block; overflow: hidden; white-space: normal; text-align: left; color: black; height: auto; } rawvote-question-slide .question-box .content-box,[data-is="rawvote-question-slide"] .question-box .content-box{ display: grid; margin: 0 auto; margin-bottom: 5px; padding: 5px; grid-template-columns: 1fr; grid-gap: 5px; grid-auto-rows: 300px; } rawvote-question-slide .question-box .content-box .item,[data-is="rawvote-question-slide"] .question-box .content-box .item{ display: block; margin: 3px auto; padding: 0; color: black; width: 100%; max-width: 100%; height: 100%; overflow: hidden; }', '', function(opts) {
 });
 riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}" end="{current.end}"></date-result> <virtial if="{current.slides && current.slides.length > 0}"> <virtial each="{slide in current.slides}"> <rawvote-question-slide slide="{slide}"></rawvote-question-slide> </virtial> </virtial> <div class="input-block center"> <button onclick="{goback}">Close</button> </div> <br>', 'rawvote-result,[data-is="rawvote-result"]{ display: block; margin: 0 auto; padding: 0; width: 100%; height: 100%; background-color: whitesmoke; } rawvote-result .input-block,[data-is="rawvote-result"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } rawvote-result .input-block.center,[data-is="rawvote-result"] .input-block.center{ margin: auto; margin-top: 10px; } rawvote-result .input-block button,[data-is="rawvote-result"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; }', '', function(opts) {
 
@@ -4408,11 +4408,8 @@ riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}"
                 self.content = scrContent ? scrContent : defaultContent;
 
                 if (result) {
-                    self.current = result;
-                    console.log(self.current)
-                }
-                else {
-                    console.log('No result found.')
+                    self.current = result[lang.langId];
+
                 }
                 self.current.begin = search_opts.beginDate;
                 self.current.end = search_opts.endDate;
@@ -4477,13 +4474,13 @@ riot.tag2('rawvote-result', '<date-result caption="Date" begin="{current.begin}"
         }
 
         this.setup = (criteria) => {
-            console.log('criteria:', criteria)
+
             search_opts = criteria;
             shown = true;
             refresh();
         }
 });
-riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree> </div> <div class="input-block center"> <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'rawvote-search,[data-is="rawvote-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } rawvote-search .input-block,[data-is="rawvote-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } rawvote-search .input-block.center,[data-is="rawvote-search"] .input-block.center{ margin: auto; margin-top: 10px; } rawvote-search .input-block span,[data-is="rawvote-search"] .input-block span,rawvote-search .input-block button,[data-is="rawvote-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } rawvote-search .input-block span.label,[data-is="rawvote-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } rawvote-search .input-block span input,[data-is="rawvote-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } rawvote-search .input-block .tree,[data-is="rawvote-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
+riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</span> </div> <div class="input-block center"> <nselect ref="ctrlQSets" title="Question set"></nselect> </div> <div class="input-block center"> <ninput ref="ctrlBegin" title="Begin Date" type="date"></ninput> <ninput ref="ctrlEnd" title="End Date" type="date"></ninput> </div> <div class="input-block center"> <ntree ref="ctrlQuesTree" title="Question" class="tree"></ntree> </div> <div class="input-block center"> <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree> </div> <div class="input-block center"> <button onclick="{onseach}">Search</button> </div> <br>', 'rawvote-search,[data-is="rawvote-search"]{ display: block; margin: 0; padding: 5px; width: 100%; height: 100%; } rawvote-search .input-block,[data-is="rawvote-search"] .input-block{ display: block; margin: 0; margin-top: 10px; padding: 0; width: 100%; max-width: 800px; text-align: center; } rawvote-search .input-block.center,[data-is="rawvote-search"] .input-block.center{ margin: auto; margin-top: 10px; } rawvote-search .input-block span,[data-is="rawvote-search"] .input-block span,rawvote-search .input-block button,[data-is="rawvote-search"] .input-block button{ display: inline-block; margin: 0 auto; padding: 0; width: 50%; font-size: 1rem; font-size: bold; } rawvote-search .input-block span.label,[data-is="rawvote-search"] .input-block span.label{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } rawvote-search .input-block span input,[data-is="rawvote-search"] .input-block span input{ margin: 1px; padding: 2px; text-align: left; color: cornflowerblue; width: 100%; } rawvote-search .input-block .tree,[data-is="rawvote-search"] .input-block .tree{ text-align: left; }', '', function(opts) {
 
 
         let self = this;
@@ -4563,7 +4560,7 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
 
         let updateQuestions = () => {
             if (ctrlQuesTree && quesModel) {
-                let lastValues = ctrlQuesTree.selectedItems();
+                let lastValue = ctrlQuesTree.selectedItem();
 
                 let questions = quesModel[lang.langId];
                 let values = questions[0].slides;
@@ -4571,7 +4568,7 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
                 let fldmap = { valueField: 'qSeq', textField: 'text', parentField: null }
                 ctrlQuesTree.setup(values, fldmap);
 
-                ctrlQuesTree.selectedItems(lastValues);
+                ctrlQuesTree.selectedItem(lastValue);
             }
         }
 
@@ -4688,19 +4685,15 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
             let beginDT = String(ctrlBegin.value());
             let endDT = String(ctrlEnd.value());
 
-            let slides = [];
-            let quesmap = ctrlQuesTree.selectedItems().map(item => item.id );
-            quesmap.forEach(quesId => {
-                slides.push({ qSeq: quesId })
-            });
+            let qseq = ctrlQuesTree.selectedItem();
             let orgid = ctrlOrgTree.selectedItem();
 
             let criteria = {
                 langId: lang.langId,
-                qsetId: qsetid,
                 beginDate: beginDT,
                 endDate: endDT,
-                slides: slides,
+                qsetId: qsetid,
+                qseq: qseq,
                 orgId: orgid
             }
 
@@ -4711,13 +4704,13 @@ riot.tag2('rawvote-table', '<div ref="grid" class="grid-box"></div>', 'rawvote-t
         let self = this;
 
         let updatecontent = () => {
-            let data = [];
+            let data = self.opts.votes;
+
             let columns = [
-                { title: 'Org', field: 'OrgName', headerSort:false },
-                { title: 'Branch', field: 'BranchName', headerSort:false },
+                { title: 'Date', field: 'VoteDate', headerSort:false },
+                { title: 'Choice', field: 'VoteText', headerSort:false },
                 { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
-                { title: 'User', field: 'FullName', align: 'center', headerSort:false },
-                { title: 'Choice', field: 'VoteValue', align: 'center', headerSort:false }
+                { title: 'User', field: 'FullName', align: 'left', headerSort:false }
             ]
 
             if (grid) {
@@ -4725,14 +4718,15 @@ riot.tag2('rawvote-table', '<div ref="grid" class="grid-box"></div>', 'rawvote-t
                     layout: 'fitDataFill',
                     columnVertAlign: 'middle',
                     data: data,
-                    columns: columns
+                    columns: columns,
+                    groupBy: "DeviceId",
                 });
             }
 
             self.update();
         }
 
-        let chart;
+        let grid;
         let initCtrls = () => {
             grid = self.refs['grid']
             updatecontent();
@@ -6055,7 +6049,6 @@ riot.tag2('votesummary-search', '<div class="input-block center"> <span>Vote Sum
 });
 riot.tag2('votesummary-table', '<div ref="grid" class="grid-box"></div>', 'votesummary-table,[data-is="votesummary-table"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } votesummary-table .grid-box,[data-is="votesummary-table"] .grid-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; } votesummary-table .grid-box .tabulator-col-title,[data-is="votesummary-table"] .grid-box .tabulator-col-title{ text-align: center; }', '', function(opts) {
         let self = this;
-
         let updatecontent = () => {
             let data = [];
             let columns = [
@@ -6104,7 +6097,7 @@ riot.tag2('votesummary-table', '<div ref="grid" class="grid-box"></div>', 'votes
             self.update();
         }
 
-        let chart;
+        let grid;
         let initCtrls = () => {
             grid = self.refs['grid']
             updatecontent();

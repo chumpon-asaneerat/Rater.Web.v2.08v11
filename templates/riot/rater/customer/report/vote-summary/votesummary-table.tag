@@ -26,7 +26,6 @@
     </style>
     <script>
         let self = this;
-
         let updatecontent = () => {
             let data = [];
             let columns = [
@@ -77,7 +76,7 @@
 
         //#region controls variables and methods
 
-        let chart;
+        let grid;
         let initCtrls = () => {
             grid = self.refs['grid']
             updatecontent();
