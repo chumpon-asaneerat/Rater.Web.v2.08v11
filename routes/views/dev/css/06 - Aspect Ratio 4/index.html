@@ -11,105 +11,41 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .area {
-            display: grid;
-            grid-template-columns: 10px 1fr 10px;
-            grid-template-rows: 10px 1fr 10px;
-            grid-template-areas: 
-                '. . .'
-                '. work-area .'
-                '. . .';
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: url('/public/assets/images/backgrounds/bg-34.png');
-            background-repeat: no-repeat;
-            background-origin: content-box;
-            background-attachment: fixed;
-            background-position: center;
-            background-size: 100% 100%;
+        .box {
+            position: relative;
+            width: 55%;
+            height: 0;
+            background: red;
+            padding-bottom: calc(55% * 9/16);
         }
-        .work-area {
-            grid-area: work-area;
-            margin: 0 auto;
-            padding: 0;
+        .wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(25, 36, 21, 0.548);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .canvas-area {
-            margin: 0 auto;
-            padding: 0;
-            /* 16:9 Aspect Ratio */
-            padding-top: 56.25%;
-            width: 100%;
-            background-color: rgba(199, 98, 58, 0.452);
+        .inside {
+            width: 50%;
+            height: 50%;
+            background: green;
         }
     </style>
 </head>
 <body>
-    <div class="area">        
-        <div class="work-area">
-            <canvas id="canvas1"></canvas>
-            <!--
-            <div class="canvas-area">
-                <canvas id="canvas1"></canvas>
-            </div>
-            -->
+    <div class="box">        
+        <div class="wrapper">
+            <div class="inside"></div>
         </div>
     </div>
-    <!-- JQuery -->
-    <script src="/dist/js/jquery.min.js"></script>
-    <!-- gifuctjs -->
-    <script src="/dist/js/gifuct-js.min.js"></script>
-    <!-- fabricjs -->
-    <script src="/dist/js/fabric.min.js"></script>
     <script>
-        let WD = 1280;
-        let HT = 720;
-        let cv1 = document.getElementById('canvas1')
-        let fb1 = new fabric.Canvas(cv1)
-        fb1.setWidth(WD)
-        fb1.setHeight(HT)
-        //fb1.setDimensions({ width: WD, height: HT }, { cssOnly: true });
-        fb1.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
-
-        let addText = (fb, text, lf = 5, tp = 5, wd = 50, ht = 18, fg = '#000', bg = 'transparent') => {
-            let obj = new fabric.IText(text, {
-                left: lf,
-                top: tp,
-                width: wd, 
-                height: ht,
-                fill: fg,
-                backgroundColor: bg,
-                fontFamily: 'Comic Sans'
-            });
-            fb.add(obj); // add object
-        }
-        let addRect = (fb, lf = 5, tp = 5, wd = 50, ht = 18, bg = '#f55') => {
-            let obj = new fabric.Rect({
-                left: lf,
-                top: tp,
-                width: wd, 
-                height: ht, 
-                fill: bg, 
-                opacity: 1
-            });
-            fb.add(obj); // add object
-        }
-
-        let render1 = () => {
-            if (fb1) { fb1.renderAll(); }
-            fabric.util.requestAnimFrame(render1);
-        }
-        render1()
-        
-        addRect(fb1)
-        addRect(fb1, 10, 25)
-        addText(fb1, 'Sample text 1')
-        addText(fb1, 'Sample text 2', 10, 25, undefined, undefined, undefined, '#ccc')
     </script>
 </body>
 </html>
