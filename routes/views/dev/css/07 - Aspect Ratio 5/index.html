@@ -54,6 +54,22 @@
     <!-- fabricjs -->
     <script src="/dist/js/fabric.min.js"></script>
     <script>
+        //fabric.Object.prototype.customiseCornerIcons.settings.borderColor = 'blue';
+        fabric.Object.prototype.set({
+            transparentCorners: false,
+            borderColor: '#ff00ff',
+            cornerColor: '#ff0000',
+            cornerStyle: 'circle'
+        });
+        console.log(fabric.Object.prototype)
+
+        /*
+        fabric.Object.prototype.selectionColor ='rgba(255,119,0,0.3)';
+        fabric.Object.prototype.cornerSize = 20;
+        fabric.Object.prototype.transparentCorners = false;
+        fabric.Object.prototype.cornerColor = '#eee';
+        */
+
         let WD = 1280;
         let HT = 720;
         let cv1 = document.getElementById('canvas1')
