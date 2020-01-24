@@ -103,6 +103,25 @@
             fb.add(obj); // add object
         }
 
+        function deleteActiveObject(fb) {
+            var activeObjects = fb.getActiveObjects()
+            if (activeObjects) {
+                if (confirm("Sure you want to delete that?")) {
+                    fb.forEachObject((obj) => {
+                        fb.remove(obj);
+                    })
+                }
+                fb.discardActiveObject();
+                fb.requestRenderAll();
+            }
+        }
+
+        $("body").on("keydown", function(e) {
+            if (e.which == 8 || e.which == 46) {
+                deleteActiveObject(fb1);
+            }
+        });
+
         let render1 = () => {
             if (fb1) { fb1.renderAll(); }
             fabric.util.requestAnimFrame(render1);
