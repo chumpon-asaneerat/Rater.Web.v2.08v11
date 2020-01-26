@@ -74,6 +74,18 @@
         let HT = 720;
         let cv1 = document.getElementById('canvas1')
         let fb1 = new fabric.Canvas(cv1)
+        fb1.on('mouse:up', (e) => {
+            //check if user clicked an object
+            if (e.target) {
+                //clicked on object
+                alert('clicked on object' + e.target);
+            }
+            else {
+                //add rectangle
+                addrect(e.e.clientY, e.e.clientX, 100, 100, "#CCCCC");
+            }
+        });
+
         fb1.setWidth(WD)
         fb1.setHeight(HT)
         //fb1.setDimensions({ width: WD, height: HT }, { cssOnly: true });
