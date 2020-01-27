@@ -2,32 +2,36 @@ EDL Database Server:
     Script for 2019-09-01:
         ✔ Verify and checks correction. @done(19-10-10 12:44)
         ✔ Generate script. @done(19-10-10 12:44)
-        ☐ Update to production server.
+        ✔ Update to production server. @done(20-01-27 17:30)
     Script for 2019-10-10:
         ✔ Verify and checks correction. @done(19-12-16 09:21)
         ✔ Generate script. @done(19-12-16 09:21)
-        ☐ Update to production server.
+        ✔ Update to production server. @done(20-01-27 17:30)
     Script for 2019-12-16:
         ✔ Verify and checks correction. @done(19-12-16 09:21)
         ✔ Generate script. @done(19-12-16 09:21)
-        ☐ Update to production server.
+        ✔ Update to production server. @done(20-01-27 17:30)
     Script for 2019-12-19:
         ✔ Verify and checks correction. @done(19-12-16 09:21)
         ✔ Generate script. @done(19-12-16 09:21)
-        ☐ Update to production server.
+        ✔ Update to production server. @done(20-01-27 17:31)
     Script for 2019-12-24:
         ✔ Verify and checks correction. @done(19-12-25 19:38)
         ✔ Generate script. @done(19-12-25 19:38)
-        ☐ Update to production server.
+        ✔ Update to production server. @done(20-01-27 17:31)
     Script for 2019-12-26:
         ✔ Verify and checks correction. @done(20-01-07 10:03)
         ✔ Generate script. @done(20-01-07 10:03)
-        ☐ Update to production server.
+        ✔ Update to production server. @done(20-01-27 17:31)
     Script for 2020-01-09:
         ✔ Verify and checks correction. @done(20-01-15 13:21)
         ✔ Generate script. @done(20-01-15 13:21)
-        ☐ Update to production server.
+        ✔ Update to production server. @done(20-01-27 17:31)
     Script for 2020-01-15:
+        ✔ Verify and checks correction. @done(20-01-27 17:31)
+        ✔ Generate script. @done(20-01-27 17:31)
+        ✔ Update to production server. @done(20-01-27 17:31)
+    Script for 2020-01-27:
         ☐ Verify and checks correction.
         ☐ Generate script.
         ☐ Update to production server.

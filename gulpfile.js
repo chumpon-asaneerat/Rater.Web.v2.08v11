@@ -93,7 +93,8 @@ gulp.task('merge-sql-scripts', () => {
     //let sDate = '2019-12-24';
     //let sDate = '2019-12-26';
     //let sDate = '2020-01-09';
-    let sDate = '2020-01-15';
+    //let sDate = '2020-01-15';
+    let sDate = '2020-01-27'
     let rootPath = path.join(__dirname, 'db/scripts/' + sDate);
     task.opts = {
         src: [
