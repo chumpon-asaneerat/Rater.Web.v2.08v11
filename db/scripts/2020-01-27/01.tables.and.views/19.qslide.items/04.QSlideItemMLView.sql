@@ -33,6 +33,7 @@ AS
 				QItemML.QText 
 		   END AS QItemText
 		 , QItemV.IsRemark
+         , QItemV.Choice
 		 , QItemV.QItemStatus
 		 , QItemV.QItemOrder
 		 , QItemV.Enabled

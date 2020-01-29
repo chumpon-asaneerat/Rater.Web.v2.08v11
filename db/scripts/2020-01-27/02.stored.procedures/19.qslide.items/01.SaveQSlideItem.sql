@@ -17,6 +17,7 @@ GO
 --DECLARE @qSSeq int = NULL;
 --DECLARE @qText nvarchar(MAX);
 --DECLARE @isRemark bit = NULL;
+--DECLARE @choice int = NULL;
 --DECLARE @sortOrder int = NULL;
 --DECLARE @errNum int;
 --DECLARE @errMsg nvarchar(MAX);
@@ -24,8 +25,9 @@ GO
 --SET @qSSeq = NULL;
 --SET @qText = N'Choice 1';
 --SET @isRemark = NULL;
+--SET @choice = 1;
 --EXEC SaveQSlideItem @customerId, @qsetId, @qSeq
---					, @qText, @isRemark, @sortOrder
+--					, @qText, @isRemark, @choice, @sortOrder
 --					, @qSSeq out
 --					, @errNum out, @errMsg out
 --SELECT @qSSeq AS QSSeq, @errNum AS ErrNum, @errMsg AS ErrMsg;
@@ -33,8 +35,9 @@ GO
 --SET @qSSeq = NULL;
 --SET @qText = N'Choice 2';
 --SET @isRemark = NULL;
+--SET @choice = 2;
 --EXEC SaveQSlideItem @customerId, @qsetId, @qSeq
---					, @qText, @isRemark, @sortOrder
+--					, @qText, @isRemark, @choice, @sortOrder
 --					, @qSSeq out
 --					, @errNum out, @errMsg out
 --SELECT @qSSeq AS QSSeq, @errNum AS ErrNum, @errMsg AS ErrMsg;
@@ -42,8 +45,9 @@ GO
 --SET @qSSeq = NULL;
 --SET @qText = N'Choice 3';
 --SET @isRemark = NULL;
+--SET @choice = 3;
 --EXEC SaveQSlideItem @customerId, @qsetId, @qSeq
---					, @qText, @isRemark, @sortOrder
+--					, @qText, @isRemark, @choice, @sortOrder
 --					, @qSSeq out
 --					, @errNum out, @errMsg out
 --SELECT @qSSeq AS QSSeq, @errNum AS ErrNum, @errMsg AS ErrMsg;
@@ -51,8 +55,9 @@ GO
 --SET @qSSeq = NULL;
 --SET @qText = N'Choice 4';
 --SET @isRemark = NULL;
+--SET @choice = 4;
 --EXEC SaveQSlideItem @customerId, @qsetId, @qSeq
---					, @qText, @isRemark, @sortOrder
+--					, @qText, @isRemark, @choice, @sortOrder
 --					, @qSSeq out
 --					, @errNum out, @errMsg out
 --SELECT @qSSeq AS QSSeq, @errNum AS ErrNum, @errMsg AS ErrMsg;
@@ -60,8 +65,9 @@ GO
 --SET @qSSeq = NULL;
 --SET @qText = N'Remark';
 --SET @isRemark = 1;
+--SET @choice = 4;
 --EXEC SaveQSlideItem @customerId, @qsetId, @qSeq
---					, @qText, @isRemark, @sortOrder
+--					, @qText, @isRemark, @choice, @sortOrder
 --					, @qSSeq out
 --					, @errNum out, @errMsg out
 --SELECT @qSSeq AS QSSeq, @errNum AS ErrNum, @errMsg AS ErrMsg;
@@ -72,6 +78,7 @@ CREATE PROCEDURE [dbo].[SaveQSlideItem] (
 , @qSeq as int
 , @qText as nvarchar(max) = null
 , @isRemark as bit = 0
+, @choice as int = null
 , @sortOrder int = 0
 , @qSSeq as int = 0 out
 , @errNum as int = 0 out
@@ -199,6 +206,7 @@ DECLARE @vQSSeq int = 0;
 				, QSSeq
 				, QText
 				, IsRemark
+                , Choice
 				, SortOrder
 				, ObjectStatus
 			)
@@ -210,6 +218,7 @@ DECLARE @vQSSeq int = 0;
 				, @iLastSSeq
 				, RTRIM(LTRIM(@qText))
 				, @isRemark
+                , @choice
 				, @sortOrder
 				, 1
 			);
@@ -224,7 +233,7 @@ DECLARE @vQSSeq int = 0;
 			 WHERE LOWER(CustomerId) = LOWER(RTRIM(LTRIM(@customerId)))
 			   AND LOWER(QSetId) = LOWER(RTRIM(LTRIM(@qSetId)))
 			   AND QSeq = @qSeq
-			   AND QSSeq = @qSSeq;
+			   AND QSSeq = @qSSeq
 			IF (@iQSSeqCnt IS NULL OR @iQSSeqCnt <= 0)
 			BEGIN
 				-- QSSeq is not found.
@@ -244,7 +253,8 @@ DECLARE @vQSSeq int = 0;
 			 WHERE LOWER(CustomerId) = LOWER(RTRIM(LTRIM(@customerId)))
 			   AND LOWER(QSetId) = LOWER(RTRIM(LTRIM(@qSetId)))
 			   AND QSeq = @qSeq
-			   AND QSSeq = @qSSeq;
+			   AND QSSeq = @qSSeq
+               AND Choice = @choice
 		END
  		-- SUCCESS
 		EXEC GetErrorMsg 0, @errNum out, @errMsg out

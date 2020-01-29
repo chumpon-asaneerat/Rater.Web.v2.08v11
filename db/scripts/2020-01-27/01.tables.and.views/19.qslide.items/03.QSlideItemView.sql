@@ -32,6 +32,7 @@ AS
 		 , QSlideItem.QSSeq
 		 , QSlideItem.QText AS QItemText
 		 , QSlideItem.IsRemark
+         , QSlideItem.Choice
 		 , QSlideItem.SortOrder AS QItemOrder
 		 , QSlideItem.ObjectStatus AS QItemStatus
 	  FROM LanguageView CROSS JOIN dbo.QSlideItem
