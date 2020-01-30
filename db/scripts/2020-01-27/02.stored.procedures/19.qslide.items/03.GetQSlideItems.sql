@@ -43,6 +43,7 @@ BEGIN
 		 , qSSeq
 		 , QItemText
 		 , IsRemark
+         , Choice
 		 , QItemStatus
 		 , QItemOrder
 		 , Enabled 
