@@ -41,6 +41,14 @@
     <!-- script.js -->
     <script src="tosvg/script.js"></script>
     <script>
+        // setup selection control.
+        fabric.Object.prototype.set({
+            transparentCorners: false,
+            borderColor: '#ff00ff',
+            cornerColor: '#ff0000',
+            cornerStyle: 'circle'
+        });
+
     </script>
 </body>
 </html>
