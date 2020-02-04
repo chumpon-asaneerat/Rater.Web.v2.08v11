@@ -43,6 +43,7 @@ const routes = class {
 router.get('/dualcanvas3', routes.home)
 router.get('/dualcanvas3/style.css', routes.getCss)
 router.get('/dualcanvas3/script.js', routes.getJs)
+router.get('/dualcanvas3/nlib-fabric.js', routes.getJs)
 
 const init_routes = (svr) => {
     svr.route('/dev/fabricjs', router);
