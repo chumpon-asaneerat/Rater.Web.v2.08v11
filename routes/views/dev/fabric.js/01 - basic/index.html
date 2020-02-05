@@ -19,10 +19,116 @@
     <!-- style.css -->
     <link href="basic/style.css" rel="stylesheet" type="text/css" />
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper1 {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: grid;
+            grid-template-rows: 50px 1fr;
+            grid-template-columns: 200px 1fr 200px;
+            grid-template-areas: 
+                'toolbar toolbar toolbar'
+                'design-preview designer design-tools';
+            overflow: hidden;            
+        }
+        .toolbar {
+            grid-area: toolbar;
+            margin: 0;
+            padding: 0;
+            background-color: wheat;
+            border: 1px solid silver;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .design-preview {
+            grid-area: design-preview;
+            margin: 0 auto;
+            padding: 0;
+            height: 100%;
+            background-color: dimgray;
+            border: 1px solid silver;
+            border-radius: 2px;
+            overflow: hidden;
+            overflow-y: auto;
+            display: block;
+        }
+        .design-slide {
+            margin: 3px auto;
+            padding: 0;
+            display: inline-block;
+            background-color: whitesmoke;
+            border: 1px solid black;
+            width: calc(1280px * .15);
+            height: calc(720px * .15);
+            overflow: hidden;
+        }
+        .designer {
+            grid-area: designer;
+            position: relative;
+            display: block;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            border: 1px solid silver;
+            border-radius: 2px;
+            overflow: auto;
+        }
+        .design-tools {
+            grid-area: design-tools;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: antiquewhite;
+            border: 1px solid silver;
+            border-radius: 2px;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+        .designer canvas {
+            border: 1px solid cornflowerblue;
+        }
     </style>
 </head>
 <body>
-    <h2>Fabric.js - Basic</h2>
+    <div class="wrapper1">        
+        <div class="toolbar">
+            <button onclick="saveJson();">save</button>
+            <button onclick="loadJson();">load</button>
+            <button onclick="updateSVG();">svg</button>
+        </div>
+        <div class="design-preview">
+            <div class="design-slide">
+                <div id="svg1"></div>
+            </div>
+            <div class="design-slide">
+                <p>Slide 2</p>
+                <p>item 1</p>
+                <p>item 2</p>
+                <p>item 3</p>
+            </div>
+        </div>
+        <div class="designer">
+            <canvas id="c"></canvas>
+        </div>
+        <div class="design-tools">
+            <button onclick="addRect();">Rect</button>
+            <button onclick="addText();">Text</button>
+            <button onclick="addImage();">Image</button>
+            <button onclick="addLabel();">Label</button>
+            <button onclick="addGif(1);">Gif 1</button>
+            <button onclick="addGif(2);">Gif 2</button>
+            <button onclick="addGif(3);">Gif 3</button>
+            <button onclick="addGif(4);">Gif 4</button>
+            <button onclick="changeGif();">Change Gif</button>
+        </div>
+    </div>    
     
     <!-- JQuery -->
     <script src="/dist/js/jquery.min.js"></script>
@@ -45,7 +151,335 @@
     <!-- script.js -->
     <script src="basic/script.js"></script>
     <script>
-        //console.log('page loaded.');
+        /* Subclasses */
+        fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
+            type: 'LabeledRect',
+            initialize: function(options) {
+                options || (options = { });
+                this.callSuper('initialize', options);
+                this.set('label', options.label || '');
+            },
+            toObject: function() {
+                return fabric.util.object.extend(this.callSuper('toObject'), {
+                    label: this.get('label')
+                });
+            },
+            _render: function(ctx) {
+                this.callSuper('_render', ctx);
+                ctx.font = '20px Helvetica';
+                ctx.fillStyle = '#333';
+                ctx.fillText(this.label, -this.width/2, -this.height/2 + 20);
+            }
+        });
+        fabric.LabeledRect.fromObject = function (object, callback, forceAsync) {
+            //console.log('create label rect:', object)
+            return fabric.Object._fromObject('LabeledRect', object, callback, forceAsync)
+        }
+        
+        class GIFFrame {
+            constructor(url, callback) {
+                this.tempCanvas = document.createElement('canvas');
+                this.tempCtx = this.tempCanvas.getContext('2d');
+                this.gifCanvas = document.createElement('canvas');
+                this.gifCtx = this.gifCanvas.getContext('2d');
+                this.imgs = [];
+                this.disposalType;
+                this.delay;
+            
+                let xhr = new XMLHttpRequest();
+                xhr.open('get', url, true);
+                xhr.responseType = 'arraybuffer';
+                let self = this;
+                xhr.onload = () => {
+                    let tempBitmap = {};
+                    tempBitmap.url = url;
+                    let arrayBuffer = xhr.response;
+                    if (arrayBuffer) {
+                        let gif = new GIF(arrayBuffer);
+                        let frames = gif.decompressFrames(true);
+                        self.gifCanvas.width = frames[0].dims.width;
+                        self.gifCanvas.height = frames[0].dims.height;
+                        for (let i = 0; i < frames.length; i++) {
+                            self.createFrame(frames[i]);
+                        }
+                        this.delay = frames[0].delay;
+                        callback();
+                    }
+                }
+                xhr.send(null);
+            }
+            createFrame(frame) {
+                if (!this.disposalType) {
+                    this.disposalType = frame.disposalType;
+                }
+                let dims = frame.dims;
+                this.tempCanvas.width = dims.width;
+                this.tempCanvas.height = dims.height;
+                let frameImageData = this.tempCtx.createImageData(dims.width, dims.height);
+                frameImageData.data.set(frame.patch);
+                if (this.disposalType !== 1) {
+                    this.gifCtx.clearRect(0, 0, this.gifCanvas.width, this.gifCanvas.height);
+                }
+                this.tempCtx.putImageData(frameImageData, 0, 0);
+                this.gifCtx.drawImage(this.tempCanvas, dims.left, dims.top);
+                let dataURL = this.gifCanvas.toDataURL('image/png');
+                let tempImg = fabric.util.createImage();
+                tempImg.src = dataURL;
+                this.imgs.push(tempImg);
+            }
+        }
+        fabric.GIF = fabric.util.createClass(fabric.Image, {
+            type: 'GIF',
+            originX: 'center',
+            originY: 'center',
+            initialize: function(src, options) {
+                options || (options = {});
+                this.callSuper('initialize', options);
+                this.set('left', options.left || 10);
+                this.set('top', options.top || 10);
+                this.set('width', options.width || 75);
+                this.set('height', options.height || 75);
+                this.set('scaleX', options.scaleX || 1);
+                this.set('scaleY', options.scaleY || 1);
+                this.setCoords();
+                this.setSrc(src)
+            },
+            toObject: function() {
+                let ret = fabric.util.object.extend(this.callSuper('toObject'),
+                {
+                    src: this.get('src'),
+                    left: this.get('left'),
+                    top: this.get('top'),
+                    width: this.get('width'),
+                    height: this.get('height'),
+                    scaleX: this.get('scaleX'),
+                    scaleX: this.get('scaleY')
+                });
+                return ret;
+            },
+            toSVG: function() {
+                let imgs = this._gif.imgs;
+                var img = new fabric.Image(imgs[0]);
+                img.left = this.left;
+                img.top = this.top;
+                img.scaleToWidth(this.getScaledWidth())
+                img.scaleToHeight(this.getScaledHeight())
+                img.setCoords();
+                //return this.callSuper('toSVG') + img.toSVG();
+                return img.toSVG();
+            },
+            _render: function(ctx) {
+                if (this.loaded) {
+                    //this.callSuper('_render', ctx);
+                    let imgs = this._gif.imgs;
+                    let frame = (imgs && imgs.length > this.framesIndex) ? imgs[this.framesIndex] : null;
+                    if (frame) {
+                        ctx.drawImage(frame, -this.width / 2, -this.height / 2, this.width, this.height);
+                    }
+                }
+            },
+            play: function() {
+                //console.log('global delay:', this._gif.delay)
+                if (typeof(animInterval) === 'undefined') {
+                    this.animInterval = setInterval(() => {
+                        if (this._gif.imgs) {
+                            this.framesIndex++;
+                            if (this.framesIndex === this._gif.imgs.length) {
+                                this.framesIndex = 0;
+                            }
+                        }
+                    }, this._gif.delay);
+                }
+            },
+            stop: function() {
+                clearInterval(this.animInterval);
+                this.animInterval = undefined;
+            },
+            setSrc: function(src) {
+                this.stop();
+                // update src vlaue.
+                this.set('src', src || '');
+                this._gif = new GIFFrame(src, () => {
+                    this.framesIndex = 0;
+                    this.animInterval;
+                    this.dirty = true;
+                    this.loaded = true;
+                    this.play(); // auto play
+                })
+            }
+        });
+        fabric.GIF.fromObject = function (object, callback, forceAsync) {
+            //console.log('fromObject:', object)
+            let obj = new fabric.GIF(object.src, object);
+            obj.setCoords();
+            //obj.on('image:loaded', canvas.renderAll.bind(canvas))
+            callback(obj)
+            //return obj;
+            //return fabric.Object._fromObject('GIF', object, callback, forceAsync)
+        }
+
+        /* design code */
+        let canvas = new fabric.Canvas('c');
+        setZoom(1280, 720)
+        /*
+        canvas.setWidth(1280)
+        canvas.setHeight(720)
+        canvas.setDimensions({ width: '1280px', height: '720px' }, { cssOnly: true });    
+        */    
+
+        addRect = () => {
+            //console.log('add rect')
+            let obj = new fabric.Rect({ width: 50, height: 30, fill: '#f55', opacity: 1 });
+            canvas.add(obj); // add object
+        }
+        addText = () => {
+            //console.log('add text')
+            let obj = new fabric.IText("I'm in Comic Sans", {
+                fontFamily: 'Comic Sans'
+            });
+            canvas.add(obj); // add object
+        }
+        addImage = () => {
+            //console.log('add image')
+            /*
+            let img = new Image();
+            img.onload = () => {
+                img.onload = null;
+                let obj = new fabric.Image(img, { left: 100, top: 100, opacity: 1 });
+                canvas.add(obj);
+                img = null;
+            }
+            img.src = '/public/assets/images/png/cars/car1.png'
+            */            
+            fabric.Image.fromURL('/public/assets/images/png/cars/car1.png', function(obj) {
+                canvas.add(obj);
+            });
+        }
+        addLabel = () => {
+            let obj = new fabric.LabeledRect({
+                width: 100,
+                height: 50,
+                left: 100,
+                top: 100,
+                label: 'test',
+                fill: '#faa'
+            });
+            canvas.add(obj); // add object
+        }
+        addGif = (index) => {
+            let urls = [
+                { src:'/public/assets/images/gif/emoji/transparent/emo-nt-01.gif' },
+                { src:'/public/assets/images/gif/emoji/transparent/emo-nt-02.gif' },
+                { src:'/public/assets/images/gif/emoji/transparent/emo-nt-03.gif' },
+                { src:'/public/assets/images/gif/emoji/transparent/emo-nt-04.gif' },
+                { src:'/public/assets/images/gif/emoji/transparent/emo-nt-05.gif' }
+            ]
+            let url = urls[index - 1].src;
+            let obj = new fabric.GIF(url)
+            // when load refresh canvas
+            //obj.on('image:loaded', canvas.renderAll.bind(canvas))
+            //obj.play();
+            canvas.add(obj); // add object
+        }
+        changeGif = () => {
+            let url = '/public/assets/images/gif/emoji/transparent/emo-nt-35.gif';
+            let activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'GIF') {
+                activeObject.setSrc(url);
+            }
+        }
+        saveJson = () => {
+            let json = canvas.toJSON() //JSON.stringify(canvas);
+            console.log('saveJson:', json)
+            //console.log(json)
+            $.ajax({
+                type: "POST",
+                url: "/dev/api/question/save",
+                data: JSON.stringify({
+                    id: "QS00001",
+                    data: json
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(result) {
+                    //console.log(result);
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                }
+            })
+        }
+        
+        let onload = false;
+        loadJson = () => {
+            onload = true;
+            $.ajax({
+                type: "POST",
+                url: "/dev/api/question/load",
+                data: JSON.stringify({
+                    id: "QS00001"
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(result) {
+                    let jsonObj = JSON.parse(result.data);
+                    let canvasData = jsonObj.data;
+                    //console.log(canvasData);
+                    canvas.loadFromJSON(canvasData, () => {
+                        canvas.renderAll()
+                        onload = false;
+                    }, (o, object) => {
+                        //console.log(o, object)
+                        if (o.type === 'GIF') {
+                            //object.on('image:loaded', canvas.renderAll.bind(canvas))
+                            //object.play();
+                        }
+                    })
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                    onload = false;
+                }
+            })
+        }
+
+        updateSVG = () => {
+            fabric.Object.NUM_FRACTION_DIGITS = 80;
+            let zoomOld = canvas.getZoom();
+            //let wd = canvas.getWidth();
+            //let ht = canvas.getHeight();
+            setZoom(1280 * .12, 720 * .12)
+
+            let svg = canvas.toSVG();
+            setZoom(1280, 720); // restore
+            let el = document.getElementById('svg1');
+            //console.log(svg)
+            el.innerHTML = svg;
+        }
+
+        render()
+        function render() {
+            if (canvas && !onload) { canvas.renderAll(); }
+            fabric.util.requestAnimFrame(render);
+        }
+
+        function setZoom(newWidth, newHeight) {
+            let dsgnWd = 1280;
+            let dsgnHt = 720;
+            //let scaleRatio = Math.min(newWidth/dsgnWd, newHeight/dsgnHt);
+            let scaleRatio = Math.max(newWidth/dsgnWd, newHeight/dsgnHt);
+
+            canvas.setZoom(scaleRatio);
+            canvas.setWidth(dsgnWd * canvas.getZoom());
+            canvas.setHeight(dsgnHt * canvas.getZoom());
+            /*
+            canvas.setDimensions({ 
+                width: newWidth, 
+                height: newHeight
+            });
+            canvas.setZoom(scaleRatio);
+            */
+        }
     </script>
 </body>
 </html>
