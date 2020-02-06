@@ -1,3 +1,4 @@
+// Helper classes.
 class GIFFrame {
     constructor(url, callback) {
         this.tempCanvas = document.createElement('canvas');
@@ -50,7 +51,9 @@ class GIFFrame {
         this.imgs.push(tempImg);
     }
 }
+
 /* Subclasses */
+// LabeledRect
 fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
     type: 'LabeledRect',
     initialize: function(options) {
@@ -74,7 +77,7 @@ fabric.LabeledRect.fromObject = function (object, callback, forceAsync) {
     //console.log('create label rect:', object)
     return fabric.Object._fromObject('LabeledRect', object, callback, forceAsync)
 }
-
+// GIF
 fabric.GIF = fabric.util.createClass(fabric.Image, {
     type: 'GIF',
     originX: 'center',
@@ -164,7 +167,6 @@ fabric.GIF.fromObject = function (object, callback, forceAsync) {
     //return obj;
     //return fabric.Object._fromObject('GIF', object, callback, forceAsync)
 }
-
 
 ;(() => {
     console.log('nlib-fabric.js loaded.');
