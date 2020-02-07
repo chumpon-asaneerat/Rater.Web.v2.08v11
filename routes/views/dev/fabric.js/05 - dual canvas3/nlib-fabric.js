@@ -168,6 +168,14 @@ fabric.GIF.fromObject = function (object, callback, forceAsync) {
     //return fabric.Object._fromObject('GIF', object, callback, forceAsync)
 }
 
+// setup selection control.
+fabric.Object.prototype.set({
+    transparentCorners: false,
+    borderColor: '#ff00ff',
+    cornerColor: '#ff0000',
+    cornerStyle: 'circle'
+});
+
 ;(() => {
     console.log('nlib-fabric.js loaded.');
 })();
