@@ -55,9 +55,9 @@ Project:
         ☐ Check Idle (client side).
         ☐ Call Rest API with timer.
     fabric.js:
-        ☐ Full Screen canvas (auto resize to fit screen with aspect ratio).
+        ✔ Full Screen canvas (auto resize to fit screen with aspect ratio). @done(20-02-08 22:14)
         ☐ Toolbox drag drop to canvas.
-        ☐ Hot spot customization.
+        ✔ Hot spot customization. @done(20-02-08 22:14)
         ☐ Align to grid.
         ☐ Test for question set model (multiple slides) in fabric.js.
         ☐ Supports auto update preview canvas list (with debounce).
