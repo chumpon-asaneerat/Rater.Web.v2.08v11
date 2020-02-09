@@ -101,7 +101,8 @@ Project:
                 ☐ Slide preview (Intro Slide [video, image, animation], Question Slide [all], End Slide [audio]).
                 Slide:
                     ☐ slidepreview tag.
-                    ☐ 
+                    ☐ slidedesigner tag.
+                    ☐ shapepropertyeditor tag.
         Rater:
             Controls:
                 Dashboard Items:
