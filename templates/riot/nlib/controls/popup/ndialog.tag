@@ -1,7 +1,7 @@
 <ndialog>
     <!-- Modal content -->
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span ref="closeBtn" class="close">&times;</span>
         <p>Some text in the Modal..</p>
     </div>  
     <style>
@@ -39,5 +39,74 @@
         }
     </style>
     <script>
+        //#region Internal Variables
+
+        let self = this;
+
+        //#endregion
+
+        //#region controls variables and methods
+
+        let closeBtn;
+        let initCtrls = () => {
+            closeBtn = self.refs['closeBtn']
+        }
+        let freeCtrls = () => {
+            closeBtn = null;
+        }
+
+        //#endregion
+
+        //#region document listener add/remove handler
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        //#endregion
+
+        //#region events bind/unbind
+
+        let bindEvents = () => {
+            //addEvt(events.name.ShowOsd, showOsd)
+            //addEvt(events.name.UpdateOsd, updateOsd)
+            //addEvt(events.name.HideOsd, hideOsd)
+            window.addEventListener('click', windowClick)
+            closeBtn.addEventListener('click', closeClick)
+        }
+        let unbindEvents = () => {
+            closeBtn.removeEventListener('click', closeClick)
+            window.removeEventListener('click', windowClick)
+            //delEvt(events.name.HideOsd, hideOsd)
+            //delEvt(events.name.UpdateOsd, updateOsd)
+            //delEvt(events.name.ShowOsd, showOsd)
+        }
+
+        //#endregion
+
+        //#region riot handlers
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        //#endregion
+
+        let windowClick = (evt) => {
+            // When the user clicks anywhere outside of the modal, close it
+            if (eveevtnt.target === self.root) { 
+                self.root.style.display = "none";
+            }
+        }
+        let closeClick = (evt) => {
+            self.root.style.display = "none";
+        }
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function() { modal.style.display = "block"; }
     </script>
 </ndialog>
