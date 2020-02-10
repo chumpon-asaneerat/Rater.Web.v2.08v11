@@ -99,14 +99,17 @@
         let windowClick = (evt) => {
             // When the user clicks anywhere outside of the modal, close it
             if (eveevtnt.target === self.root) { 
-                self.root.style.display = "none";
+                self.hide()
             }
         }
         let closeClick = (evt) => {
+            self.hide()
+        }
+        this.show = () => {
+            self.root.style.display = "block";
+        }
+        this.hide = () => {
             self.root.style.display = "none";
         }
-
-        // When the user clicks on the button, open the modal
-        btn.onclick = function() { modal.style.display = "block"; }
     </script>
 </ndialog>

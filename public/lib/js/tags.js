@@ -258,14 +258,18 @@ riot.tag2('ndialog', '<div class="modal-content"> <span ref="closeBtn" class="cl
         let windowClick = (evt) => {
 
             if (eveevtnt.target === self.root) {
-                self.root.style.display = "none";
+                self.hide()
             }
         }
         let closeClick = (evt) => {
+            self.hide()
+        }
+        this.show = () => {
+            self.root.style.display = "block";
+        }
+        this.hide = () => {
             self.root.style.display = "none";
         }
-
-        btn.onclick = function() { modal.style.display = "block"; }
 });
 riot.tag2('osd', '<div ref="osd-ctrl" class="osd error"> <label style="margin: 0 auto; padding: 0;"></label> </div>', 'osd,[data-is="osd"]{ display: inline-block; position: absolute; margin: 0 auto; padding: 0; left: 50px; right: 50px; bottom: 50px; z-index: 1000; background-color: transparent; } osd .osd,[data-is="osd"] .osd{ display: block; position: relative; margin: 0 auto; padding: 5px; height: auto; width: 200px; color: white; background-color: rgba(0, 0, 0, .7); text-align: center; border: 1; border-color: rgba(0, 0, 0, 1); border-radius: 8px; user-select: none; visibility: hidden; } osd .osd.show,[data-is="osd"] .osd.show{ visibility: visible; } osd .osd.show.info,[data-is="osd"] .osd.show.info{ color: whitesmoke; background-color: rgba(0, 0, 0, .7); border-color: rgba(0, 0, 0, 1); } osd .osd.show.warn,[data-is="osd"] .osd.show.warn{ color: black; background-color: rgba(255, 255, 0, .7); border-color: rgba(255, 255, 0, 1); } osd .osd.show.error,[data-is="osd"] .osd.show.error{ color: yellow; background-color: rgba(255, 0, 0, .7); border-color: rgba(255, 0, 0, 1); }', '', function(opts) {
 
