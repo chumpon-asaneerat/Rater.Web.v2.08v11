@@ -21,7 +21,8 @@
     <style>
     </style>
 </head>
-<body>    
+<body>
+    <ndialog id="dialog"></ndialog>
     <!-- JQuery -->
     <script src="/dist/js/jquery.min.js"></script>
     <!-- JQuery UI -->
@@ -36,6 +37,10 @@
     <script src="/dist/js/gifuct-js.min.js"></script>
     <!-- fabricjs -->
     <script src="/dist/js/fabric.min.js"></script>
+    <!-- Riot.js -->
+    <script src="/dist/js/riot.min.js"></script>
+    <!-- custom components -->
+    <script src="/dist/js/tags.js"></script>
     <!-- nlib -->
     <script src="/dist/js/nlib.js"></script>
     <!-- script.js -->
@@ -50,6 +55,9 @@
             cornerStyle: 'circle'
         });
 
+        let tags = riot.mount('ndialog')
+        let dialog = tags[0];
+        dialog.show()
     </script>
 </body>
 </html>

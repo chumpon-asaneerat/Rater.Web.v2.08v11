@@ -98,7 +98,8 @@
 
         let windowClick = (evt) => {
             // When the user clicks anywhere outside of the modal, close it
-            if (eveevtnt.target === self.root) { 
+            if (evt.target === self.root) { 
+                console.log('target:', evt.target)
                 self.hide()
             }
         }

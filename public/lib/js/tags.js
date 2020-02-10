@@ -257,7 +257,8 @@ riot.tag2('ndialog', '<div class="modal-content"> <span ref="closeBtn" class="cl
 
         let windowClick = (evt) => {
 
-            if (eveevtnt.target === self.root) {
+            if (evt.target === self.root) {
+                console.log('target:', evt.target)
                 self.hide()
             }
         }
