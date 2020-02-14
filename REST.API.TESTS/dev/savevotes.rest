@@ -6,6 +6,6 @@ content-type: application/json
     "customerId": "EDL-C2019100004",
     "qSetId": "QS00004",
     "beginDate": "2020-01-17",
-    "endDate": "2020-01-17",
-    "sampleSize": 10
+    "endDate": "2020-02-17",
+    "sampleSize": 3000
 }

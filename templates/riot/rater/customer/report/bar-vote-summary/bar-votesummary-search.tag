@@ -1,34 +1,103 @@
 <bar-votesummary-search>
-    <div class="input-block center">
-        <span>Vote Summary Bar Graph.</span>
+    <div ref="container" class="scrarea">
+        <div ref="tool" class="toolarea">
+            <button class="float-button" onclick="{ onseach }">
+                <span class="fas fa-search">&nbsp;</span>
+            </button>
+            <button class="float-button" onclick="{ onhome }">
+                <span class="fas fa-home">&nbsp;</span>
+            </button>
+        </div>
+        <div ref="search" class="searcharea">
+            <div class="input-block center">
+                <span>Vote Summary Bar Graph.</span>
+            </div>
+            <div class="input-block center">
+                <nselect ref="ctrlQSets" title="Question set"></nselect>
+            </div>
+            <div class="input-block center">
+                <ninput ref="ctrlBegin" type="date" title="Begin Date"></ninput>
+                <ninput ref="ctrlEnd" type="date" title="End Date"></ninput>
+            </div>
+            <div class="input-block center">
+                <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree>
+            </div>
+            <div class="input-block center">
+                <ncheckedtree ref="ctrlOrgTree" title="Organization" class="tree"></ncheckedtree>
+            </div>
+            <!--
+            <div class="input-block center">
+                <button onclick="{ onseach }">Search</button>
+            </div>
+            -->
+            <br>
+        </div>
     </div>
-    <div class="input-block center">
-        <nselect ref="ctrlQSets" title="Question set"></nselect>
-    </div>
-    <div class="input-block center">
-        <ninput ref="ctrlBegin" type="date" title="Begin Date"></ninput>
-        <ninput ref="ctrlEnd" type="date" title="End Date"></ninput>
-    </div>
-    <div class="input-block center">
-        <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree>
-    </div>
-    <div class="input-block center">
-        <ncheckedtree ref="ctrlOrgTree" title="Organization" class="tree"></ncheckedtree>
-    </div>
-    <div class="input-block center">
-        <button onclick="{ onseach }">Search</button>
-    </div>
-    <br>
     <style>
         :scope {
-            display: block;
-            margin: 0;
-            padding: 5px;
+            margin: 0 auto;
+            padding: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 20px 1fr 20px;
+            grid-template-areas:
+                '.'
+                'scrarea'
+                '.'
         }
-        :scope .input-block {
+        :scope>.scrarea {
+            grid-area: scrarea;
+            display: grid;
+            grid-template-columns: 5px auto 1fr;
+            grid-template-rows: 1fr;
+            grid-template-areas:
+                '. toolarea searcharea';
+            margin: 0 auto;
+            padding: 0;
+            margin-top: 3px;
+            width: 100%;
+            max-width: 800px;
+            height: 100%;
+        }
+        :scope>.scrarea>.toolarea {
+            grid-area: toolarea;
+            margin: 0 auto;
+            margin-right: 5px;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: transparent;
+            color: whitesmoke;
+        }
+        :scope>.scrarea>.toolarea .float-button {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 5px;
+            padding: 3px;
+            padding-right: 1px;
+            height: 40px;
+            width: 40px;
+            color: whitesmoke;
+            background: silver;
+            border: none;
+            outline: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        :scope>.scrarea>.toolarea .float-button:hover {
+            color: whitesmoke;
+            background: forestgreen;
+        }
+        :scope>.scrarea>.searcharea {
+            grid-area: searcharea;
+            margin: 0 auto;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        :scope>.scrarea>.searcharea .input-block {
             display: block;
             margin: 0;
             margin-top: 10px;
@@ -37,12 +106,12 @@
             max-width: 800px;
             text-align: center;
         }
-        :scope .input-block.center {
+        :scope>.scrarea>.searcharea .input-block.center {
             margin: auto;
             margin-top: 10px;
         }
-        :scope .input-block span,
-        :scope .input-block button {
+        :scope>.scrarea>.searcharea .input-block span,
+        :scope>.scrarea>.searcharea .input-block button {
             display: inline-block;
             margin: 0 auto;
             padding: 0;
@@ -50,21 +119,21 @@
             font-size: 1rem;
             font-size: bold;
         }
-        :scope .input-block span.label {
+        :scope>.scrarea>.searcharea .input-block span.label {
             margin: 1px;
             padding: 2px;
             text-align: left;
             color: cornflowerblue;
             width: 100%;
         }
-        :scope .input-block span input {
+        :scope>.scrarea>.searcharea .input-block span input {
             margin: 1px;
             padding: 2px;
             text-align: left;
             color: cornflowerblue;
             width: 100%;
         }
-        :scope .input-block .tree {
+        :scope>.scrarea>.searcharea .input-block .tree {
             text-align: left;
         }
     </style>
@@ -333,6 +402,15 @@
             //console.log(criteria)
 
             events.raise(events.name.BarSummaryResult, criteria)
+        }
+        this.onhome = () => {
+            let paths = window.location.pathname.split('/');
+            let url = window.location.origin
+            for (i = 0; i < paths.length - 1; i++) {
+                if (paths[i].length > 0) url += '/'
+                url += paths[i]
+            }
+            nlib.nav.gotoUrl(url)
         }
     </script>
 </bar-votesummary-search>
