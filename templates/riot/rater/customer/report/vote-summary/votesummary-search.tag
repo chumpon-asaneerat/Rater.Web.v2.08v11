@@ -1,24 +1,33 @@
 <votesummary-search>
-    <div class="input-block center">
-        <span>Vote Summary.</span>
+    <div ref="container" class="scrarea">
+        <div ref="tool" class="toolarea">
+            <button class="float-button" onclick="{ onseach }">
+                <span class="fas fa-search">&nbsp;</span>
+            </button>
+            <button class="float-button" onclick="{ onhome }">
+                <span class="fas fa-home">&nbsp;</span>
+            </button>
+        </div>
+        <div ref="search" class="searcharea">
+            <div class="input-block center">
+                <span>Vote Summary.</span>
+            </div>
+            <div class="input-block center">
+                <nselect ref="ctrlQSets" title="Question set"></nselect>
+            </div>
+            <div class="input-block center">
+                <ninput ref="ctrlBegin" type="date" title="Begin Date"></ninput>
+                <ninput ref="ctrlEnd" type="date" title="End Date"></ninput>
+            </div>
+            <div class="input-block center">
+                <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree>
+            </div>
+            <div class="input-block center">
+                <ncheckedtree ref="ctrlOrgTree" title="Organization" class="tree"></ncheckedtree>
+            </div>
+            <br>
+        </div>
     </div>
-    <div class="input-block center">
-        <nselect ref="ctrlQSets" title="Question set"></nselect>
-    </div>
-    <div class="input-block center">
-        <ninput ref="ctrlBegin" type="date" title="Begin Date"></ninput>
-        <ninput ref="ctrlEnd" type="date" title="End Date"></ninput>
-    </div>
-    <div class="input-block center">
-        <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree>
-    </div>
-    <div class="input-block center">
-        <ncheckedtree ref="ctrlOrgTree" title="Organization" class="tree"></ncheckedtree>
-    </div>
-    <div class="input-block center">
-        <button onclick="{ onseach }">Search</button>
-    </div>
-    <br>
     <style>
         :scope {
             margin: 0 auto;

@@ -25,11 +25,6 @@
             <div class="input-block center">
                 <ncheckedtree ref="ctrlOrgTree" title="Organization" class="tree"></ncheckedtree>
             </div>
-            <!--
-            <div class="input-block center">
-                <button onclick="{ onseach }">Search</button>
-            </div>
-            -->
             <br>
         </div>
     </div>
