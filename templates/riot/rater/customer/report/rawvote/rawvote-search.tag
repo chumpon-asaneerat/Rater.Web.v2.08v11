@@ -323,5 +323,14 @@
 
             events.raise(events.name.RawVoteResult, criteria)
         }
+        this.onhome = () => {
+            let paths = window.location.pathname.split('/');
+            let url = window.location.origin
+            for (i = 0; i < paths.length - 1; i++) {
+                if (paths[i].length > 0) url += '/'
+                url += paths[i]
+            }
+            nlib.nav.gotoUrl(url)
+        }
     </script>
 </rawvote-search>

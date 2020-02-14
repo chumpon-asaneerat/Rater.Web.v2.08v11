@@ -4363,6 +4363,15 @@ riot.tag2('pie-votesummary-search', '<div class="input-block center"> <span>Vote
 
             events.raise(events.name.PieSummaryResult, criteria)
         }
+        this.onhome = () => {
+            let paths = window.location.pathname.split('/');
+            let url = window.location.origin
+            for (i = 0; i < paths.length - 1; i++) {
+                if (paths[i].length > 0) url += '/'
+                url += paths[i]
+            }
+            nlib.nav.gotoUrl(url)
+        }
 });
 riot.tag2('rawvote-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <rawvote-search ref="viewer" class="view"></rawvote-search> </yield> <yield to="entry"> <rawvote-result ref="entry" class="entry"></rawvote-result> </yield> </flip-screen>', 'rawvote-manage,[data-is="rawvote-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } rawvote-manage .view,[data-is="rawvote-manage"] .view,rawvote-manage .entry,[data-is="rawvote-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
 
@@ -4760,6 +4769,15 @@ riot.tag2('rawvote-search', '<div class="input-block center"> <span>Raw Vote.</s
             }
 
             events.raise(events.name.RawVoteResult, criteria)
+        }
+        this.onhome = () => {
+            let paths = window.location.pathname.split('/');
+            let url = window.location.origin
+            for (i = 0; i < paths.length - 1; i++) {
+                if (paths[i].length > 0) url += '/'
+                url += paths[i]
+            }
+            nlib.nav.gotoUrl(url)
         }
 });
 riot.tag2('rawvote-table', '<div ref="grid" class="grid-box"></div>', 'rawvote-table,[data-is="rawvote-table"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } rawvote-table .grid-box,[data-is="rawvote-table"] .grid-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; } rawvote-table .grid-box .tabulator-col-title,[data-is="rawvote-table"] .grid-box .tabulator-col-title{ text-align: center; }', '', function(opts) {
@@ -5373,6 +5391,15 @@ riot.tag2('staff-compare-search', '<div class="input-block center"> <span>Staff 
 
             events.raise(events.name.StaffCompareResult, criteria)
         }
+        this.onhome = () => {
+            let paths = window.location.pathname.split('/');
+            let url = window.location.origin
+            for (i = 0; i < paths.length - 1; i++) {
+                if (paths[i].length > 0) url += '/'
+                url += paths[i]
+            }
+            nlib.nav.gotoUrl(url)
+        }
 });
 riot.tag2('staff-perf-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <staff-perf-search ref="viewer" class="view"></staff-perf-search> </yield> <yield to="entry"> <staff-perf-result ref="entry" class="entry"></staff-perf-result> </yield> </flip-screen>', 'staff-perf-manage,[data-is="staff-perf-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } staff-perf-manage .view,[data-is="staff-perf-manage"] .view,staff-perf-manage .entry,[data-is="staff-perf-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
 
@@ -5701,6 +5728,15 @@ riot.tag2('staff-perf-search', '<div class="input-block center"> <span>Staff Per
             let criteria = { }
 
             events.raise(events.name.StaffPerfResult, criteria)
+        }
+        this.onhome = () => {
+            let paths = window.location.pathname.split('/');
+            let url = window.location.origin
+            for (i = 0; i < paths.length - 1; i++) {
+                if (paths[i].length > 0) url += '/'
+                url += paths[i]
+            }
+            nlib.nav.gotoUrl(url)
         }
 });
 riot.tag2('votesummary-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <votesummary-search ref="viewer" class="view"></votesummary-search> </yield> <yield to="entry"> <votesummary-result ref="entry" class="entry"></votesummary-result> </yield> </flip-screen>', 'votesummary-manage,[data-is="votesummary-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } votesummary-manage .view,[data-is="votesummary-manage"] .view,votesummary-manage .entry,[data-is="votesummary-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
@@ -6108,6 +6144,15 @@ riot.tag2('votesummary-search', '<div class="input-block center"> <span>Vote Sum
             }
 
             events.raise(events.name.VoteSummaryResult, criteria)
+        }
+        this.onhome = () => {
+            let paths = window.location.pathname.split('/');
+            let url = window.location.origin
+            for (i = 0; i < paths.length - 1; i++) {
+                if (paths[i].length > 0) url += '/'
+                url += paths[i]
+            }
+            nlib.nav.gotoUrl(url)
         }
 });
 riot.tag2('votesummary-table', '<div ref="grid" class="grid-box"></div>', 'votesummary-table,[data-is="votesummary-table"]{ display: block; position: relative; margin: 0 auto; padding: 3px; border: 1px solid silver; border-radius: 3px; overflow: auto; } votesummary-table .grid-box,[data-is="votesummary-table"] .grid-box{ display: block; position: absolute; margin: 0 auto; padding: 0; width: 100%; height: 100%; } votesummary-table .grid-box .tabulator-col-title,[data-is="votesummary-table"] .grid-box .tabulator-col-title{ text-align: center; }', '', function(opts) {
