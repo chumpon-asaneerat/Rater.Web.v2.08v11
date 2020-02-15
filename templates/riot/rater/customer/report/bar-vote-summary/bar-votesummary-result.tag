@@ -1,4 +1,8 @@
 <bar-votesummary-result>
+    <div class="tabs">
+    </div>
+    <div class="tool">
+    </div>
     <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
     <virtial if={ current.slides && current.slides.length > 0 }>
         <virtial each={ slide in current.slides }>
