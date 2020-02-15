@@ -1,16 +1,18 @@
 <bar-votesummary-result>
     <div class="tabs">
+        <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
+        <virtial if={ current.slides && current.slides.length > 0 }>
+            <virtial each={ slide in current.slides }>
+                <bar-votesummary-question-slide slide="{ slide }"></bar-votesummary-question-slide>
+            </virtial>
+        </virtial>
+        <div class="input-block center">
+            <button onclick="{ goback }">Close</button>
+        </div>
     </div>
     <div class="tool">
-    </div>
-    <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
-    <virtial if={ current.slides && current.slides.length > 0 }>
-        <virtial each={ slide in current.slides }>
-            <bar-votesummary-question-slide slide="{ slide }"></bar-votesummary-question-slide>
-        </virtial>
-    </virtial>
-    <div class="input-block center">
-        <button onclick="{ goback }">Close</button>
+        <button class="float-button save" onclick="{ save }"><span class="fas fa-save"></span></button>
+        <button class="float-button cancel" onclick="{ cancel }"><span class="fas fa-times"></span></button>
     </div>
     <br>
     <style>
