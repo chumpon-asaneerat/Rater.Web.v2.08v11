@@ -261,6 +261,7 @@
                 fontFamily: 'Comic Sans'
             });
             fb.add(obj); // add object
+            return obj;
         }
         let addRect = (fb, lf = 5, tp = 5, wd = 50, ht = 18, bg = '#f55') => {
             let obj = new fabric.Rect({
@@ -272,7 +273,47 @@
                 opacity: 1
             });
             fb.add(obj); // add object
+            return obj;
         }
+
+        /*
+
+        https://stackoverflow.com/questions/43000320/can-i-create-more-complex-shapes-like-this-one-in-fabric-js
+
+        var canvas = new fabric.Canvas('c');
+        var defaultProperties = {
+        fill: 'black',
+        stroke: 'lime',
+        strokeWidth: 12
+        };
+        var ellipse = new fabric.Ellipse({
+            left: 30,
+            top: 30,
+            rx: 170,
+            ry: 110,
+            strokeWidth: 12
+        });
+        var horizontalLine = new fabric.Line([30, 140, 370, 140]);
+        var verticalLine = new fabric.Line([200, 30, 200, 140]);
+        var group = new fabric.Group([ellipse, horizontalLine, verticalLine]);
+        group.set(defaultProperties);
+        canvas.add(group);
+        var toggle = true;
+        document.getElementsByTagName('button')[0].addEventListener('click', function() {
+            if (toggle) {
+                group.set({
+                    fill: 'red',
+                    stroke: 'pink',
+                    strokeWidth: 5
+                });
+            } 
+            else {
+                group.set(defaultProperties);
+            }
+            toggle = !toggle;
+            canvas.renderAll();
+        });
+        */
 
         let sync = () => {
             let json = fb1.toJSON()
@@ -311,9 +352,21 @@
         });
         
         addRect(fb1)
-        addRect(fb1, 10, 25)
-        addText(fb1, 'Sample text 1')
-        addText(fb1, 'Sample text 2', 10, 25, undefined, undefined, undefined, '#ccc')
+        let r2 = addRect(fb1, 10, 25)
+        r2.fill = 'beige'
+        r2.strokeWidth = 1
+        r2.rx = 0.9
+        r2.ry = 0.9
+        let shadow = { 
+            color: 'rgba(0,0,0,0.3)', 
+            offsetX: 0.9, 
+            offsetY : 0.9,
+            blur: 0.9
+        }
+        r2.setShadow(shadow);
+
+        //addText(fb1, 'Sample text 1')
+        //addText(fb1, 'Sample text 2', 10, 25, undefined, undefined, undefined, '#ccc')
     </script>
 </body>
 </html>
