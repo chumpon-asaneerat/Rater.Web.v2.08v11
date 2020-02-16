@@ -9,12 +9,12 @@
         <div class="input-block center">
             <button onclick="{ goback }">Close</button>
         </div>
+        <br>
     </div>
     <div class="tool">
         <button class="float-button save" onclick="{ save }"><span class="fas fa-save"></span></button>
         <button class="float-button cancel" onclick="{ cancel }"><span class="fas fa-times"></span></button>
     </div>
-    <br>
     <style>
         :scope {
             display: block;

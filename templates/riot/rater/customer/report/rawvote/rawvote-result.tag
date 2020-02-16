@@ -1,14 +1,20 @@
 <rawvote-result>
-    <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
-    <virtial if={ current.slides && current.slides.length > 0 }>
-        <virtial each={ slide in current.slides }>
-            <rawvote-question-slide slide="{ slide }"></rawvote-question-slide>
+    <div class="tabs">
+        <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
+        <virtial if={ current.slides && current.slides.length > 0 }>
+            <virtial each={ slide in current.slides }>
+                <rawvote-question-slide slide="{ slide }"></rawvote-question-slide>
+            </virtial>
         </virtial>
-    </virtial>
-    <div class="input-block center">
-        <button onclick="{ goback }">Close</button>
+        <div class="input-block center">
+            <button onclick="{ goback }">Close</button>
+        </div>
+        <br>
     </div>
-    <br>
+    <div class="tool">
+        <button class="float-button save" onclick="{ save }"><span class="fas fa-save"></span></button>
+        <button class="float-button cancel" onclick="{ cancel }"><span class="fas fa-times"></span></button>
+    </div>
     <style>
         :scope {
             display: block;
