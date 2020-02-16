@@ -1,50 +1,86 @@
 <rawvote-result>
-    <div class="tabs">
-        <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
-        <virtial if={ current.slides && current.slides.length > 0 }>
-            <virtial each={ slide in current.slides }>
-                <rawvote-question-slide slide="{ slide }"></rawvote-question-slide>
+    <div class="result">
+        <div class="tabs">
+            <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
+            <virtial if={ current.slides && current.slides.length > 0 }>
+                <virtial each={ slide in current.slides }>
+                    <rawvote-question-slide slide="{ slide }"></rawvote-question-slide>
+                </virtial>
             </virtial>
-        </virtial>
-        <div class="input-block center">
-            <button onclick="{ goback }">Close</button>
         </div>
-        <br>
-    </div>
-    <div class="tool">
-        <button class="float-button save" onclick="{ save }"><span class="fas fa-save"></span></button>
-        <button class="float-button cancel" onclick="{ cancel }"><span class="fas fa-times"></span></button>
+        <div class="tool">
+            <button class="float-button" onclick="{ goback }">
+                <span class="fas fa-times"></span>
+            </button>
+            <button class="float-button" onclick="{ onhome }">
+                <span class="fas fa-home"></span>
+            </button>
+        </div>
     </div>
     <style>
         :scope {
-            display: block;
             margin: 0 auto;
             padding: 0;
             width: 100%;
             height: 100%;
-            /* overflow: hidden; */
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 20px 1fr 20px;
+            grid-template-areas: 
+                '.'
+                'result'
+                '.';
             background-color: whitesmoke;
+            /* overflow: hidden; */
         }
-        :scope .input-block {
-            display: block;
-            margin: 0;
-            margin-top: 10px;
-            padding: 0;
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-        }
-        :scope .input-block.center {
-            margin: auto;
-            margin-top: 10px;
-        }
-        :scope .input-block button {
-            display: inline-block;
+        :scope>.result {
+            grid-area: result;
+            display: grid;
+            grid-template-columns: 1fr auto 5px;
+            grid-template-rows: 1fr;
+            grid-template-areas: 
+                'tabs tool .';
             margin: 0 auto;
             padding: 0;
-            width: 50%;
-            font-size: 1rem;
-            font-size: bold;
+            width: 100%;
+            /* max-width: 800px; */
+            height: 100%;
+        }
+        :scope>.result .tabs {
+            grid-area: tabs;
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        :scope>.result .tool {
+            grid-area: tool;
+            margin: 0 auto;
+            margin-right: 5px;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: transparent;
+            color: whitesmoke;
+        }
+        :scope>.result .tool .float-button {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 5px;
+            padding: 3px;
+            padding-right: 1px;
+            height: 40px;
+            width: 40px;
+            color: whitesmoke;
+            background: silver;
+            border: none;
+            outline: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        :scope>.result .tool .float-button:hover {
+            color: whitesmoke;
+            background: forestgreen;
         }
     </style>
     <script>
@@ -174,6 +210,16 @@
             search_opts = criteria;
             shown = true;
             refresh();
+        }
+
+        this.onhome = () => {
+            let paths = window.location.pathname.split('/');
+            let url = window.location.origin
+            for (i = 0; i < paths.length - 1; i++) {
+                if (paths[i].length > 0) url += '/'
+                url += paths[i]
+            }
+            nlib.nav.gotoUrl(url)
         }
     </script>
 </rawvote-result>
