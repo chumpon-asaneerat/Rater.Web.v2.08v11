@@ -360,18 +360,60 @@
         
         //addRect(fb1)
 
-        let r2 = addRect(fb1, 10, 25, 200, 100)
-        r2.fill = 'beige'
-        r2.strokeWidth = 1
-        r2.rx = 0.9
-        r2.ry = 0.9
+        let tlf = 5, ttp = 5, twd = 50, tht = 18
+        let r1 = new fabric.Rect({
+            left: tlf,
+            top: ttp,
+            width: twd, 
+            height: tht, 
+            fill: 'rgba(192, 192, 192, 0.5)', 
+            strokeWidth: 1,
+            rx: 1.9,
+            ry: 1.9,
+            opacity: 0.7
+        });
+        let shadow1 = { 
+            color: 'rgba(255, 255, 255, 0.9)', 
+            offsetX: -0.5, 
+            offsetY : -0.5,
+            blur: 0.9
+        }
+        r1.setShadow(shadow1);
+        let r2 = new fabric.Rect({
+            left: tlf,
+            top: ttp,
+            width: twd, 
+            height: tht, 
+            fill: 'beige', 
+            strokeWidth: 1,
+            rx: 1.9,
+            ry: 1.9,
+            opacity: 1
+        });
+        let shadow2 = { 
+            color: 'rgba(100, 100, 100, 0.3)', 
+            offsetX: 0.5, 
+            offsetY : 0.5,
+            blur: 0.9
+        }
+        r2.setShadow(shadow2);
+        let group = new fabric.Group([r1, r2]);
+        fb1.add(group); // add object
+
+        /*
+        let rX = addRect(fb1, 10, 25, 200, 100)
+        rX.fill = 'beige'
+        rX.strokeWidth = 1
+        rX.rx = 0.9
+        rX.ry = 0.9
         let shadow = { 
-            color: 'rgba(0,0,0,0.3)', 
+            color: 'rgba(0, 0, 0, 0.3)', 
             offsetX: 0.9, 
             offsetY : 0.9,
             blur: 0.9
         }
-        r2.setShadow(shadow);
+        rX.setShadow(shadow);
+        */
 
         //addText(fb1, 'Sample text 1')
         //addText(fb1, 'Sample text 2', 10, 25, undefined, undefined, undefined, '#ccc')
