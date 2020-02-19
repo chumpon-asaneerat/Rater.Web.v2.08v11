@@ -106,7 +106,46 @@
             }
         });
 
-        
+        // Add objects and group
+        let tlf = 5, ttp = 5, twd = 50, tht = 18
+        let r1 = new fabric.Rect({
+            left: tlf,
+            top: ttp,
+            width: twd, 
+            height: tht, 
+            fill: 'rgba(192, 192, 192, 0.5)', 
+            strokeWidth: 1,
+            rx: 1.9,
+            ry: 1.9,
+            opacity: 0.7
+        });
+        let shadow1 = { 
+            color: 'rgba(255, 255, 255, 0.9)', 
+            offsetX: -0.5, 
+            offsetY : -0.5,
+            blur: 0.9
+        }
+        r1.setShadow(shadow1);
+        let r2 = new fabric.Rect({
+            left: tlf,
+            top: ttp,
+            width: twd, 
+            height: tht, 
+            fill: 'beige', 
+            strokeWidth: 1,
+            rx: 1.9,
+            ry: 1.9,
+            opacity: 1
+        });
+        let shadow2 = { 
+            color: 'rgba(100, 100, 100, 0.3)', 
+            offsetX: 0.5, 
+            offsetY : 0.5,
+            blur: 0.9
+        }
+        r2.setShadow(shadow2);
+        let group = new fabric.Group([r1, r2]);
+        canvas.add(group); // add object
     </script>
 </body>
 </html>
