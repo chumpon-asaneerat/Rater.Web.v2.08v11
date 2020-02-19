@@ -60,7 +60,7 @@ Project:
         ✔ Hot spot customization. @done(20-02-08 22:14)
         ☐ Align to grid.
         ☐ Test for question set model (multiple slides) in fabric.js.
-        ☐ Supports auto update preview canvas list (with debounce).
+        ✔ Supports auto update preview canvas list. @done(20-02-19 14:36)
         ☐ Add multilanguage Text control (extend properties required).
     riot.js:
         Layout:
@@ -96,7 +96,7 @@ Project:
                 ✔ tabpages tag. @done(19-12-16 18:04)
                 ✔ tabpage tag. @done(19-12-16 18:04)
             Dialog:
-                ☐ dialog tag.
+                ✔ dialog tag. @done(20-02-19 14:36)
             Special controls:
                 ☐ Slide preview (Intro Slide [video, image, animation], Question Slide [all], End Slide [audio]).
                 Slide:
