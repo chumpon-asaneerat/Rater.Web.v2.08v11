@@ -99,14 +99,14 @@
             if (e.target) {
                 //clicked on object
                 //alert('clicked on object' + e.target);
-                //let type = e.target.get('type')
-                let type = e.target.type
-                console.log('clicked on object', type)
+                let obj = e.target
+                //let type = e.target.get('type')                
+                let type = obj.type
                 if (type === 'group') {
-
+                    console.log('clicked on object', type)
                 }
                 else {
-
+                    console.log('clicked on object', obj)
                 }
             }
             else {
@@ -115,7 +115,7 @@
         });
 
         // Add objects and group
-        let tlf = 5, ttp = 5, twd = 50, tht = 18
+        let tlf = 50, ttp = 50, twd = 100, tht = 30
         let r1 = new fabric.Rect({
             left: tlf,
             top: ttp,
@@ -154,6 +154,20 @@
         r2.setShadow(shadow2);
         let group = new fabric.Group([r1, r2]);
         canvas.add(group); // add object
+
+        // add some rect
+        let rect = new fabric.Rect({
+            left: 100,
+            top: 50,
+            width: 150, 
+            height: 40, 
+            fill: 'beige', 
+            strokeWidth: 1,
+            rx: 1.9,
+            ry: 1.9,
+            opacity: 1
+        });
+        canvas.add(rect); // add object
     </script>
 </body>
 </html>
