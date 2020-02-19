@@ -19,16 +19,27 @@
     <!-- style.css -->
     <link href="selection/style.css" rel="stylesheet" type="text/css" />
     <style>
+        html {
+            margin: 0 auto;
+            width: 100vw;
+            height: 100vh;
+        }
+        body {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+        }
         .designer {
-            grid-area: designer;
             position: relative;
             display: block;
             margin: 0;
             padding: 0;
-            height: 100%;
             width: 100%;
+            height: 100%;
+            /*
             border: 1px solid silver;
             border-radius: 2px;
+            */
             overflow: auto;
         }
     </style>
@@ -60,7 +71,9 @@
     <script src="/dist/js/nlib.js"></script>
     <!-- script.js -->
     <script src="selection/script.js"></script>
+    <!--
     <script src="selection/nlib-fabric.js"></script>
+    -->
     <script>
         // setup selection control.
         fabric.Object.prototype.set({
@@ -69,6 +82,31 @@
             cornerColor: '#ff0000',
             cornerStyle: 'circle'
         });
+
+        /* design code */
+        let canvas = new fabric.Canvas('c');
+        let WD = 1280;
+        let HT = 720;
+
+        canvas.setWidth(WD)
+        canvas.setHeight(HT)
+        //canvas.setDimensions({ width: WD, height: HT }, { cssOnly: true });
+        canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
+
+        // handle mouse event.
+        canvas.on('mouse:up', (e) => {
+            //check if user clicked an object
+            if (e.target) {
+                //clicked on object
+                //alert('clicked on object' + e.target);
+                console.log('clicked on object', e.target)
+            }
+            else {
+                console.log('clicked on canvas')
+            }
+        });
+
+        
     </script>
 </body>
 </html>
