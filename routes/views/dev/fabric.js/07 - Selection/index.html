@@ -94,12 +94,26 @@
         canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
 
         // handle mouse event.
+
+        let selectObject;
+        canvas.on('mouse:down', (e) => {
+            if (e.target) {
+                let obj = e.target
+                selectObject = obj
+                //let type = e.target.get('type')                
+                if (obj.isType('rect')) {
+                    console.log('rect mouse down')
+                    obj.fill = '#777'             
+                    //canvas.renderAll()                    
+                }
+            }
+        });
         canvas.on('mouse:up', (e) => {
             //check if user clicked an object
             if (e.target) {
-                //clicked on object
                 //alert('clicked on object' + e.target);
                 let obj = e.target
+                selectObject = obj
                 //let type = e.target.get('type')                
                 let type = obj.type
                 if (type === 'group') {
@@ -111,7 +125,8 @@
             }
             else {
                 console.log('clicked on canvas')
-            }
+                selectObject = null
+            }            
         });
 
         // Add objects and group
