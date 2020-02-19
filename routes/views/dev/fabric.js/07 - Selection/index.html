@@ -99,7 +99,15 @@
             if (e.target) {
                 //clicked on object
                 //alert('clicked on object' + e.target);
-                console.log('clicked on object', e.target)
+                //let type = e.target.get('type')
+                let type = e.target.type
+                console.log('clicked on object', type)
+                if (type === 'group') {
+
+                }
+                else {
+
+                }
             }
             else {
                 console.log('clicked on canvas')
