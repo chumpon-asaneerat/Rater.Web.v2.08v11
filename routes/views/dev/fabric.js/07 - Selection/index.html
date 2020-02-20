@@ -89,6 +89,31 @@
         // at runtime to make animation effect with input state
         // changed.
 
+        // Note 2:
+        // Try to create custom json model to store question/choices
+        // Control:
+        // 1. Question Box:
+        //    - Text
+        //      - Position (left/top/width/height) -> when shape move/resize update model.
+        //      - Font (Family/size/outline/stoke/thickness) -> set via editor.
+        //      - Color -> set via editor.
+        // 2. Choice button:
+        //    - Text
+        //      - Position (left/top/width/height) -> when shape move/resize update model.
+        //      - Font (Family/size/outline/stoke/thickness) -> set via editor.
+        //      - Color -> set via editor.
+        //    - Image
+        //      - Position (left/top/width/height) -> when shape move/resize update model.
+        //      - Url -> set via editor.
+        //    - Style
+        //      - ImageAbove/ImageBelow/ImageLeft/ImageRight -> set via editor.
+        //      - Background color (solid/gradient) -> set via editor.
+        // 3. Static shape
+        //    - Image/Video
+        //      - Position (left/top/width/height) -> when shape move/resize update model.
+        //      - Url -> set via editor.
+        //
+
 
         /* design code */
         let canvas = new fabric.Canvas('c');
