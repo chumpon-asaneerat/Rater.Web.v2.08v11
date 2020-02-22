@@ -38,6 +38,15 @@ const routes = class {
     static getJs(req, res) {
         WebServer.sendFile(req, res, __dirname, 'script.js');
     }
+    static getAssetList(req, res) {
+        let obj = { urls: [] }
+        WebServer.sendJson(req, res, obj)
+    }
+    static getAsset(req, res) {
+        console.log(req)
+        let obj = { urls: [] }
+        WebServer.sendJson(req, rest, obj)
+    }
 }
 
 router.get('/dualcanvas3', routes.home)
