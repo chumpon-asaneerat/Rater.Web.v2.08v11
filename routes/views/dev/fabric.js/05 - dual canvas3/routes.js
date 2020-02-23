@@ -38,6 +38,9 @@ const routes = class {
     static getJs(req, res) {
         WebServer.sendFile(req, res, __dirname, 'script.js');
     }
+    static getFabricJs(req, res) {
+        WebServer.sendFile(req, res, __dirname, 'nlib-fabric.js');
+    }
     static getAssetList(req, res) {
         let obj = { urls: [] }
         WebServer.sendJson(req, res, obj)
@@ -52,7 +55,7 @@ const routes = class {
 router.get('/dualcanvas3', routes.home)
 router.get('/dualcanvas3/style.css', routes.getCss)
 router.get('/dualcanvas3/script.js', routes.getJs)
-router.get('/dualcanvas3/nlib-fabric.js', routes.getJs)
+router.get('/dualcanvas3/nlib-fabric.js', routes.getFabricJs)
 
 const init_routes = (svr) => {
     svr.route('/dev/fabricjs', router);

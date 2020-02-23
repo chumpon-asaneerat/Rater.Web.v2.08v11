@@ -38,12 +38,24 @@ const routes = class {
     static getJs(req, res) {
         WebServer.sendFile(req, res, __dirname, 'script.js');
     }
+    static getFabricJs(req, res) {
+        WebServer.sendFile(req, res, __dirname, 'nlib-fabric.js');
+    }
+    static getAssetList(req, res) {
+        let obj = { urls: [] }
+        WebServer.sendJson(req, res, obj)
+    }
+    static getAsset(req, res) {
+        console.log(req)
+        let obj = { urls: [] }
+        WebServer.sendJson(req, rest, obj)
+    }
 }
 
 router.get('/selection', routes.home)
 router.get('/selection/style.css', routes.getCss)
 router.get('/selection/script.js', routes.getJs)
-//router.get('/dualcanvas3/nlib-fabric.js', routes.getJs)
+router.get('/selection/nlib-fabric.js', routes.getFabricJs)
 
 const init_routes = (svr) => {
     svr.route('/dev/fabricjs', router);
