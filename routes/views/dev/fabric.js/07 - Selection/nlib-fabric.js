@@ -89,6 +89,18 @@ class GIFFrame {
 
 //#endregion
 
+//#region fabric.js canvas management class.
+
+class NCanvas {
+    constructor() {}
+    add() {}
+}
+NCanvas.selection = class {
+
+}
+
+//#endregion
+
 ;(() => {
     console.log('nlib-fabric.js loaded.');
 })();
