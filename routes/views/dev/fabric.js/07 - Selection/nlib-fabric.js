@@ -108,6 +108,7 @@ class NCanvas {
     constructor(el) {
         this.canvas = new fabric.Canvas(el);
         this.options = new NCanvas.options(this);
+        this.selection = new NCanvas.designer(this)
     }
     create(type, options) {
         let idx = shapeTypes.indexOf(type.toLowerCase())
@@ -178,11 +179,15 @@ NCanvas.designer = class {
         this.toolbox = new NCanvas.designer.toolbox(this)
         // create selection manager
         this.selection = new NCanvas.designer.selection(this)
+
+        // init fabric.js canvas events
         this._initEvents()
     }
     _initEvents() {
-        canvas.on('mouse:down', (e) => {})
-        canvas.on('mouse:up', (e) => {})
+        if (this._canvas) {
+            this._canvas.on('mouse:down', (e) => {})
+            this._canvas.on('mouse:up', (e) => {})
+        }
     }
 }
 
@@ -198,6 +203,8 @@ NCanvas.designer.toolbox = class {
             this.canvas = null;
             this._canvas = null;
         }
+        // init properties
+        this.activeTool = null
     }
 }
 
