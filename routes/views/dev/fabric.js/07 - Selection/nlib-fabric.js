@@ -123,6 +123,7 @@ class NCanvas {
 NCanvas.options = class {
     constructor(canvas) {
         this.canvas = canvas;
+        // shortcut to fabric.Canvas
         this._canvas = (canvas) ? canvas.canvas : null
         this.width = 1280
         this.height = 720
@@ -168,6 +169,35 @@ NCanvas.options = class {
     }
 }
 
+NCanvas.designer = class {
+    constructor(canvas) {
+        this.canvas = canvas;
+        // shortcut to fabric.Canvas
+        this._canvas = (canvas) ? canvas.canvas : null
+        this.selection = new NCanvas.designer.selection(this)
+        this._initEvents()
+    }
+    _initEvents() {
+        canvas.on('mouse:down', (e) => {})
+        canvas.on('mouse:up', (e) => {})
+    }
+}
+
+NCanvas.designer.selection = class {
+    constructor(designer) {
+        this.designer = designer;
+        // shortcut to fabric.Canvas
+        if (designer) {
+            this.canvas = designer.canvas
+            this._canvas = designer._canvas
+        }
+        else {
+            this.canvas = null;
+            this._canvas = null;
+        }
+    }
+}
+
 //#endregion
 
 //#region fabric.js custom selection controls (set only once)
@@ -178,7 +208,7 @@ fabric.Object.prototype.set({
     borderColor: '#ff00ff',
     cornerColor: '#ff0000',
     cornerStyle: 'circle',
-    cornerSize: 9,
+    cornerSize: 8,
     borderDashArray: [3, 3]
 });
 
