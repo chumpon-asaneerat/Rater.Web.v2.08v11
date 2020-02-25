@@ -205,30 +205,41 @@ NCanvas.designer = class {
         this.selection = new NCanvas.designer.selection(this)
 
         this._inputState = {
-            mouse_down: { x, y },
-            mouse_up: { x, y }
+            mouse_down: { x: 0, y: 0 },
+            mouse_up: { x: 0, y: 0 }
         }
 
         // init fabric.js canvas events
         this._initEvents()
     }
     _initEvents() {
+        let self = this;
         if (this._canvas) {
             this._canvas.on('mouse:down', (e) => {
-                if (!e.tagget) {
+                if (!e.target) {
                     // no taget object
-                    this._inputState.mouse_down.x = e.pointer.x
-                    this._inputState.mouse_down.y = e.pointer.y
+                    self._inputState.mouse_down.x = e.pointer.x
+                    self._inputState.mouse_down.y = e.pointer.y
                 }
                 else {
 
                 }
             })
             this._canvas.on('mouse:up', (e) => {
-                if (!e.tagget) {
+                if (!e.target) {
                     // no taget object
-                    this._inputState.mouse_up.x = e.pointer.x
-                    this._inputState.mouse_up.y = e.pointer.y
+                    self._inputState.mouse_up.x = e.pointer.x
+                    self._inputState.mouse_up.y = e.pointer.y
+                    let type = self.toolbox.activeTool;
+                    if (type) {
+                        let obj = self.canvas.create(type, {
+                            left: self._inputState.mouse_down.x,
+                            top: self._inputState.mouse_down.y,
+                            width: self._inputState.mouse_up.x - self._inputState.mouse_down.x,
+                            height: self._inputState.mouse_up.y - self._inputState.mouse_down.y,
+                        })
+                        self.canvas.add(obj)
+                    }
                 }
                 else {
                 }
@@ -250,7 +261,7 @@ NCanvas.designer.toolbox = class {
             this._canvas = null;
         }
         // init properties
-        this.activeTool = null
+        this.activeTool = 'rect'
     }
 }
 
