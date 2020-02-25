@@ -92,11 +92,25 @@ class GIFFrame {
 //#region fabric.js canvas management class.
 
 class NCanvas {
-    constructor() {}
+    constructor(el) {
+        this.canvas = new fabric.Canvas(el);
+        this.options = new NCanvas.options(this);
+    }
     add() {}
 }
-NCanvas.selection = class {
-
+NCanvas.options = class {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.width = 1280
+        this.height = 720
+    }
+    apply() {
+        if (this.canvas) {
+            this.canvas.setWidth(this.width)
+            this.canvas.setHeight(this.height)
+            this.canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true })
+        }
+    }
 }
 
 //#endregion
