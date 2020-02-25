@@ -92,14 +92,14 @@ class GIFFrame {
 //#region fabric.js canvas management class.
 
 const shapeConstructors = [
-    { type: 'Circle', create: (options) => { return new fabric.Circle(options) }},
-    { type: 'Ellipse', create: (options) => { return new fabric.Ellipse(options) }},
-    { type: 'Line', create: (options) => { return new fabric.Line(options) }},
-    { type: 'Polygon', create: (options) => { return new fabric.Polygon(options) }},
-    { type: 'Polyline', create: (options) => { return new fabric.Polyline(options) }},
-    { type: 'Rect', create: (options) => { return new fabric.Rect(options) }},
-    { type: 'Triangle', create: (options) => { return new fabric.Triangle(options) }},
-    { type: 'Group', create: (options) => { return new fabric.Group(options) }}
+    { type: 'circle', create: (options) => { return new fabric.Circle(options) }},
+    { type: 'ellipse', create: (options) => { return new fabric.Ellipse(options) }},
+    { type: 'line', create: (options) => { return new fabric.Line(options) }},
+    { type: 'polygon', create: (options) => { return new fabric.Polygon(options) }},
+    { type: 'polyline', create: (options) => { return new fabric.Polyline(options) }},
+    { type: 'rect', create: (options) => { return new fabric.Rect(options) }},
+    { type: 'triangle', create: (options) => { return new fabric.Triangle(options) }},
+    { type: 'group', create: (options) => { return new fabric.Group(options) }}
 ]
 
 const shapeTypes = shapeConstructors.map((ctor) => ctor.type )
@@ -110,26 +110,77 @@ class NCanvas {
         this.options = new NCanvas.options(this);
     }
     create(type, options) {
-        let idx = shapeTypes.indexOf(type)
+        let idx = shapeTypes.indexOf(type.toLowerCase())
         let ctor = (idx !== -1) ? shapeConstructors[idx].create : null
         return (ctor) ? ctor(options) : null;
     }
-    add() {}
+    add(obj) {
+        if (this.canvas) {
+            this.canvas.add(obj)
+        }
+    }
 }
 NCanvas.options = class {
     constructor(canvas) {
         this.canvas = canvas;
+        this._canvas = (canvas) ? canvas.canvas : null
         this.width = 1280
         this.height = 720
+        this.apply()
     }
     apply() {
-        if (this.canvas) {
-            this.canvas.setWidth(this.width)
-            this.canvas.setHeight(this.height)
-            this.canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true })
+        if (this._canvas) {
+            let cv = this._canvas
+            cv.setWidth(this.width)
+            cv.setHeight(this.height)
+            cv.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true })
+        }
+    }
+    get mode() {
+        let ret = 'unknown'
+        if (this._canvas) {
+            let cv = this._canvas
+            ret = (cv.selection) ? 'design' : 'runtime'
+        }
+        return ret
+    }
+    set mode(mode) {
+        if (this._canvas) {
+            let cv = this._canvas
+            if (mode.toLowerCase() === 'design') {
+                cv.selection = true
+                cv.hoverCursor = 'move';
+            }
+            else {
+                cv.selection = false
+                cv.hoverCursor = 'pointer';
+            }
+            let objs = cv.getObjects()
+            objs.forEach((o) => {
+                // apply to all objects
+                o.selectable = cv.selection
+            })
+            // deselection.
+            //cv.discardActiveGroup()
+            cv.discardActiveObject()
+            cv.renderAll()
         }
     }
 }
+
+//#endregion
+
+//#region fabric.js custom selection controls (set only once)
+
+// setup selection control.
+fabric.Object.prototype.set({
+    transparentCorners: false,
+    borderColor: '#ff00ff',
+    cornerColor: '#ff0000',
+    cornerStyle: 'circle',
+    cornerSize: 9,
+    borderDashArray: [3, 3]
+});
 
 //#endregion
 

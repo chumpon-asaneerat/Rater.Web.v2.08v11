@@ -73,145 +73,148 @@
     <script src="selection/script.js"></script>
     <script src="selection/nlib-fabric.js"></script>
     <script>
-        // setup selection control.
-        fabric.Object.prototype.set({
-            transparentCorners: false,
-            borderColor: '#ff00ff',
-            cornerColor: '#ff0000',
-            cornerStyle: 'circle'
-        });
+        // // Note:
+        // // need to recheck to stored some properties in object
+        // // with serialization and in some properties should used
+        // // at runtime to make animation effect with input state
+        // // changed.
 
-        // Note:
-        // need to recheck to stored some properties in object
-        // with serialization and in some properties should used
-        // at runtime to make animation effect with input state
-        // changed.
-
-        // Note 2:
-        // Try to create custom json model to store question/choices
-        // Control:
-        // 1. Question Box:
-        //    - Text
-        //      - Position (left/top/width/height) -> when shape move/resize update model.
-        //      - Font (Family/size/outline/stoke/thickness) -> set via editor.
-        //      - Color -> set via editor.
-        // 2. Choice button:
-        //    - Text
-        //      - Position (left/top/width/height) -> when shape move/resize update model.
-        //      - Font (Family/size/outline/stoke/thickness) -> set via editor.
-        //      - Color -> set via editor.
-        //    - Image
-        //      - Position (left/top/width/height) -> when shape move/resize update model.
-        //      - Url -> set via editor.
-        //    - Style
-        //      - ImageAbove/ImageBelow/ImageLeft/ImageRight -> set via editor.
-        //      - Background color (solid/gradient) -> set via editor.
-        // 3. Static shape
-        //    - Image/Video
-        //      - Position (left/top/width/height) -> when shape move/resize update model.
-        //      - Url -> set via editor.
-        //
+        // // Note 2:
+        // // Try to create custom json model to store question/choices
+        // // Control:
+        // // 1. Question Box:
+        // //    - Text
+        // //      - Position (left/top/width/height) -> when shape move/resize update model.
+        // //      - Font (Family/size/outline/stoke/thickness) -> set via editor.
+        // //      - Color -> set via editor.
+        // // 2. Choice button:
+        // //    - Text
+        // //      - Position (left/top/width/height) -> when shape move/resize update model.
+        // //      - Font (Family/size/outline/stoke/thickness) -> set via editor.
+        // //      - Color -> set via editor.
+        // //    - Image
+        // //      - Position (left/top/width/height) -> when shape move/resize update model.
+        // //      - Url -> set via editor.
+        // //    - Style
+        // //      - ImageAbove/ImageBelow/ImageLeft/ImageRight -> set via editor.
+        // //      - Background color (solid/gradient) -> set via editor.
+        // // 3. Static shape
+        // //    - Image/Video
+        // //      - Position (left/top/width/height) -> when shape move/resize update model.
+        // //      - Url -> set via editor.
+        // //
 
 
-        /* design code */
-        let canvas = new fabric.Canvas('c');
-        let WD = 1280;
-        let HT = 720;
+        // /* design code */
+        // let canvas = new fabric.Canvas('c');
+        // let WD = 1280;
+        // let HT = 720;
 
-        canvas.setWidth(WD)
-        canvas.setHeight(HT)
-        //canvas.setDimensions({ width: WD, height: HT }, { cssOnly: true });
-        canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
+        // canvas.setWidth(WD)
+        // canvas.setHeight(HT)
+        // //canvas.setDimensions({ width: WD, height: HT }, { cssOnly: true });
+        // canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
 
-        // handle mouse event.
+        // // handle mouse event.
 
-        let selectObject;
-        canvas.on('mouse:down', (e) => {
-            if (e.target) {
-                let obj = e.target
-                selectObject = obj
-                //let type = e.target.get('type')                
-                if (obj.isType('rect')) {
-                    console.log('rect mouse down')
-                    obj.fill = '#777'             
-                    //canvas.renderAll()                    
-                }
-            }
-        });
-        canvas.on('mouse:up', (e) => {
-            //check if user clicked an object
-            if (e.target) {
-                //alert('clicked on object' + e.target);
-                let obj = e.target
-                selectObject = obj
-                //let type = e.target.get('type')                
-                let type = obj.type
-                if (type === 'group') {
-                    console.log('clicked on object', type)
-                }
-                else {
-                    console.log('clicked on object', obj)
-                }
-            }
-            else {
-                console.log('clicked on canvas')
-                selectObject = null
-            }            
-        });
+        // let selectObject;
+        // canvas.on('mouse:down', (e) => {
+        //     if (e.target) {
+        //         let obj = e.target
+        //         selectObject = obj
+        //         //let type = e.target.get('type')                
+        //         if (obj.isType('rect')) {
+        //             console.log('rect mouse down')
+        //             obj.fill = '#777'             
+        //             //canvas.renderAll()                    
+        //         }
+        //     }
+        // });
+        // canvas.on('mouse:up', (e) => {
+        //     //check if user clicked an object
+        //     if (e.target) {
+        //         //alert('clicked on object' + e.target);
+        //         let obj = e.target
+        //         selectObject = obj
+        //         //let type = e.target.get('type')                
+        //         let type = obj.type
+        //         if (type === 'group') {
+        //             console.log('clicked on object', type)
+        //         }
+        //         else {
+        //             console.log('clicked on object', obj)
+        //         }
+        //     }
+        //     else {
+        //         console.log('clicked on canvas')
+        //         selectObject = null
+        //     }            
+        // });
 
-        // Add objects and group
-        let tlf = 50, ttp = 50, twd = 100, tht = 30
-        let r1 = new fabric.Rect({
-            left: tlf,
-            top: ttp,
-            width: twd, 
-            height: tht, 
-            fill: 'rgba(192, 192, 192, 0.5)', 
-            strokeWidth: 1,
-            rx: 1.9,
-            ry: 1.9,
-            opacity: 0.7
-        });
-        let shadow1 = { 
-            color: 'rgba(255, 255, 255, 0.9)', 
-            offsetX: -0.5, 
-            offsetY : -0.5,
-            blur: 0.9
-        }
-        r1.setShadow(shadow1);
-        let r2 = new fabric.Rect({
-            left: tlf,
-            top: ttp,
-            width: twd, 
-            height: tht, 
-            fill: 'beige', 
-            strokeWidth: 1,
-            rx: 1.9,
-            ry: 1.9,
-            opacity: 1
-        });
-        let shadow2 = { 
-            color: 'rgba(100, 100, 100, 0.3)', 
-            offsetX: 0.5, 
-            offsetY : 0.5,
-            blur: 0.9
-        }
-        r2.setShadow(shadow2);
-        let group = new fabric.Group([r1, r2]);
-        canvas.add(group); // add object
+        // // Add objects and group
+        // let tlf = 50, ttp = 50, twd = 100, tht = 30
+        // let r1 = new fabric.Rect({
+        //     left: tlf,
+        //     top: ttp,
+        //     width: twd, 
+        //     height: tht, 
+        //     fill: 'rgba(192, 192, 192, 0.5)', 
+        //     strokeWidth: 1,
+        //     rx: 1.9,
+        //     ry: 1.9,
+        //     opacity: 0.7
+        // });
+        // let shadow1 = { 
+        //     color: 'rgba(255, 255, 255, 0.9)', 
+        //     offsetX: -0.5, 
+        //     offsetY : -0.5,
+        //     blur: 0.9
+        // }
+        // r1.setShadow(shadow1);
+        // let r2 = new fabric.Rect({
+        //     left: tlf,
+        //     top: ttp,
+        //     width: twd, 
+        //     height: tht, 
+        //     fill: 'beige', 
+        //     strokeWidth: 1,
+        //     rx: 1.9,
+        //     ry: 1.9,
+        //     opacity: 1
+        // });
+        // let shadow2 = { 
+        //     color: 'rgba(100, 100, 100, 0.3)', 
+        //     offsetX: 0.5, 
+        //     offsetY : 0.5,
+        //     blur: 0.9
+        // }
+        // r2.setShadow(shadow2);
+        // let group = new fabric.Group([r1, r2]);
+        // canvas.add(group); // add object
 
-        // add some rect
-        let rect = new fabric.Rect({
-            left: 100,
-            top: 50,
-            width: 150, 
-            height: 40, 
-            fill: 'beige', 
-            strokeWidth: 1,
-            rx: 1.9,
-            ry: 1.9,
-            opacity: 1
-        });
+        // // add some rect
+        // let rect = new fabric.Rect({
+        //     left: 100,
+        //     top: 50,
+        //     width: 150, 
+        //     height: 40, 
+        //     fill: 'beige', 
+        //     strokeWidth: 1,
+        //     rx: 1.9,
+        //     ry: 1.9,
+        //     opacity: 1
+        // });
+        // canvas.add(rect); // add object
+
+        let canvas = new NCanvas('c')
+        let rect = canvas.create('rect', { 
+            left: 10, 
+            top: 10, 
+            width: 150,
+            height: 70,
+            fill: 'rgba(192, 192, 192, 0.5)' 
+        })
+        console.log(rect)
         canvas.add(rect); // add object
     </script>
 </body>
