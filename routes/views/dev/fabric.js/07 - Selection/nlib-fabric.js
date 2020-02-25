@@ -91,10 +91,28 @@ class GIFFrame {
 
 //#region fabric.js canvas management class.
 
+const shapeConstructors = [
+    { type: 'Circle', create: (options) => { return new fabric.Circle(options) }},
+    { type: 'Ellipse', create: (options) => { return new fabric.Ellipse(options) }},
+    { type: 'Line', create: (options) => { return new fabric.Line(options) }},
+    { type: 'Polygon', create: (options) => { return new fabric.Polygon(options) }},
+    { type: 'Polyline', create: (options) => { return new fabric.Polyline(options) }},
+    { type: 'Rect', create: (options) => { return new fabric.Rect(options) }},
+    { type: 'Triangle', create: (options) => { return new fabric.Triangle(options) }},
+    { type: 'Group', create: (options) => { return new fabric.Group(options) }}
+]
+
+const shapeTypes = shapeConstructors.map((ctor) => ctor.type )
+
 class NCanvas {
     constructor(el) {
         this.canvas = new fabric.Canvas(el);
         this.options = new NCanvas.options(this);
+    }
+    create(type, options) {
+        let idx = shapeTypes.indexOf(type)
+        let ctor = (idx !== -1) ? shapeConstructors[idx].create : null
+        return (ctor) ? ctor(options) : null;
     }
     add() {}
 }
