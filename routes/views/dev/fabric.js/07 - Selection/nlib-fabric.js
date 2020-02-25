@@ -92,14 +92,38 @@ class GIFFrame {
 //#region fabric.js canvas management class.
 
 const shapeConstructors = [
-    { type: 'circle', create: (options) => { return new fabric.Circle(options) }},
-    { type: 'ellipse', create: (options) => { return new fabric.Ellipse(options) }},
-    { type: 'line', create: (options) => { return new fabric.Line(options) }},
-    { type: 'polygon', create: (options) => { return new fabric.Polygon(options) }},
-    { type: 'polyline', create: (options) => { return new fabric.Polyline(options) }},
-    { type: 'rect', create: (options) => { return new fabric.Rect(options) }},
-    { type: 'triangle', create: (options) => { return new fabric.Triangle(options) }},
-    { type: 'group', create: (options) => { return new fabric.Group(options) }}
+    { 
+        type: 'circle', 
+        create: (options) => { return new fabric.Circle(options) }
+    },
+    { 
+        type: 'ellipse', 
+        create: (options) => { return new fabric.Ellipse(options) }
+    },
+    { 
+        type: 'line', 
+        create: (options) => { return new fabric.Line(options) }
+    },
+    { 
+        type: 'polygon', 
+        create: (options) => { return new fabric.Polygon(options) }
+    },
+    { 
+        type: 'polyline', 
+        create: (options) => { return new fabric.Polyline(options) }
+    },
+    { 
+        type: 'rect', 
+        create: (options) => { return new fabric.Rect(options) }
+    },
+    { 
+        type: 'triangle', 
+        create: (options) => { return new fabric.Triangle(options) }
+    },
+    { 
+        type: 'group', 
+        create: (options) => { return new fabric.Group(options) }
+    }
 ]
 
 const shapeTypes = shapeConstructors.map((ctor) => ctor.type )
@@ -180,13 +204,35 @@ NCanvas.designer = class {
         // create selection manager
         this.selection = new NCanvas.designer.selection(this)
 
+        this._inputState = {
+            mouse_down: { x, y },
+            mouse_up: { x, y }
+        }
+
         // init fabric.js canvas events
         this._initEvents()
     }
     _initEvents() {
         if (this._canvas) {
-            this._canvas.on('mouse:down', (e) => {})
-            this._canvas.on('mouse:up', (e) => {})
+            this._canvas.on('mouse:down', (e) => {
+                if (!e.tagget) {
+                    // no taget object
+                    this._inputState.mouse_down.x = e.pointer.x
+                    this._inputState.mouse_down.y = e.pointer.y
+                }
+                else {
+
+                }
+            })
+            this._canvas.on('mouse:up', (e) => {
+                if (!e.tagget) {
+                    // no taget object
+                    this._inputState.mouse_up.x = e.pointer.x
+                    this._inputState.mouse_up.y = e.pointer.y
+                }
+                else {
+                }
+            })
         }
     }
 }
