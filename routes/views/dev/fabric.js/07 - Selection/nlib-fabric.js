@@ -174,12 +174,30 @@ NCanvas.designer = class {
         this.canvas = canvas;
         // shortcut to fabric.Canvas
         this._canvas = (canvas) ? canvas.canvas : null
+        // create toolbox
+        this.toolbox = new NCanvas.designer.toolbox(this)
+        // create selection manager
         this.selection = new NCanvas.designer.selection(this)
         this._initEvents()
     }
     _initEvents() {
         canvas.on('mouse:down', (e) => {})
         canvas.on('mouse:up', (e) => {})
+    }
+}
+
+NCanvas.designer.toolbox = class {
+    constructor(designer) {
+        this.designer = designer;
+        // shortcut to fabric.Canvas
+        if (designer) {
+            this.canvas = designer.canvas
+            this._canvas = designer._canvas
+        }
+        else {
+            this.canvas = null;
+            this._canvas = null;
+        }
     }
 }
 
