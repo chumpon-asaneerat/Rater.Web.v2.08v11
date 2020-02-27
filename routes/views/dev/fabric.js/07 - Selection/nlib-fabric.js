@@ -223,8 +223,10 @@ NCanvas.designer = class {
     _initMouseEvents() {
         let self = this
         if (this._canvas) {
+            this._canvas.on('mouse:down:before', (e) => { self.__onMouseDown(e) })
             this._canvas.on('mouse:down', (e) => { self.__onMouseDown(e) })
             this._canvas.on('mouse:move', (e) => { self.__onMouseMove(e) })
+            this._canvas.on('mouse:up:before', (e) => { self.__onMouseUp(e) })
             this._canvas.on('mouse:up', (e) => { self.__onMouseUp(e) })
         }
     }
@@ -232,6 +234,8 @@ NCanvas.designer = class {
         let self = this
         if (this._canvas) {
             this._canvas.on('object:moved', (e) => { self.__onObjMoved(e) })
+            this._canvas.on('object:scaling', (e) => { self.__onObjMoved(e) })
+            this._canvas.on('object:scaled', (e) => { self.__onObjMoved(e) })
         }
     }
     __onMouseDown(e) {
