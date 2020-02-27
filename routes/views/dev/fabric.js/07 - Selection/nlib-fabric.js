@@ -129,7 +129,9 @@ const shapeConstructors = [
 const shapeTypes = shapeConstructors.map((ctor) => ctor.type )
 
 class NCanvas {
-    constructor(el) {
+    constructor(id_selector) {
+        let el = document.getElementById(id_selector)
+        this.parentElement = (el) ? el.parentElement : null
         this.canvas = new fabric.Canvas(el);
         this.options = new NCanvas.options(this);
         this.selection = new NCanvas.designer(this)
@@ -160,6 +162,7 @@ NCanvas.options = class {
             cv.setWidth(this.width)
             cv.setHeight(this.height)
             cv.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true })
+            //cv.setDimensions({ width: this.width + 'px', height: this.height + 'px' }, { cssOnly: true })
         }
     }
     get mode() {
@@ -213,41 +216,102 @@ NCanvas.designer = class {
         this._initEvents()
     }
     _initEvents() {
-        let self = this;
+        let self = this
         if (this._canvas) {
-            this._canvas.on('mouse:down', (e) => {
-                if (!e.target) {
-                    // no taget object
-                    self._inputState.mouse_down.x = e.pointer.x
-                    self._inputState.mouse_down.y = e.pointer.y
-                }
-                else {
-
-                }
-            })
-            this._canvas.on('mouse:up', (e) => {
-                if (!e.target) {
-                    // no taget object
-                    self._inputState.mouse_up.x = e.pointer.x
-                    self._inputState.mouse_up.y = e.pointer.y
-                    /*
-                    let type = self.toolbox.activeTool;
-                    if (type) {
-                        let obj = self.canvas.create(type, {
-                            left: self._inputState.mouse_down.x,
-                            top: self._inputState.mouse_down.y,
-                            width: self._inputState.mouse_up.x - self._inputState.mouse_down.x,
-                            height: self._inputState.mouse_up.y - self._inputState.mouse_down.y,
-                        })
-                        self.canvas.add(obj)
-                    }
-                    */
-                }
-                else {
-                }
-            })
+            this._canvas.on('mouse:down', (e) => { self.__onMouseDown(e) })
+            this._canvas.on('mouse:move', (e) => { self.__onMouseMove(e) })
+            this._canvas.on('mouse:up', (e) => { self.__onMouseUp(e) })
         }
     }
+    __onMouseDown(e) {
+        let self = this
+        if (!e.target) {
+            // no taget object
+            this._inputState.mouse_down.x = e.pointer.x
+            this._inputState.mouse_down.y = e.pointer.y
+        }
+        else {
+
+        }
+    }
+    __onMouseMove(e) {
+        let self = this
+        if (!e.target) {
+            // no taget object
+            this.hideEditor()
+        }
+        else {
+            let obj = self._canvas.getActiveObject()
+            if (obj) {
+                this.showEditor(obj)
+            }
+        }
+    }
+    __onMouseUp(e) {
+        let self = this
+        if (!e.target) {
+            // no taget object
+            this._inputState.mouse_up.x = e.pointer.x
+            this._inputState.mouse_up.y = e.pointer.y
+            //el.style.left = 
+            //el.style.top = 
+            /*
+            let type = self.toolbox.activeTool;
+            if (type) {
+                let obj = self.canvas.create(type, {
+                    left: self._inputState.mouse_down.x,
+                    top: self._inputState.mouse_down.y,
+                    width: self._inputState.mouse_up.x - self._inputState.mouse_down.x,
+                    height: self._inputState.mouse_up.y - self._inputState.mouse_down.y,
+                })
+                self.canvas.add(obj)
+            }
+            */
+        }
+        else {
+        }
+    }
+    showEditor(object) {
+        let el = document.getElementById('context1')
+        let domRect = el.getBoundingClientRect()
+        //console.log(e.target)
+        let abs = this.__getAbsoluteCoords(object)
+        el.style.left = abs.left + 'px'
+        el.style.top = (abs.top - domRect.height - 5) + 'px'
+        if (!el.classList.contains('show')) {
+            el.classList.add('show')
+        }
+    }
+    hideEditor() {
+        let el = document.getElementById('context1')
+        el.classList.remove('show')
+    }
+    __getAbsoluteCoords(object) {
+        let cv = this._canvas
+        let dsgn = this.canvas.parentElement
+        let dsgnRect = dsgn.getBoundingClientRect()
+        //console.log('design rect:', dsgnRect)
+        let opts = this.canvas.options
+        let scaleX = dsgnRect.width / opts.width
+        let scaleY = dsgnRect.height / opts.height
+        //console.log('scale:', scaleX, scaleY)
+    
+        let canvasZoom = cv.getZoom();
+        //console.log('zoom:', canvasZoom)
+        let offset = cv.calcOffset();
+        let ret = { left: 0, top: 0, width: 0, height: 0 }
+        if (object) {
+            // Get dimensions of object
+            let rect = object.getBoundingRect();
+            //console.log('aCoords:', object.aCoords.tl)
+            // Do the math - offset is from $(body)
+            ret.left = (offset._offset.left + rect.left) * scaleX
+            ret.top = (offset._offset.top + rect.top) * scaleY
+            ret.width = rect.width
+            ret.height = rect.height
+        }
+        return ret
+        }
 }
 
 NCanvas.designer.toolbox = class {
@@ -295,6 +359,8 @@ fabric.Object.prototype.set({
     cornerSize: 8,
     borderDashArray: [3, 3]
 });
+
+//fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
 /*
 
