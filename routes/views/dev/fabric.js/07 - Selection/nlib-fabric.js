@@ -230,6 +230,7 @@ NCanvas.designer = class {
                     // no taget object
                     self._inputState.mouse_up.x = e.pointer.x
                     self._inputState.mouse_up.y = e.pointer.y
+                    /*
                     let type = self.toolbox.activeTool;
                     if (type) {
                         let obj = self.canvas.create(type, {
@@ -240,6 +241,7 @@ NCanvas.designer = class {
                         })
                         self.canvas.add(obj)
                     }
+                    */
                 }
                 else {
                 }

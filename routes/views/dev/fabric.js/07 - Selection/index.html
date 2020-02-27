@@ -42,13 +42,86 @@
             */
             overflow: auto;
         }
+        .context-tool-menu {
+            display: inline-block;
+            /*
+            display: none;
+            */
+            position: absolute;
+            margin: 0;
+            padding: 0;
+            left: 0px;
+            top: 0px;
+            border: 1px solid black;
+        }
+        .context-tool-menu .item {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .context-tool-menu .item span {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .iconify {
+            vertical-align: baseline !important;
+            width: 24px;
+            height: 24px;
+        }
+        /*
+        .context-tool-menu .item .iconify {
+            display: block;
+            position: absolute;
+            margin: 0 auto;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+        }
+        */
+        /*
+        .context-tool-menu .item span {
+            margin: 0 auto;
+        }        
+        .context-tool-menu.show {
+            display: inline-block;
+        }
+        .iconify {
+            margin: 0;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        */
+        .context-tool-menu .item:hover {
+            background-color: royalblue;
+        }
     </style>
 </head>
 <body>
     <div class="designer">
         <canvas id="c"></canvas>
     </div>
+    <div class="context-tool-menu">
+        <div class="item">
+            <span class="far fa-object-group"></span>
+        </div>
+        <div class="item">
+            <span class="far fa-object-ungroup"></span>
+        </div>
+        <!-- Fontawesome PRO Only need replacement -->
+        <!--
+        <span class="fas fa-bring-to-font"></span>
+        <span class="fas fa-send-back"></span>
+        -->
+        <div class="item">
+            <span class="iconify" data-icon="mdi:arrange-bring-to-front" data-inline="true"></span>
+        </div>
+        <div class="item">
+            <span class="iconify" data-icon="mdi:arrange-send-to-back" data-inline="true"></span>
+        </div>
+    </div>
 
+    <script src="/dist/js/iconify.min.js"></script>
     <!-- JQuery -->
     <script src="/dist/js/jquery.min.js"></script>
     <!-- JQuery UI -->
