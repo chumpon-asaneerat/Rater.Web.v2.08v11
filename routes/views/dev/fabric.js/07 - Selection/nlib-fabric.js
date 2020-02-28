@@ -81,6 +81,13 @@ class GIFFrame {
 
 //#endregion
 
+
+// - add route to get assets (url/type).
+// - add route to load each asset.
+// - add asset manager class to cache url and data with supports progress bar.
+
+
+
 //#region fabric.js object subclasses.
 
 // Button
