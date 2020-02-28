@@ -85,8 +85,12 @@ class GIFFrame {
 // - add route to get assets (url/type).
 // - add route to load each asset.
 // - add asset manager class to cache url and data with supports progress bar.
-
-
+// - check device routes
+//   - main menu
+//   - device register
+//   - device org setup
+//   - user login
+//   - question main screen
 
 //#region fabric.js object subclasses.
 
