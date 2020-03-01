@@ -62,6 +62,7 @@ Project:
         ☐ Test for question set model (multiple slides) in fabric.js.
         ✔ Supports auto update preview canvas list. @done(20-02-19 14:36)
         ☐ Add multilanguage Text control (extend properties required).
+        ☐ Group/ungroup selection.
     riot.js:
         Layout:
             ✔ napp tag rewrite. @done(19-12-12 09:39)
