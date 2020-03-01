@@ -63,6 +63,7 @@ Project:
         ✔ Supports auto update preview canvas list. @done(20-02-19 14:36)
         ☐ Add multilanguage Text control (extend properties required).
         ☐ Group/ungroup selection.
+        ☐ Background image.
     riot.js:
         Layout:
             ✔ napp tag rewrite. @done(19-12-12 09:39)
