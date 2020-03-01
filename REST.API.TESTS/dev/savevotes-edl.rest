@@ -1,0 +1,11 @@
+### Save vote (random generate)
+POST http://localhost:3000/dev/api/votes/save
+content-type: application/json
+
+{
+    "customerId": "EDL-C2020030001",
+    "qSetId": "QS00004",
+    "beginDate": "2020-01-01",
+    "endDate": "2020-05-31",
+    "sampleSize": 3000
+}
