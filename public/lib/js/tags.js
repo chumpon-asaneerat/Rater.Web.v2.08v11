@@ -4088,32 +4088,32 @@ riot.tag2('report-admin-home', '<div class="report-home-main"> <div class="repor
         });
 
         this.showpiesummary = () => {
-            let url = 'http://localhost:3000/customer/admin/report/pie-votesummary';
+            let url = '/customer/admin/report/pie-votesummary';
             secure.nav(url)
 
         }
         this.showbarsummary = () => {
-            let url = 'http://localhost:3000/customer/admin/report/bar-votesummary';
+            let url = '/customer/admin/report/bar-votesummary';
             secure.nav(url)
 
         }
         this.showvotesummary = () => {
-            let url = 'http://localhost:3000/customer/admin/report/votesummary';
+            let url = '/customer/admin/report/votesummary';
             secure.nav(url)
 
         }
         this.showrawvote = () => {
-            let url = 'http://localhost:3000/customer/admin/report/raw-vote';
+            let url = '/customer/admin/report/raw-vote';
             secure.nav(url)
 
         }
         this.showstaffcompare = () => {
-            let url = 'http://localhost:3000/customer/admin/report/staff-compare';
+            let url = '/customer/admin/report/staff-compare';
             secure.nav(url)
 
         }
         this.showstaffperf = () => {
-            let url = 'http://localhost:3000/customer/admin/report/staff-perf';
+            let url = '/customer/admin/report/staff-perf';
             secure.nav(url)
 
         }
