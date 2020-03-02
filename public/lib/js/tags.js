@@ -2215,11 +2215,34 @@ riot.tag2('admin-home', '<div class="client-area"> <div class="info-panel"> <div
             });
         }
 });
-riot.tag2('exclusive-home', '<h3>{content.title}</h3>', 'exclusive-home,[data-is="exclusive-home"]{ margin: 0; padding: 0; width: 100%; height: 100%; }', '', function(opts) {
+riot.tag2('exclusive-home', '<div class="client-area"> <div class="info-panel"> <div class="info-box"> <div class="info-data"> <div class="info-data-value">3.82</div> </div> <div class="info-caption"> <div class="info-caption-icon"> <span class="fas fa-calendar"></span> </div> <div class="info-caption-text"> Average </div> </div> </div> <div class="info-box"> <div class="info-data"> <div class="info-data-value">87%</div> </div> <div class="info-caption"> <div class="info-caption-icon"> <span class="fas fa-calendar"></span> </div> <div class="info-caption-text"> Average % </div> </div> </div> <div class="info-box"> <div class="info-data"> <div class="info-data-value">200 K+</div> </div> <div class="info-caption"> <div class="info-caption-icon"> <span class="fas fa-calendar"></span> </div> <div class="info-caption-text"> Total Votes </div> </div> </div> <div class="info-box"> <div class="info-data"> <div class="info-data-value">30</div> </div> <div class="info-caption"> <div class="info-caption-icon"> <span class="fas fa-calendar"></span> </div> <div class="info-caption-text"> Wait list </div> </div> </div> </div> <div class="chart-panel"> <div class="bar-chart"> <div class="chart-box" ref="bar1"></div> </div> <div class="pie-chart"> <div class="chart-box" ref="pie1"></div> </div> </div> </div>', 'exclusive-home,[data-is="exclusive-home"]{ display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'client-area\'; margin: 0 auto; padding: 0; width: 100%; height: 100%; } exclusive-home>.client-area,[data-is="exclusive-home"]>.client-area{ grid-area: client-area; display: grid; grid-auto-flow: row; grid-auto-rows: max-content; grid-gap: 10px; margin: 0; padding: 5px; width: 100%; height: 100%; border: 1px dotted navy; overflow: auto; } exclusive-home>.client-area .chart-panel,[data-is="exclusive-home"]>.client-area .chart-panel{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); grid-gap: 10px; grid-auto-rows: minmax(200px, max-content); margin: 0; padding: 5px; width: 100%; height: auto; } exclusive-home>.client-area .bar-chart,[data-is="exclusive-home"]>.client-area .bar-chart{ position: relative; display: block; margin: 0; padding: 5px; width: 100%; height: 100%; background: whitesmoke; border: 1px dotted orchid; border-radius: 5px; box-shadow: 5px 5px 8px -3px rgba(0, 0, 0, 0.4); } exclusive-home>.client-area .bar-chart .chart-box,[data-is="exclusive-home"]>.client-area .bar-chart .chart-box{ display: block; position: absolute; margin: 0; padding: 5px; width: 100%; height: 100%; min-width: 100px; } exclusive-home .bar-chart .chart-box .highcharts-background,[data-is="exclusive-home"] .bar-chart .chart-box .highcharts-background{ fill: rgba(250, 250, 250, .1); } exclusive-home>.client-area .pie-chart,[data-is="exclusive-home"]>.client-area .pie-chart{ position: relative; display: block; margin: 0; padding: 5px; width: 100%; height: 100%; background: whitesmoke; border: 1px dotted skyblue; border-radius: 5px; box-shadow: 5px 5px 8px -3px rgba(0, 0, 0, 0.4); } exclusive-home>.client-area .pie-chart .chart-box,[data-is="exclusive-home"]>.client-area .pie-chart .chart-box{ display: block; margin: 0 auto; padding: 5px; width: 100%; height: 100%; } exclusive-home>.client-area .pie-chart .chart-box .highcharts-background,[data-is="exclusive-home"]>.client-area .pie-chart .chart-box .highcharts-background{ fill: rgba(250, 250, 250, .1); } exclusive-home>.client-area .info-panel,[data-is="exclusive-home"]>.client-area .info-panel{ display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); grid-gap: 10px; grid-auto-rows: max-content; margin: 0; padding: 5px; width: 100%; height: auto; } exclusive-home>.client-area .info-box,[data-is="exclusive-home"]>.client-area .info-box{ display: inline-block; margin: 0; padding: 5px; height: fit-content; font-size: 1rem; background: wheat; border: 1px dotted chocolate; border-radius: 5px; box-shadow: 5px 5px 8px -3px rgba(0, 0, 0, 0.4); } @media only screen and (min-width: 400px) { exclusive-home>.client-area .info-box,[data-is="exclusive-home"]>.client-area .info-box{ background: olive; } } @media only screen and (min-width: 600px) { exclusive-home>.client-area .info-box,[data-is="exclusive-home"]>.client-area .info-box{ background: hotpink; } } @media only screen and (min-width: 800px) { exclusive-home>.client-area .info-box,[data-is="exclusive-home"]>.client-area .info-box{ background: fuchsia; } } @media only screen and (min-width: 1000px) { exclusive-home>.client-area .info-box,[data-is="exclusive-home"]>.client-area .info-box{ background: grey; } } exclusive-home>.client-area .info-box .info-data-value,[data-is="exclusive-home"]>.client-area .info-box .info-data-value{ display: inline-block; margin: 0 auto; padding: 0; width: 100%; height: auto; font-size: 2.5em; font-weight: bold; text-align: center; } exclusive-home>.client-area .info-box .info-caption,[data-is="exclusive-home"]>.client-area .info-box .info-caption{ display: inline-block; margin: 0 auto; padding: 0; width: 100%; height: auto; text-align: center; } exclusive-home>.client-area .info-box .info-caption-icon,[data-is="exclusive-home"]>.client-area .info-box .info-caption-icon{ display: inline-block; margin: 0; padding: 0; height: auto; font-size: 0.7em; font-weight: normal; } exclusive-home>.client-area .info-box .info-caption-text,[data-is="exclusive-home"]>.client-area .info-box .info-caption-text{ display: inline-block; margin: 0; padding: 0; height: auto; font-size: 0.7em; font-weight: normal; }', '', function(opts) {
 
 
         let self = this;
         let screenId = 'exclusive-home';
+
+        let data1 = [
+            { name: 'EDL', y: 3.5 },
+            { name: 'Sale', y: 3.8 },
+            { name: 'Engineer', y: 3.2 },
+            { name: 'Supports', y: 2.9 },
+            { name: 'Finance', y: 3.7 }
+        ];
+        let xlabels = [
+            'EDL',
+            'Sale',
+            'Engineer',
+            'Supports',
+            'Finance'
+        ];
+
+        let chartTitle = 'EDL';
+        let data2 = [
+            { name: 'Excellent', y: 30 },
+            { name: 'Good', y: 21 },
+            { name: 'Fair', y: 24 },
+            { name: 'Poor', y: 15 }
+        ];
 
         let defaultContent = {
             title: 'Exclusive Home Page.'
@@ -2231,12 +2254,23 @@ riot.tag2('exclusive-home', '<h3>{content.title}</h3>', 'exclusive-home,[data-is
             if (screenId === scrId) {
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
+
+                updateBar()
+                updatePie()
+
                 self.update();
             }
         }
 
-        let initCtrls = () => {}
-        let freeCtrls = () => {}
+        let bar1, pie1;
+        let initCtrls = () => {
+            bar1 = self.refs['bar1']
+            pie1 = self.refs['pie1']
+        }
+        let freeCtrls = () => {
+            pie1 = null
+            bar1 = null
+        }
 
         let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
         let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
@@ -2275,13 +2309,115 @@ riot.tag2('exclusive-home', '<h3>{content.title}</h3>', 'exclusive-home,[data-is
             }
         }
 
+        let updateBar = () => {
+            Highcharts.chart(bar1, {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Vote Summary Bar graph'
+                },
+                subtitle: {
+
+                },
+                xAxis: {
+
+                    categories: xlabels
+                },
+                yAxis: {
+                    title: { text: 'Average' }
+                },
+                legend: { enabled: false },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.2f}'
+                        }
+                    }
+                },
+                tooltip: {
+
+                    headerFormat: '',
+
+                    pointFormat: '<span>{point.name}</span>: <b>{point.y:.2f}</b><br/>'
+                },
+                series: [{
+                    name: "Organization",
+                    colorByPoint: true,
+                    data: data1
+                }]
+            });
+        }
+
+        let updatePie = () => {
+            Highcharts.chart(pie1, {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: chartTitle
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.percentage:.2f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: false,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.2f} %'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Choice',
+                    colorByPoint: true,
+                    data: data2
+                }]
+            });
+        }
 });
 
-riot.tag2('staff-home', '<h3>{content.title}</h3>', 'staff-home,[data-is="staff-home"]{ margin: 0; padding: 0; width: 100%; height: 100%; }', '', function(opts) {
+riot.tag2('staff-home', '<div class="client-area"> <div class="info-panel"> <div class="info-box"> <div class="info-data"> <div class="info-data-value">3.82</div> </div> <div class="info-caption"> <div class="info-caption-icon"> <span class="fas fa-calendar"></span> </div> <div class="info-caption-text"> Average </div> </div> </div> <div class="info-box"> <div class="info-data"> <div class="info-data-value">87%</div> </div> <div class="info-caption"> <div class="info-caption-icon"> <span class="fas fa-calendar"></span> </div> <div class="info-caption-text"> Average % </div> </div> </div> <div class="info-box"> <div class="info-data"> <div class="info-data-value">200 K+</div> </div> <div class="info-caption"> <div class="info-caption-icon"> <span class="fas fa-calendar"></span> </div> <div class="info-caption-text"> Total Votes </div> </div> </div> <div class="info-box"> <div class="info-data"> <div class="info-data-value">30</div> </div> <div class="info-caption"> <div class="info-caption-icon"> <span class="fas fa-calendar"></span> </div> <div class="info-caption-text"> Wait list </div> </div> </div> </div> <div class="chart-panel"> <div class="bar-chart"> <div class="chart-box" ref="bar1"></div> </div> <div class="pie-chart"> <div class="chart-box" ref="pie1"></div> </div> </div> </div>', 'staff-home,[data-is="staff-home"]{ display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'client-area\'; margin: 0 auto; padding: 0; width: 100%; height: 100%; } staff-home>.client-area,[data-is="staff-home"]>.client-area{ grid-area: client-area; display: grid; grid-auto-flow: row; grid-auto-rows: max-content; grid-gap: 10px; margin: 0; padding: 5px; width: 100%; height: 100%; border: 1px dotted navy; overflow: auto; } staff-home>.client-area .chart-panel,[data-is="staff-home"]>.client-area .chart-panel{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); grid-gap: 10px; grid-auto-rows: minmax(200px, max-content); margin: 0; padding: 5px; width: 100%; height: auto; } staff-home>.client-area .bar-chart,[data-is="staff-home"]>.client-area .bar-chart{ position: relative; display: block; margin: 0; padding: 5px; width: 100%; height: 100%; background: whitesmoke; border: 1px dotted orchid; border-radius: 5px; box-shadow: 5px 5px 8px -3px rgba(0, 0, 0, 0.4); } staff-home>.client-area .bar-chart .chart-box,[data-is="staff-home"]>.client-area .bar-chart .chart-box{ display: block; position: absolute; margin: 0; padding: 5px; width: 100%; height: 100%; min-width: 100px; } staff-home .bar-chart .chart-box .highcharts-background,[data-is="staff-home"] .bar-chart .chart-box .highcharts-background{ fill: rgba(250, 250, 250, .1); } staff-home>.client-area .pie-chart,[data-is="staff-home"]>.client-area .pie-chart{ position: relative; display: block; margin: 0; padding: 5px; width: 100%; height: 100%; background: whitesmoke; border: 1px dotted skyblue; border-radius: 5px; box-shadow: 5px 5px 8px -3px rgba(0, 0, 0, 0.4); } staff-home>.client-area .pie-chart .chart-box,[data-is="staff-home"]>.client-area .pie-chart .chart-box{ display: block; margin: 0 auto; padding: 5px; width: 100%; height: 100%; } staff-home>.client-area .pie-chart .chart-box .highcharts-background,[data-is="staff-home"]>.client-area .pie-chart .chart-box .highcharts-background{ fill: rgba(250, 250, 250, .1); } staff-home>.client-area .info-panel,[data-is="staff-home"]>.client-area .info-panel{ display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); grid-gap: 10px; grid-auto-rows: max-content; margin: 0; padding: 5px; width: 100%; height: auto; } staff-home>.client-area .info-box,[data-is="staff-home"]>.client-area .info-box{ display: inline-block; margin: 0; padding: 5px; height: fit-content; font-size: 1rem; background: wheat; border: 1px dotted chocolate; border-radius: 5px; box-shadow: 5px 5px 8px -3px rgba(0, 0, 0, 0.4); } @media only screen and (min-width: 400px) { staff-home>.client-area .info-box,[data-is="staff-home"]>.client-area .info-box{ background: olive; } } @media only screen and (min-width: 600px) { staff-home>.client-area .info-box,[data-is="staff-home"]>.client-area .info-box{ background: hotpink; } } @media only screen and (min-width: 800px) { staff-home>.client-area .info-box,[data-is="staff-home"]>.client-area .info-box{ background: fuchsia; } } @media only screen and (min-width: 1000px) { staff-home>.client-area .info-box,[data-is="staff-home"]>.client-area .info-box{ background: grey; } } staff-home>.client-area .info-box .info-data-value,[data-is="staff-home"]>.client-area .info-box .info-data-value{ display: inline-block; margin: 0 auto; padding: 0; width: 100%; height: auto; font-size: 2.5em; font-weight: bold; text-align: center; } staff-home>.client-area .info-box .info-caption,[data-is="staff-home"]>.client-area .info-box .info-caption{ display: inline-block; margin: 0 auto; padding: 0; width: 100%; height: auto; text-align: center; } staff-home>.client-area .info-box .info-caption-icon,[data-is="staff-home"]>.client-area .info-box .info-caption-icon{ display: inline-block; margin: 0; padding: 0; height: auto; font-size: 0.7em; font-weight: normal; } staff-home>.client-area .info-box .info-caption-text,[data-is="staff-home"]>.client-area .info-box .info-caption-text{ display: inline-block; margin: 0; padding: 0; height: auto; font-size: 0.7em; font-weight: normal; }', '', function(opts) {
 
 
         let self = this;
         let screenId = 'staff-home';
+
+        let data1 = [
+            { name: 'EDL', y: 3.5 },
+            { name: 'Sale', y: 3.8 },
+            { name: 'Engineer', y: 3.2 },
+            { name: 'Supports', y: 2.9 },
+            { name: 'Finance', y: 3.7 }
+        ];
+        let xlabels = [
+            'EDL',
+            'Sale',
+            'Engineer',
+            'Supports',
+            'Finance'
+        ];
+
+        let chartTitle = 'EDL';
+        let data2 = [
+            { name: 'Excellent', y: 30 },
+            { name: 'Good', y: 21 },
+            { name: 'Fair', y: 24 },
+            { name: 'Poor', y: 15 }
+        ];
 
         let defaultContent = {
             title: 'Staff Home Page.'
@@ -2293,12 +2429,23 @@ riot.tag2('staff-home', '<h3>{content.title}</h3>', 'staff-home,[data-is="staff-
             if (screenId === scrId) {
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
+
+                updateBar()
+                updatePie()
+
                 self.update();
             }
         }
 
-        let initCtrls = () => {}
-        let freeCtrls = () => {}
+        let bar1, pie1;
+        let initCtrls = () => {
+            bar1 = self.refs['bar1']
+            pie1 = self.refs['pie1']
+        }
+        let freeCtrls = () => {
+            pie1 = null
+            bar1 = null
+        }
 
         let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
         let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
@@ -2337,6 +2484,85 @@ riot.tag2('staff-home', '<h3>{content.title}</h3>', 'staff-home,[data-is="staff-
             }
         }
 
+        let updateBar = () => {
+            Highcharts.chart(bar1, {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Vote Summary Bar graph'
+                },
+                subtitle: {
+
+                },
+                xAxis: {
+
+                    categories: xlabels
+                },
+                yAxis: {
+                    title: { text: 'Average' }
+                },
+                legend: { enabled: false },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.2f}'
+                        }
+                    }
+                },
+                tooltip: {
+
+                    headerFormat: '',
+
+                    pointFormat: '<span>{point.name}</span>: <b>{point.y:.2f}</b><br/>'
+                },
+                series: [{
+                    name: "Organization",
+                    colorByPoint: true,
+                    data: data1
+                }]
+            });
+        }
+
+        let updatePie = () => {
+            Highcharts.chart(pie1, {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: chartTitle
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.percentage:.2f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: false,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.2f} %'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Choice',
+                    colorByPoint: true,
+                    data: data2
+                }]
+            });
+        }
 });
 riot.tag2('member-editor', '<div class="entry"> <tabcontrol class="tabs" content="{opts.content}"> <tabheaders content="{opts.content}"> <tabheader for="default" content="{opts.content}"> <span class="fas fa-cog"></span> {opts.content.entry.tabDefault} </tabheader> <tabheader for="miltilang" content="{opts.content}"> <span class="fas fa-globe-americas"></span> {opts.content.entry.tabMultiLang} </tabheader> </tabheaders> <tabpages> <tabpage name="default"> <member-entry ref="EN" langid=""></member-entry> </tabpage> <tabpage name="miltilang"> <virtual if="{lang.languages}"> <virtual each="{item in lang.languages}"> <virtual if="{item.langId !==\'EN\'}"> <div class="panel-header" langid="{item.langId}"> &nbsp;&nbsp; <span class="flag-css flag-icon flag-icon-{item.flagId.toLowerCase()}"></span> &nbsp;{item.Description}&nbsp; </div> <div class="panel-body" langid="{item.langId}"> <member-entry ref="{item.langId}" langid="{item.langId}"></member-entry> </div> </virtual> </virtual> </virtual> </tabpage> </tabpages> </tabcontrol> <div class="tool"> <button class="float-button save" onclick="{save}"><span class="fas fa-save"></span></button> <button class="float-button cancel" onclick="{cancel}"><span class="fas fa-times"></span></button> </div> </div>', 'member-editor,[data-is="member-editor"]{ margin: 0 auto; padding: 0; width: 100%; max-width: 800px; height: 100%; display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr; grid-template-areas: \'entry\'; background-color: white; overflow: hidden; } member-editor>.entry,[data-is="member-editor"]>.entry{ grid-area: entry; display: grid; grid-template-columns: 1fr auto 5px; grid-template-rows: 1fr; grid-template-areas: \'tabs tool .\'; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tabs,[data-is="member-editor"]>.entry .tabs{ grid-area: tabs; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tool,[data-is="member-editor"]>.entry .tool{ grid-area: tool; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; grid-template-areas: \'. .\' \'btn-cancel .\' \'btn-save .\'; margin: 0 auto; margin-left: 3px; padding: 0; width: 100%; height: 100%; overflow: hidden; } member-editor>.entry .tool .float-button,[data-is="member-editor"]>.entry .tool .float-button{ margin: 0 auto; padding: 0; border: none; outline: none; border-radius: 50%; height: 40px; width: 40px; color: whitesmoke; background: silver; cursor: pointer; } member-editor>.entry .tool .float-button:hover,[data-is="member-editor"]>.entry .tool .float-button:hover{ color: whitesmoke; background: forestgreen; } member-editor>.entry .tool .float-button.save,[data-is="member-editor"]>.entry .tool .float-button.save{ grid-area: btn-save; } member-editor>.entry .tool .float-button.cancel,[data-is="member-editor"]>.entry .tool .float-button.cancel{ grid-area: btn-cancel; } member-editor .panel-header,[data-is="member-editor"] .panel-header{ margin: 0 auto; padding: 0; padding-top: 3px; width: 100%; height: 30px; color: white; background: cornflowerblue; border-radius: 5px 5px 0 0; } member-editor .panel-body,[data-is="member-editor"] .panel-body{ margin: 0 auto; margin-bottom: 5px; padding: 2px; width: 100%; border: 1px solid cornflowerblue; }', '', function(opts) {
 

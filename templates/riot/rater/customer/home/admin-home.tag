@@ -276,7 +276,6 @@
 
         //#endregion
 
-        //let bar1 = document.getElementById('bar1');
         let data1 = [
             { name: 'EDL', y: 3.5 },
             { name: 'Sale', y: 3.8 },
@@ -292,7 +291,6 @@
             'Finance'
         ];
 
-        //let pie1 = document.getElementById('pie1');
         let chartTitle = 'EDL';
         let data2 = [
             { name: 'Excellent', y: 30 },
