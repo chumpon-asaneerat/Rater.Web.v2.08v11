@@ -7,6 +7,11 @@
     </style>
     <script>
         let self = this;
+        
+        let defaultContent = {
+            title: 'Admin Home Page.'
+        }
+        this.content = defaultContent;
 
         let updatecontent = () => {
             let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
