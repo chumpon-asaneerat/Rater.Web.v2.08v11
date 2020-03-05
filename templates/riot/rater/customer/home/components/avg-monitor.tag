@@ -8,6 +8,13 @@
     <script>
         let self = this;
 
+        let updatecontent = () => {
+            let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+            self.content = scrContent ? scrContent : defaultContent;
+
+            self.update();
+        }
+
         //#region document listener add/remove handler
 
         let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
