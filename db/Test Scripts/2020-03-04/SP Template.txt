@@ -1,0 +1,68 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author: Chumpon Asaneerat
+-- Name: __SP_NAME__.
+-- Description:	__SP_DESC__.
+-- [== History ==]
+-- <2018-07-12> :
+--	- Stored Procedure Created.
+--   
+-- [== Example ==]
+--
+--
+--
+-- =============================================
+CREATE PROCEDURE __SP_NAME__
+(
+  @param1 nvarchar(3)
+, @param2 nvarchar(3)
+, @param3 nvarchar(50)
+, @param4 nvarchar(50)
+, @param5 datetime
+, @param6 datetime
+, @param7 datetime
+, @param8 int = NULL out
+, @param9 nvarchar(30) = NULL out
+, @pageNum as int = 1 out
+, @rowsPerPage as int = 10 out
+, @totalRecords as int = 0 out
+, @maxPage as int = 0 out
+, @errNum int = 0 out
+, @errMsg nvarchar(MAX) = N'' out
+)
+AS
+BEGIN
+DECLARE @iCnt int;
+	-- Error Code:
+	--     0 : Success.
+	--  XXXX : 
+	--  XXXX : 
+	--  XXXX : 
+	--  XXXX : 
+	-- OTHER : SQL Error Number & Error Message.
+	BEGIN TRY
+		/*
+		IF (dbo.IsNullOrEmpty(@langId) = 1)
+		BEGIN
+			EXEC GetErrorMsg @langId, XXXX, @errNum out, @errMsg out
+			RETURN
+		END
+		*/
+	
+		-- SUCCESS
+		--EXEC GetErrorMsg @langId, 0, @errNum out, @errMsg out		
+		-- OR		
+		SET @errNum = 0;
+		SET @errMsg = N'';
+	END TRY
+	BEGIN CATCH
+		SET @errNum = ERROR_NUMBER();
+		SET @errMsg = ERROR_MESSAGE();
+	END CATCH
+END
+
+GO
