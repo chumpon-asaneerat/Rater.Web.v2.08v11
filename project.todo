@@ -47,7 +47,14 @@ Project:
                             ☐ 
                 Device:
                     Home:
-                        ☐ 
+                        ☐ Main Menu.
+                        ☐ Register Device 1.
+                            - Request to register device.
+                            - On device management should see list of request device.
+                            - When allow the device generate code from device management.
+                            - On device screen enter generate code to activate.
+                        ☐ Register Device 2.
+                        ☐ Org Setup Screen.
     CSS:
         ✔ nested absolute position. @done(19-12-10 10:29)
         ☐ Dock able panel.
