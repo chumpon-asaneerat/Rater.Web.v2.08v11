@@ -8,6 +8,9 @@
     <script>
         let self = this;
 
+        let updatecontent = () => {
+            self.update();
+        }
 
         //#region document listener add/remove handler
 
@@ -40,6 +43,14 @@
             freeCtrls();
         });
 
+        //#endregion
+
+        //#region public methods
+
+        this.refresh = () => {
+            updatecontent()
+        }
+        
         //#endregion
     </script>
 </norgtree>
