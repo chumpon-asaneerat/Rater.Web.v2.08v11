@@ -59,6 +59,11 @@ Project:
                         ☐ Org Setup Screen.
                             - OrgTree required.
                         ☐ Today Question Screen.
+                Question:
+                    Design:
+                        ☐ Provide save json route (all silde).
+                        ☐ Provide get assets routes.
+                        ☐ 
     CSS:
         ✔ nested absolute position. @done(19-12-10 10:29)
         ☐ Dock able panel.
