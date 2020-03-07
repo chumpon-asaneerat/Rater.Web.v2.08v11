@@ -59,5 +59,13 @@
         let onLanguageChanged = (e) => { updatecontent(); }
 
         //#endregion
+
+        //#region public methods
+
+        this.refresh = () => {
+            updatecontent()
+        }
+        
+        //#endregion
     </script>
 </avg-monitor>
