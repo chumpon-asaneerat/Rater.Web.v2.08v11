@@ -105,6 +105,9 @@ Project:
                     ☐ slidepreview tag.
                     ☐ slidedesigner tag.
                     ☐ shapepropertyeditor tag.
+            OrgTree:
+                ☐ OrgTree tag.
+                ☐ OrgEdit tag.
         Rater:
             Controls:
                 Dashboard Items:
