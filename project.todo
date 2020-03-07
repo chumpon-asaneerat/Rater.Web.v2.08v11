@@ -54,7 +54,11 @@ Project:
                             - When allow the device generate code from device management.
                             - On device screen enter generate code to activate.
                         ☐ Register Device 2.
+                            - On device management when add device the unique code generated.
+                            - On device screen enter generate code to activate.
                         ☐ Org Setup Screen.
+                            - OrgTree required.
+                        ☐ Today Question Screen.
     CSS:
         ✔ nested absolute position. @done(19-12-10 10:29)
         ☐ Dock able panel.
