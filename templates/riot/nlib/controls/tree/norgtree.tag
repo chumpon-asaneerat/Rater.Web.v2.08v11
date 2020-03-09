@@ -2,13 +2,20 @@
     <div class="org-tree-container" ref="orgtree"></div>
     <style>
         :scope {
-            position: relative;
             margin: 0 auto;
             padding: 0;
             width: 100%;
             height: 100%;
+            overflow: hidden;
         }
-        .org-tree-container {
+        :scope .org-tree-container {
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        :scope .org-tree-container .orgchart {
             position: relative;
             display: inline-block;
             margin: 0 auto;
@@ -55,12 +62,18 @@
             ]
         };
 
+        let $orgtree;
         let updatecontent = () => {
+            console.log(datasource)
             if (orgtree) {
-                $(orgtree).orgchart({
-                    'data': datascource,
+                $orgtree = $(orgtree).orgchart({
+                    'data': datasource,
                     'nodeContent': 'title'
                 });
+                console.log('orgtree init.', $orgtree)
+            }
+            else {
+                console.log('orgtree not init.')
             }
             self.update();
         }
@@ -70,7 +83,9 @@
         let orgtree;
 
         let initCtrls = () => {
-            orgtree = self.refs['tree'];
+            orgtree = self.refs['orgtree'];
+
+            self.refresh()
         }
         let freeCtrls = () => {
             orgtree = null;

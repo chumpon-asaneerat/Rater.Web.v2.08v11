@@ -595,7 +595,7 @@ riot.tag2('ncheckedtree', '<div class="ntree-container"> <div ref="tree" class="
         }
 });
 
-riot.tag2('norgtree', '<div class="org-tree-container" ref="orgtree"></div>', 'norgtree,[data-is="norgtree"]{ position: relative; margin: 0 auto; padding: 0; width: 100%; height: 100%; } norgtree .org-tree-container,[data-is="norgtree"] .org-tree-container{ position: relative; display: inline-block; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
+riot.tag2('norgtree', '<div class="org-tree-container" ref="orgtree"></div>', 'norgtree,[data-is="norgtree"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } norgtree .org-tree-container,[data-is="norgtree"] .org-tree-container{ margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: hidden; } norgtree .org-tree-container .orgchart,[data-is="norgtree"] .org-tree-container .orgchart{ position: relative; display: inline-block; margin: 0 auto; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
         let self = this;
         let datasource = {
             'name': 'Lao Lao',
@@ -632,12 +632,18 @@ riot.tag2('norgtree', '<div class="org-tree-container" ref="orgtree"></div>', 'n
             ]
         };
 
+        let $orgtree;
         let updatecontent = () => {
+            console.log(datasource)
             if (orgtree) {
-                $(orgtree).orgchart({
-                    'data': datascource,
+                $orgtree = $(orgtree).orgchart({
+                    'data': datasource,
                     'nodeContent': 'title'
                 });
+                console.log('orgtree init.', $orgtree)
+            }
+            else {
+                console.log('orgtree not init.')
             }
             self.update();
         }
@@ -645,7 +651,9 @@ riot.tag2('norgtree', '<div class="org-tree-container" ref="orgtree"></div>', 'n
         let orgtree;
 
         let initCtrls = () => {
-            orgtree = self.refs['tree'];
+            orgtree = self.refs['orgtree'];
+
+            self.refresh()
         }
         let freeCtrls = () => {
             orgtree = null;
