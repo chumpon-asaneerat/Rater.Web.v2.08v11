@@ -2,16 +2,20 @@
     <div class="org-tree-container" ref="orgtree"></div>
     <style>
         :scope {
+            position: relative;
             margin: 0 auto;
             padding: 0;
             width: 100%;
             height: 100%;
         }
         .org-tree-container {
+            position: relative;
+            display: inline-block;
             margin: 0 auto;
             padding: 0;
             width: 100%;
             height: 100%;
+            overflow: auto;
         }
     </style>
     <script>
