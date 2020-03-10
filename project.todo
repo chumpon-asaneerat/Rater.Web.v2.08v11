@@ -51,14 +51,16 @@ Project:
                             ✔ Prepare routes. @done(20-03-11 05:52)
                         Register Device:
                             ✔ Prepare routes. @done(20-03-11 06:22)
-                        Register Device 1:
-                            ☐ Request to register device.
-                            ☐ On device management should see list of request device.
-                            ☐ When allow the device generate code from device management.
-                            ☐ On device screen enter generate code to activate.
-                        Register Device 2:
-                            ☐ On device management when add device the unique code generated.
-                            ☐ On device screen enter generate code to activate.
+                            Register Device 1:
+                                ☐ Request to register device.
+                                ☐ On device management should see list of request device.
+                                ☐ When allow the device generate code from device management.
+                                ☐ On device screen enter generate code to activate.
+                            Register Device 2:
+                                ☐ On device management when add device the unique code generated.
+                                ☐ On device screen enter generate code to activate.
+                        Device Staff Sign In:
+                            ✔ Prepare routes. @done(20-03-11 06:31)
                         Org Setup Screen (OrgTree required):
                             ✔ Prepare routes. @done(20-03-11 05:52)
                         Today Question Screen:

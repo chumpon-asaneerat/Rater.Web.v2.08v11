@@ -3948,6 +3948,57 @@ riot.tag2('rating-register', '<h2>{(content) ? content.title : \'Device Registra
 
 });
 
+riot.tag2('rating-signin', '<h2>{(content) ? content.title : \'Device Staff Sign In.\'}</h2>', 'rating-signin,[data-is="rating-signin"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+        let self = this;
+        let screenId = 'rating-signin';
+        let defaultContent = {
+            title: 'Device Staff Sign In.'
+        };
+        this.content = defaultContent;
+        opts.content = this.content;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                opts.content = self.content;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => { }
+        let freeCtrls = () => { }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+});
+
 riot.tag2('bar-votesummary-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <bar-votesummary-search ref="viewer" class="view"></bar-votesummary-search> </yield> <yield to="entry"> <bar-votesummary-result ref="entry" class="entry"></bar-votesummary-result> </yield> </flip-screen>', 'bar-votesummary-manage,[data-is="bar-votesummary-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } bar-votesummary-manage .view,[data-is="bar-votesummary-manage"] .view,bar-votesummary-manage .entry,[data-is="bar-votesummary-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {
 
 
