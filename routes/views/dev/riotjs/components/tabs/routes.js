@@ -30,11 +30,27 @@ const routes = class {
      * @param {Response} res The Response.
      */
     static home(req, res) {
-        WebServer.sendFile(req, res, __dirname, 'index.html');
+        WebServer.sendFile(req, res, __dirname, 'html', 'index.html');
+    }
+    static getjsfile(req, res) {
+        let file = req.params.file.toLowerCase();
+        let files = ['app.js']
+        let idx = files.indexOf(file);
+        if (idx !== -1) {
+            let fname = path.join(__dirname, 'js', files[idx]);
+            WebServer.sendFile(req, res, fname);
+        }
+    }
+    static getContents(req, res) {
+        let data = sfs.getContents(path.join(__dirname, 'contents'));
+        let result = nlib.NResult.data(data);
+        WebServer.sendJson(req, res, result);
     }
 }
 
 router.get('/tabs', routes.home)
+router.get('/tabs/contents', routes.getContents)
+router.get('/tabs/js/:file', routes.getjsfile)
 
 const init_routes = (svr) => {
     svr.route('/dev/riot/components', router);

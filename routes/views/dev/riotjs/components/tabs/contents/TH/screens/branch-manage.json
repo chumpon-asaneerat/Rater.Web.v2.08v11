@@ -1,0 +1,11 @@
+{
+    "title": "จัดการข้อมูลสาขา",
+    "entry": {
+        "tabDefault": "ค่าตั้งต้น",
+        "tabMultiLang": "ภาษาอื่น",
+        "branchName": "ชื่อสาขา"
+    },
+    "columns": [
+        { "title": "ชื่อสาขา", "field": "branchName", "resizable": false }
+    ]
+}

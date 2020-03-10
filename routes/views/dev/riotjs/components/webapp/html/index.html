@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Riot Org Tree.</title>
+    <title>Riot web app tag.</title>
     <!-- Font Awesome -->
     <link href="/dist/css/fontawesome.all.min.css" rel="stylesheet" type="text/css" />
     <!-- JQuery UI -->
@@ -16,15 +16,50 @@
     <!-- Flag and Emoji icons -->
     <link href="/dist/css/flag-icon.min.css" rel="stylesheet" type="text/css" />
     <link href="/dist/css/emojisymbol.min.css" rel="stylesheet" type="text/css" />
-    <!-- jQuery Org Chart css -->
-    <link href="/dist/css/jquery.orgchart.min.css" rel="stylesheet" type="text/css" />
-    <!-- nlib css -->
-    <link href="/dist/css/nlib.css" rel="stylesheet" type="text/css" />
     <style>
     </style>
 </head>
-<body>    
-    <norgtree></norgtree>
+<body>
+    <rater-web-app>
+        <screen class="active">
+            <tabcontrol>
+                <tabheaders>
+                    <tabheader for="tab1">
+                        <span class="fas fa-home"></span>
+                        <span>Tab 1</span>
+                    </tabheader>
+                    <tabheader for="tab2">
+                        <a href="javascript:;">
+                            <span class="fas fa-cross"></span>
+                            <span>Tab 2</span>
+                        </a>
+                    </tabheader>
+                    <tabheader for="tab4">
+                        <!--
+                        <button style="margin:0 auto; font-size: 8px;">
+                            <span class="fas fa-plane"></span>
+                            <span>Tab 2</span>
+                        </button>
+                        -->
+                        <a href="javascript:;">
+                            <span class="fas fa-plane"></span>
+                            <span>Tab 4</span>
+                        </a>
+                </tabheaders>
+                <tabpages>
+                    <tabpage name="tab1">Body 1</tabpage>
+                    <tabpage name="tab2">Body 2</tabpage>
+                    <tabpage name="tab4">Body 4</tabpage>
+                </tabpages>
+            </tabcontrol>
+        </screen>
+        <screen class="hide">
+            <h2>Screen 2</h2>
+        </screen>
+        <screen class="hide">
+            <h2>Screen 3</h2>
+        </screen>
+    </rater-web-app>
     <!-- JQuery -->
     <script src="/dist/js/jquery.min.js"></script>
     <!-- JQuery UI -->
@@ -35,19 +70,15 @@
     <script src="/dist/js/bootstrap.min.js">/* bootstrap required jQuery and popperjs. */</script>
     <!-- Moment.js -->
     <script src="/dist/js/moment.min.js"></script>
-    <!-- jQuery Org Chart -->
-    <script src="/dist/js/jquery.orgchart.min.js"></script>
-
     <!-- Riot.js -->
     <script src="/dist/js/riot.min.js"></script>
     <!-- nlib -->
     <script src="/dist/js/nlib.js"></script>
-
     <!-- riot tags -->
     <script src="/dist/js/tags.js"></script>
 
     <script>
-        riot.mount('norgtree');
+        
     </script>
 </body>
 </html>
