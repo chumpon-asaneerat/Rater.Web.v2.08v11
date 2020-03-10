@@ -26,22 +26,42 @@
     </style>
     <script>
         let self = this;
+        let screenId = 'votesummary-manage';
+        let defaultContent = {
+            columns: {
+                organization: "Organization",
+                branch: 'Branch',
+                totalCnt: 'Count<br>(Total)',
+                totalAvg: 'Avg<br>(Total)',
+                totalPct: 'Percent<br>(Total)',
+                eachCnt: 'Count',
+                eachPct: 'Percent',
+            }
+        }
+        this.content = this.defaultContent;
+
         let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+            }
+
             let data = [];
             let columns = [
-                { title: 'Org', field: 'OrgName', headerSort:false },
-                { title: 'Branch', field: 'BranchName', headerSort:false },
-                { title: 'Count<br>(Total)', field: 'TotCnt', align: 'center', headerSort:false },
-                { title: 'Avg<br>(Total)', field: 'AvgTot', align: 'center', headerSort:false },
-                { title: 'Percent<br>(Total)', field: 'AvgPct', align: 'center', headerSort:false }
+                { title: self.content.columns.organization, field: 'OrgName', headerSort:false },
+                { title: self.content.columns.branch, field: 'BranchName', headerSort:false },
+                { title: self.content.columns.totalCnt, field: 'TotCnt', align: 'center', headerSort:false },
+                { title: self.content.columns.totalAvg, field: 'AvgTot', align: 'center', headerSort:false },
+                { title: self.content.columns.totalPct, field: 'AvgPct', align: 'center', headerSort:false }
             ]
             // create group columm for each choices
             self.opts.choices.forEach(choice => {            
                 let group = {
                     title: choice.text + ' (' + choice.choice + ')',
                     columns: [
-                        { title: 'Count', field: 'Cnt-' + String(choice.choice), align: 'center', headerSort:false },
-                        { title: 'Percent', field: 'Pct-' + String(choice.choice), align: 'center', headerSort:false }
+                        { title: self.content.columns.eachCnt, field: 'Cnt-' + String(choice.choice), align: 'center', headerSort:false },
+                        { title: self.content.columns.eachPct, field: 'Pct-' + String(choice.choice), align: 'center', headerSort:false }
                     ]
                 }
                 columns.push(group)

@@ -1,3 +1,16 @@
 {
-    "title": "Vote Summary (Bar graph)"
+    "title": "Vote Summary (Bar graph)",
+    "labels": {
+        "questionSet": "Question Set",
+        "date": "Date",
+        "beginDate": "Begin Date",
+        "endDate": "End Date",
+        "question": "Question",
+        "organization": "Organization",
+        "staff": "Staff"
+    },
+    "barchart": {
+        "title": "Bar graph vote summary.",
+        "yAxis": "Average"
+    }
 }

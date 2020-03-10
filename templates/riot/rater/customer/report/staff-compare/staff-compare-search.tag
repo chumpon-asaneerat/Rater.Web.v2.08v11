@@ -10,23 +10,23 @@
         </div>
         <div ref="search" class="searcharea">
             <div class="input-block center">
-                <span>Staff Compare.</span>
+                <span>{ (content) ? content.title : 'Staff Compare.' }</span>
             </div>
             <div class="input-block center">
-                <nselect ref="ctrlQSets" title="Question set"></nselect>
+                <nselect ref="ctrlQSets" title="{ (content && content.labels) ? content.labels.questionSet : 'Question Set' }"></nselect>
             </div>
             <div class="input-block center">
-                <ninput ref="ctrlBegin" type="date" title="Begin Date"></ninput>
-                <ninput ref="ctrlEnd" type="date" title="End Date"></ninput>
+                <ninput ref="ctrlBegin" type="date" title="{ (content && content.labels) ? content.labels.beginDate : 'Begin Date' }"></ninput>
+                <ninput ref="ctrlEnd" type="date" title="{ (content && content.labels) ? content.labels.endDate : 'End Date' }"></ninput>
             </div>
             <div class="input-block center">
-                <ncheckedtree ref="ctrlQuesTree" title="Question" class="tree"></ncheckedtree>
+                <ncheckedtree ref="ctrlQuesTree" title="{ (content && content.labels) ? content.labels.question : 'Question' }" class="tree"></ncheckedtree>
             </div>
             <div class="input-block center">
-                <ntree ref="ctrlOrgTree" title="Organization" class="tree"></ntree>
+                <ntree ref="ctrlOrgTree" title="{ (content && content.labels) ? content.labels.organization : 'Organization' }" class="tree"></ntree>
             </div>
             <div class="input-block center">
-                <ncheckedtree ref="ctrlMemberTree" title="Staff" class="tree"></ncheckedtree>
+                <ncheckedtree ref="ctrlMemberTree" title="{ (content && content.labels) ? content.labels.staff : 'Staff' }" class="tree"></ncheckedtree>
             </div>
             <br>
         </div>
@@ -146,7 +146,16 @@
         let memModel;
 
         let defaultContent = {
-            title: ''
+            title: 'Staff Compare.',
+            labels: {
+                questionSet: 'Question Set',
+                date: 'Date',
+                beginDate: 'Begin Date',
+                endDate: 'End Date',
+                question: 'Question',
+                organization: 'Organization',
+                staff: 'Staff'
+            }
         }
         this.content = this.defaultContent;
 
@@ -160,6 +169,7 @@
                 updateQSets();
                 updateQuestions();
                 updateOrgs();
+                updateMembers();
                 self.update();
             }
         }

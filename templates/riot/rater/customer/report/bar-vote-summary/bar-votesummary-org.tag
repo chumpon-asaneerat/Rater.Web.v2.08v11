@@ -22,8 +22,22 @@
     </style>
     <script>
         let self = this;
+        let screenId = 'bar-votesummary-manage';
+        let defaultContent = {
+            barchart: {
+                title: 'Bar graph vote summary.',
+                yAxis: 'Average'
+            }
+        }
+        self.content = defaultContent
 
         let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+            }
+
             let data = [];
             let xlabels = []
             self.opts.orgs.forEach(item => {
@@ -37,7 +51,7 @@
                 },
                 chart: { type: 'column' },
                 title: { 
-                    text: 'Vote Summary Bar graph'
+                    text: self.content.barchart.title
                 },
                 subtitle: {
                     //text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
@@ -47,7 +61,7 @@
                     categories: xlabels
                 },
                 yAxis: { 
-                    title: { text: 'Average' }
+                    title: { text: self.content.barchart.yAxis }
                 },
                 legend: { enabled: false },
                 plotOptions: {

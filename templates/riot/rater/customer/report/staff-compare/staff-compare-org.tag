@@ -21,7 +21,7 @@
 
         let updatecontent = () => {
             let data = [];
-            console.log('opts', self.opts)
+            //console.log('opts', self.opts)
             self.opts.member.choices.forEach(item => {
                 data.push({ name: item.text, y: item.Pct })
             })

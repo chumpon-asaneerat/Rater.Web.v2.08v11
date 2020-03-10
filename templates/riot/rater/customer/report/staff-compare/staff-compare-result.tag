@@ -1,7 +1,7 @@
 <staff-compare-result>
     <div class="result">
         <div class="tabs">
-            <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
+            <date-result caption="{ (content && content.labels) ? content.labels.date : 'Date' }" begin="{ current.begin }" end="{ current.end }"></date-result>
             <virtial if={ current.slides && current.slides.length > 0 }>
                 <virtial each={ slide in current.slides }>
                     <staff-compare-question-slide slide="{ slide }"></staff-compare-question-slide>

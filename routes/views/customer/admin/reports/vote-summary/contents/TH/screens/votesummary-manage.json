@@ -1,3 +1,21 @@
 {
-    "title": "รายงานสรุปผล"
+    "title": "รายงานสรุปผล",
+    "labels": {
+        "questionSet": "ชุดคำถาม",
+        "date": "วันที่",
+        "beginDate": "วันที่เริ่มต้น",
+        "endDate": "วันที่สิ้นสุด",
+        "question": "คำถาม",
+        "organization": "หน่วยงาน",
+        "staff": "ผู้ปฏิบัติงาน"
+    },
+    "columns": {
+        "organization": "หน่วยงาน",
+        "branch": "สาขา",
+        "totalCnt": "จำนวน<br>(รวม)",
+        "totalAvg": "ค่าเฉลี่ย<br>(รวม)",
+        "totalPct": "เปอร์เซ็นต์<br>(รวม)",
+        "eachCnt": "จำนวน",
+        "eachPct": "เปอร์เซ็นต์"
+    }
 }

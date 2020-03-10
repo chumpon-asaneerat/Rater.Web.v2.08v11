@@ -1,7 +1,7 @@
 <rawvote-result>
     <div class="result">
         <div class="tabs">
-            <date-result caption="Date" begin="{ current.begin }" end="{ current.end }"></date-result>
+            <date-result caption="{ (content && content.labels) ? content.labels.date : 'Date' }" begin="{ current.begin }" end="{ current.end }"></date-result>
             <virtial if={ current.slides && current.slides.length > 0 }>
                 <virtial each={ slide in current.slides }>
                     <rawvote-question-slide slide="{ slide }"></rawvote-question-slide>
@@ -117,6 +117,11 @@
                 if (result) {
                     self.current = result[lang.langId];
                     //console.log(self.current)
+                }
+                if (!self.current) self.current = {
+                    begin: '',
+                    end: '',
+                    slides: []
                 }
                 self.current.begin = search_opts.beginDate;
                 self.current.end = search_opts.endDate;

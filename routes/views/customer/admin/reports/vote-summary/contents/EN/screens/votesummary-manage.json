@@ -1,3 +1,21 @@
 {
-    "title": "Vote Summary"
+    "title": "Vote Summary",
+    "labels": {
+        "questionSet": "Question Set",
+        "date": "Date",
+        "beginDate": "Begin Date",
+        "endDate": "End Date",
+        "question": "Question",
+        "organization": "Organization",
+        "staff": "Staff"
+    },
+    "columns": {
+        "organization": "Organization",
+        "branch": "Branch",
+        "totalCnt": "Count<br>(Total)",
+        "totalAvg": "Avg<br>(Total)",
+        "totalPct": "Percent<br>(Total)",
+        "eachCnt": "Count",
+        "eachPct": "Percent"
+    }
 }

@@ -26,16 +26,33 @@
     </style>
     <script>
         let self = this;
+        let screenId = 'rawvote-manage';
+        let defaultContent = {
+            columns: {
+                date: 'Date',
+                choice: 'Choice',
+                device: 'Device',
+                organization: 'Organization',
+                staff: 'Staff'
+            }
+        }
+        this.content = this.defaultContent;
 
         let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+            }
+
             let data = self.opts.votes;
             //console.log('data:', data)
             let columns = [
-                { title: 'Date', field: 'VoteDateS', headerSort:false },
-                { title: 'Choice', field: 'VoteText', headerSort:false },
-                { title: 'Device', field: 'DeviceId', align: 'center', headerSort:false },
-                { title: 'Organization', field: 'OrgName', align: 'left', headerSort:false },
-                { title: 'Staff', field: 'FullName', align: 'left', headerSort:false }
+                { title: self.content.columns.date, field: 'VoteDateS', headerSort:false },
+                { title: self.content.columns.choice, field: 'VoteText', headerSort:false },
+                { title: self.content.columns.device, field: 'DeviceId', align: 'center', headerSort:false },
+                { title: self.content.columns.organization, field: 'OrgName', align: 'left', headerSort:false },
+                { title: self.content.columns.staff, field: 'FullName', align: 'left', headerSort:false }
             ]
             // define table
             if (grid) {

@@ -1,3 +1,19 @@
 {
-    "title": "Raw Vote"
+    "title": "Raw Vote",
+    "labels": {
+        "questionSet": "Question Set",
+        "date": "Date",
+        "beginDate": "Begin Date",
+        "endDate": "End Date",
+        "question": "Question",
+        "organization": "Organization",
+        "staff": "Staff"
+    },
+    "columns": {
+        "date": "Date",
+        "choice": "Choice",
+        "device": "Device",
+        "organization": "Organization",
+        "staff": "Staff"
+    }
 }

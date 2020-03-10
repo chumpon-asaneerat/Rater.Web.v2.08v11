@@ -119,10 +119,10 @@
         let setSelectedItem = (item) => {
             console.log('set selected item.')
             if (tree && item) {
-                console.log('item to select:', item)
-                console.log('get item:', $(tree).jstree(true).get_node(item))
+                //console.log('item to select:', item)
+                //console.log('get item:', $(tree).jstree(true).get_node(item))
                 $(tree).jstree(true).select_node(item);                
-                console.log('select item:', getSelectedItem())
+                //console.log('select item:', getSelectedItem())
             }
         }        
         let getSelectedItem = () => {

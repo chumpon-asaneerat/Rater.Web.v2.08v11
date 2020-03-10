@@ -1,3 +1,12 @@
 {
-    "title": "Staff Performance"
+    "title": "Staff Performance",
+    "labels": {
+        "questionSet": "Question Set",
+        "date": "Date",
+        "beginDate": "Begin Date",
+        "endDate": "End Date",
+        "question": "Question",
+        "organization": "Organization",
+        "staff": "Staff"
+    }
 }
