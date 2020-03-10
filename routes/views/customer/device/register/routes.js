@@ -32,10 +32,10 @@ const routes = class {
     }
 }
 
-//router.get('/orgs/', secure.checkAccess, secure.checkRedirect, routes.home)
-router.get('/orgs/', routes.home)
-router.get('/orgs/contents', routes.getContents)
-router.get('/orgs/js/:file', routes.getjsfile)
+//router.get('/register/', secure.checkAccess, secure.checkRedirect, routes.home)
+router.get('/register/', routes.home)
+router.get('/register/contents', routes.getContents)
+router.get('/register/js/:file', routes.getjsfile)
 
 const init_routes = (svr) => {
     svr.route('/rating', router);
