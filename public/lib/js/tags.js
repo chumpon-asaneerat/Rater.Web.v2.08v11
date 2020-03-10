@@ -631,19 +631,15 @@ riot.tag2('norgtree', '<div class="org-tree-container" ref="orgtree"></div>', 'n
                 }
             ]
         };
-
-        let $orgtree;
         let updatecontent = () => {
-            console.log(datasource)
             if (orgtree) {
-                $orgtree = $(orgtree).orgchart({
+                $(orgtree).orgchart({
                     'data': datasource,
                     'nodeContent': 'title'
                 });
-                console.log('orgtree init.', $orgtree)
             }
             else {
-                console.log('orgtree not init.')
+
             }
             self.update();
         }
