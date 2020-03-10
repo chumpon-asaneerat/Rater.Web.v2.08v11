@@ -3753,10 +3753,148 @@ riot.tag2('org-view', '<div ref="container" class="scrarea"> <div ref="tool" cla
         }
 
 });
-riot.tag2('rating-device-home', '<h2>Rating Device Home</h2>', '', '', function(opts) {
+riot.tag2('rating-device-home', '<h2>{(content) ? content.title : \'Rating Device Home\'}</h2>', 'rating-device-home,[data-is="rating-device-home"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+        let self = this;
+        let screenId = 'rating-device-home';
+        let defaultContent = {
+            title: 'Rating Device Home'
+        };
+        this.content = defaultContent;
+        opts.content = this.content;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                opts.content = self.content;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => { }
+        let freeCtrls = () => { }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
 });
 
-riot.tag2('rating-question', '<h2>Today Question.</h2>', '', '', function(opts) {
+riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization Setup\'}</h2>', 'rating-org,[data-is="rating-org"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+        let self = this;
+        let screenId = 'rating-org';
+        let defaultContent = {
+            title: 'Device Organization Setup'
+        };
+        this.content = defaultContent;
+        opts.content = this.content;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                opts.content = self.content;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => { }
+        let freeCtrls = () => { }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
+        }
+        let unbindEvents = () => {
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
+
+});
+riot.tag2('rating-question', '<h2>{(content) ? content.title : \'Today Question\'}</h2>', 'rating-question,[data-is="rating-question"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+        let self = this;
+        let screenId = 'rating-question';
+        let defaultContent = {
+            title: 'Today Question.'
+        };
+        this.content = defaultContent;
+        opts.content = this.content;
+
+        let updatecontent = () => {
+            let scrId = screens.current.screenId;
+            if (screenId === scrId) {
+                let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
+                self.content = scrContent ? scrContent : defaultContent;
+                opts.content = self.content;
+                self.update();
+            }
+        }
+
+        let initCtrls = () => { }
+        let freeCtrls = () => { }
+
+        let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
+        let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
+
+        let bindEvents = () => {
+
+        }
+        let unbindEvents = () => {
+
+        }
+
+        this.on('mount', () => {
+            initCtrls();
+            bindEvents();
+        });
+        this.on('unmount', () => {
+            unbindEvents();
+            freeCtrls();
+        });
+
 });
 
 riot.tag2('bar-votesummary-manage', '<flip-screen ref="flipper"> <yield to="viewer"> <bar-votesummary-search ref="viewer" class="view"></bar-votesummary-search> </yield> <yield to="entry"> <bar-votesummary-result ref="entry" class="entry"></bar-votesummary-result> </yield> </flip-screen>', 'bar-votesummary-manage,[data-is="bar-votesummary-manage"]{ margin: 0 auto; padding: 0; width: 100%; height: 100%; } bar-votesummary-manage .view,[data-is="bar-votesummary-manage"] .view,bar-votesummary-manage .entry,[data-is="bar-votesummary-manage"] .entry{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: auto; }', '', function(opts) {

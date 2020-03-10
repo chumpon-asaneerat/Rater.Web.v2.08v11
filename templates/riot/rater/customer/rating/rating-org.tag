@@ -1,5 +1,5 @@
-<rating-question>
-    <h2>{ (content) ? content.title : 'Today Question' }</h2>
+<rating-org>
+    <h2>{ (content) ? content.title : 'Device Organization Setup' }</h2>
     <style>
         :scope {
             margin: 0 auto;
@@ -8,9 +8,9 @@
     </style>
     <script>
         let self = this;
-        let screenId = 'rating-question';
+        let screenId = 'rating-org';
         let defaultContent = {
-            title: 'Today Question.'
+            title: 'Device Organization Setup'
         };
         this.content = defaultContent;
         opts.content = this.content;
@@ -34,18 +34,18 @@
         let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
 
         //#endregion
-        
+
         //#region events bind/unbind
 
         let bindEvents = () => {
-            //addEvt(events.name.LanguageChanged, onLanguageChanged)
-            //addEvt(events.name.ContentChanged, onContentChanged)
-            //addEvt(events.name.ScreenChanged, onScreenChanged)
+            addEvt(events.name.LanguageChanged, onLanguageChanged)
+            addEvt(events.name.ContentChanged, onContentChanged)
+            addEvt(events.name.ScreenChanged, onScreenChanged)
         }
         let unbindEvents = () => {
-            //delEvt(events.name.ScreenChanged, onScreenChanged)
-            //delEvt(events.name.ContentChanged, onContentChanged)
-            //delEvt(events.name.LanguageChanged, onLanguageChanged)
+            delEvt(events.name.ScreenChanged, onScreenChanged)
+            delEvt(events.name.ContentChanged, onContentChanged)
+            delEvt(events.name.LanguageChanged, onLanguageChanged)
         }
 
         //#endregion
@@ -65,10 +65,10 @@
 
         //#region dom event handlers
 
-        //let onContentChanged = (e) => { updatecontent(); }
-        //let onLanguageChanged = (e) => { updatecontent(); }
-        //let onScreenChanged = (e) => { updatecontent(); }
+        let onContentChanged = (e) => { updatecontent(); }
+        let onLanguageChanged = (e) => { updatecontent(); }
+        let onScreenChanged = (e) => { updatecontent(); }
 
         //#endregion
     </script>
-</rating-question>
+</rating-org>
