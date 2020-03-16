@@ -32,6 +32,7 @@ Project:
                     Admin:
                         Home:
                             ✔ Prepare route. @done(20-03-11 06:22)
+                            ☐ 
                         Customer:
                             ☐ Small screen (show notify for customer request add new device/staff).
                             ☐ Medium screen (show notify in collapse menu and on screen dashboard for customer request add new device/staff).
@@ -42,15 +43,19 @@ Project:
                     Supervisor:
                         Home:
                             ✔ Prepare route. @done(20-03-11 06:23)
+                            ☐ 
                     Staff:
                         Home:
                             ✔ Prepare route. @done(20-03-11 06:23)
+                            ☐ 
                 Device:
                     Home:
                         Main Menu:
                             ✔ Prepare routes. @done(20-03-11 05:52)
+                            ☐ 
                         Register Device:
                             ✔ Prepare routes. @done(20-03-11 06:22)
+                            ☐ 
                             Register Device 1:
                                 ☐ Request to register device.
                                 ☐ On device management should see list of request device.
@@ -61,12 +66,14 @@ Project:
                                 ☐ On device screen enter generate code to activate.
                         Device Staff Sign In:
                             ✔ Prepare routes. @done(20-03-11 06:31)
+                            ☐ 
                         Org Setup Screen (OrgTree required):
                             ✔ Prepare routes. @done(20-03-11 05:52)
                             ☐ Required dropdown org tree selection.
                             ☐ Or TreeView selection.
                         Today Question Screen:
                             ✔ Prepare routes. @done(20-03-11 05:52)
+                            ☐ 
                 Question:
                     Design:
                         ✔ Prepare route. @done(20-03-11 06:23)
