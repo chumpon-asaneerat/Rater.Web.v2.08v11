@@ -212,8 +212,9 @@ const updateSecureObj = (req, res, obj) => {
     }
     let rater = res.locals.rater;
     if (obj) {
+        //console.log(obj)
         rater.secure.accessId = obj.AccessId;
-        rater.secure.deviceId = ''; // this value exist only on device screen.
+        rater.secure.deviceId = obj.DeviceId; // this value exist only on device screen.
         rater.secure.customerId = obj.CustomerId;
         rater.secure.memberId = obj.MemberId;
         rater.secure.memberType = obj.MemberType;

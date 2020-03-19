@@ -33,7 +33,7 @@ const routes = class {
 }
 
 //router.get('/register/', secure.checkAccess, secure.checkRedirect, routes.home)
-router.get('/register/', routes.home)
+router.get('/register/', secure.checkAccess, routes.home)
 router.get('/register/contents', routes.getContents)
 router.get('/register/js/:file', routes.getjsfile)
 

@@ -33,7 +33,7 @@ const routes = class {
 }
 
 //router.get('/orgs/', secure.checkAccess, secure.checkRedirect, routes.home)
-router.get('/orgs/', routes.home)
+router.get('/orgs/', secure.checkAccess, routes.home)
 router.get('/orgs/contents', routes.getContents)
 router.get('/orgs/js/:file', routes.getjsfile)
 

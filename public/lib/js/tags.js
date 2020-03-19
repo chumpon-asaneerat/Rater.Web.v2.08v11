@@ -3804,11 +3804,14 @@ riot.tag2('rating-device-home', '<h2>{(content) ? content.title : \'Rating Devic
 
 });
 
-riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization Setup\'}</h2> <a href="/rating">Home</a>', 'rating-org,[data-is="rating-org"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization Setup\'}</h2> <nselect ref="orgNames" title="{content.entry.orgName}"></nselect> <a href="/rating">Home</a>', 'rating-org,[data-is="rating-org"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
         let self = this;
         let screenId = 'rating-org';
         let defaultContent = {
-            title: 'Device Organization Setup'
+            title: 'Device Organization Setup',
+            entry: {
+                orgName: 'Organization'
+            }
         };
         this.content = defaultContent;
         opts.content = this.content;
@@ -3816,6 +3819,7 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (screenId === scrId) {
+                updateOrgList()
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
                 opts.content = self.content;
@@ -3823,8 +3827,59 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
             }
         }
 
-        let initCtrls = () => { }
-        let freeCtrls = () => { }
+        let orgNames;
+
+        let initCtrls = () => {
+            orgNames = self.refs['orgNames']
+            getOrgs()
+        }
+        let freeCtrls = () => {
+            orgNames = null
+        }
+
+        let orgs = null;
+
+        let getOrgs = () => {
+            let opt = {}
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/org/search",
+                data: JSON.stringify(opt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    orgs = ret.data;
+                    updatecontent();
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+
+        let orgId = '';
+
+        let updateOrgList = () => {
+
+            if (orgNames) {
+
+                if (orgNames) {
+                    orgId = orgNames.value();
+                }
+
+                if (orgs && orgs[lang.langId]) {
+                    let org = orgs[lang.langId]
+
+                    if (orgNames) {
+                        orgNames.setup(org, { valueField:'orgId', textField:'OrgName' });
+                        if (orgId) {
+                            orgNames.value(orgId);
+                        }
+                    }
+                }
+            }
+        }
 
         let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
         let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }

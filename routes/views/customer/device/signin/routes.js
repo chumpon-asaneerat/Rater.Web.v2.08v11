@@ -33,7 +33,7 @@ const routes = class {
 }
 
 //router.get('/signin/', secure.checkAccess, secure.checkRedirect, routes.home)
-router.get('/signin/', routes.home)
+router.get('/signin/', secure.checkAccess, routes.home)
 router.get('/signin/contents', routes.getContents)
 router.get('/signin/js/:file', routes.getjsfile)
 

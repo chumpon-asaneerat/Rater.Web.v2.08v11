@@ -33,7 +33,7 @@ const routes = class {
 }
 
 //router.get('/question/', secure.checkAccess, secure.checkRedirect, routes.home)
-router.get('/question/', routes.home)
+router.get('/question/', secure.checkAccess, routes.home)
 router.get('/question/contents', routes.getContents)
 router.get('/question/js/:file', routes.getjsfile)
 

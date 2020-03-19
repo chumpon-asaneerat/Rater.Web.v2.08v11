@@ -1,5 +1,6 @@
 <rating-org>
     <h2>{ (content) ? content.title : 'Device Organization Setup' }</h2>
+    <nselect ref="orgNames" title="{ content.entry.orgName }"></nselect>
     <a href="/rating">Home</a>
     <style>
         :scope {
@@ -11,7 +12,10 @@
         let self = this;
         let screenId = 'rating-org';
         let defaultContent = {
-            title: 'Device Organization Setup'
+            title: 'Device Organization Setup',
+            entry: {
+                orgName: 'Organization'
+            }
         };
         this.content = defaultContent;
         opts.content = this.content;
@@ -19,6 +23,7 @@
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (screenId === scrId) {
+                updateOrgList()
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
                 opts.content = self.content;
@@ -26,8 +31,59 @@
             }
         }
 
-        let initCtrls = () => { }
-        let freeCtrls = () => { }
+        let orgNames;
+
+        let initCtrls = () => {
+            orgNames = self.refs['orgNames']
+            getOrgs()
+        }
+        let freeCtrls = () => {
+            orgNames = null
+        }
+
+        let orgs = null;
+
+        let getOrgs = () => {
+            let opt = {}
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/org/search",
+                data: JSON.stringify(opt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+                    //console.log(ret);
+                    orgs = ret.data;
+                    updatecontent();
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+        
+        let orgId = '';
+
+        let updateOrgList = () => {
+            // update org names by language id.
+            if (orgNames) {
+                // get exists value
+                if (orgNames) {
+                    orgId = orgNames.value();
+                }
+
+                if (orgs && orgs[lang.langId]) {
+                    let org = orgs[lang.langId]
+                    // load lookup.
+                    if (orgNames) {
+                        orgNames.setup(org, { valueField:'orgId', textField:'OrgName' });
+                        if (orgId) {
+                            orgNames.value(orgId);
+                        }
+                    }
+                }
+            }
+        }
 
         //#region document listener add/remove handler
 
