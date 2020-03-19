@@ -1,5 +1,6 @@
 <rating-question>
     <h2>{ (content) ? content.title : 'Today Question' }</h2>
+    <a href="/rating">Home</a>
     <style>
         :scope {
             margin: 0 auto;

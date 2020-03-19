@@ -1,5 +1,6 @@
 <rating-register>
     <h2>{ (content) ? content.title : 'Device Registration' }</h2>
+    <a href="/rating">Home</a>
     <style>
         :scope {
             margin: 0 auto;

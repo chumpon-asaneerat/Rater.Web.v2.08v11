@@ -1,5 +1,6 @@
 <rating-org>
     <h2>{ (content) ? content.title : 'Device Organization Setup' }</h2>
+    <a href="/rating">Home</a>
     <style>
         :scope {
             margin: 0 auto;

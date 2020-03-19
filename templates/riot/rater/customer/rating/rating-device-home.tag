@@ -1,5 +1,8 @@
 <rating-device-home>
     <h2>{ (content) ? content.title : 'Rating Device Home' }</h2>
+    <a href="/rating/orgs">Orgs</a>
+    <a href="/rating/register">Register.</a>
+    <a href="/rating/question">Question.</a>
     <style>
         :scope {
             margin: 0 auto;

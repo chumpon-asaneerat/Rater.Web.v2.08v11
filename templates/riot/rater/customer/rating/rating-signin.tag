@@ -1,5 +1,6 @@
 <rating-signin>
     <h2>{ (content) ? content.title : 'Device Staff Sign In.' }</h2>
+    <a href="/rating">Home</a>
     <style>
         :scope {
             margin: 0 auto;

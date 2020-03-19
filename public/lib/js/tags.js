@@ -3753,7 +3753,7 @@ riot.tag2('org-view', '<div ref="container" class="scrarea"> <div ref="tool" cla
         }
 
 });
-riot.tag2('rating-device-home', '<h2>{(content) ? content.title : \'Rating Device Home\'}</h2>', 'rating-device-home,[data-is="rating-device-home"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+riot.tag2('rating-device-home', '<h2>{(content) ? content.title : \'Rating Device Home\'}</h2> <a href="/rating/orgs">Orgs</a> <a href="/rating/register">Register.</a> <a href="/rating/question">Question.</a>', 'rating-device-home,[data-is="rating-device-home"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
         let self = this;
         let screenId = 'rating-device-home';
         let defaultContent = {
@@ -3804,7 +3804,7 @@ riot.tag2('rating-device-home', '<h2>{(content) ? content.title : \'Rating Devic
 
 });
 
-riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization Setup\'}</h2>', 'rating-org,[data-is="rating-org"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization Setup\'}</h2> <a href="/rating">Home</a>', 'rating-org,[data-is="rating-org"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
         let self = this;
         let screenId = 'rating-org';
         let defaultContent = {
@@ -3854,7 +3854,7 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
         let onScreenChanged = (e) => { updatecontent(); }
 
 });
-riot.tag2('rating-question', '<h2>{(content) ? content.title : \'Today Question\'}</h2>', 'rating-question,[data-is="rating-question"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+riot.tag2('rating-question', '<h2>{(content) ? content.title : \'Today Question\'}</h2> <a href="/rating">Home</a>', 'rating-question,[data-is="rating-question"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
         let self = this;
         let screenId = 'rating-question';
         let defaultContent = {
@@ -3897,7 +3897,7 @@ riot.tag2('rating-question', '<h2>{(content) ? content.title : \'Today Question\
 
 });
 
-riot.tag2('rating-register', '<h2>{(content) ? content.title : \'Device Registration\'}</h2>', 'rating-register,[data-is="rating-register"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+riot.tag2('rating-register', '<h2>{(content) ? content.title : \'Device Registration\'}</h2> <a href="/rating">Home</a>', 'rating-register,[data-is="rating-register"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
         let self = this;
         let screenId = 'rating-register';
         let defaultContent = {
@@ -3948,7 +3948,7 @@ riot.tag2('rating-register', '<h2>{(content) ? content.title : \'Device Registra
 
 });
 
-riot.tag2('rating-signin', '<h2>{(content) ? content.title : \'Device Staff Sign In.\'}</h2>', 'rating-signin,[data-is="rating-signin"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+riot.tag2('rating-signin', '<h2>{(content) ? content.title : \'Device Staff Sign In.\'}</h2> <a href="/rating">Home</a>', 'rating-signin,[data-is="rating-signin"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
         let self = this;
         let screenId = 'rating-signin';
         let defaultContent = {
