@@ -1,4 +1,7 @@
 Project:
+    WebServer:
+        ☐ Required to fixed tailing slash in all routes.
+        ☐ Recheck all reference in all index.html files.
     Rater Web:
         Database:
             Delete:
