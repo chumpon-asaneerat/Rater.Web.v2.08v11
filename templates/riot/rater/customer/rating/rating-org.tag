@@ -23,7 +23,7 @@
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (screenId === scrId) {
-                updateOrgList()
+                updateOrgList();
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
                 opts.content = self.content;
@@ -35,7 +35,7 @@
 
         let initCtrls = () => {
             orgNames = self.refs['orgNames']
-            getOrgs()
+            getOrgs();
         }
         let freeCtrls = () => {
             orgNames = null

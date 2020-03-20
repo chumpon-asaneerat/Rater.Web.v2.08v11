@@ -3819,7 +3819,7 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (screenId === scrId) {
-                updateOrgList()
+                updateOrgList();
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
                 opts.content = self.content;
@@ -3831,7 +3831,7 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
 
         let initCtrls = () => {
             orgNames = self.refs['orgNames']
-            getOrgs()
+            getOrgs();
         }
         let freeCtrls = () => {
             orgNames = null
@@ -3952,18 +3952,26 @@ riot.tag2('rating-question', '<h2>{(content) ? content.title : \'Today Question\
 
 });
 
-riot.tag2('rating-register', '<h2>{(content) ? content.title : \'Device Registration\'}</h2> <a href="/rating">Home</a>', 'rating-register,[data-is="rating-register"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+riot.tag2('rating-register', '<div ref="container" class="scrarea"> <div class="title">{(content) ? content.title : \'Device Registration\'}</div> <div class="current-device">{content.entry.currentDevice}: {(register) ? \'( \' + register.deviceName + \' )\' : \'-\'}</div> <nselect ref="deviceNames" title="{content.entry.deviceName}"></nselect> <br> <div class="toolbars"> <button class="float-button" onclick="{gohome}"> <span class="fas fa-home">&nbsp;</span> </button> <button class="float-button" onclick="{save}"> <span class="fas fa-save">&nbsp;</span> </button> </div> </div>', 'rating-register,[data-is="rating-register"]{ margin: 0 auto; padding: 0; display: grid; grid-template-columns: 1fr; grid-template-rows: 20px 1fr 20px; grid-template-areas: \'.\' \'scrarea\' \'.\' } rating-register>.scrarea,[data-is="rating-register"]>.scrarea{ grid-area: scrarea; margin: 0 auto; padding: 0; height: 100%; width: 100%; max-width: 800px; } rating-register>.scrarea>.title,[data-is="rating-register"]>.scrarea>.title{ display: block; margin: 0 auto; color: cornflowerblue; text-align: center; font-size: 1.5em; width: 100%; height: auto; } rating-register>.scrarea>.current-device,[data-is="rating-register"]>.scrarea>.current-device{ display: block; margin: 0 auto; color: red; text-align: center; font-size: 0.8em; width: 100%; height: auto; } rating-register>.scrarea>.toolbars,[data-is="rating-register"]>.scrarea>.toolbars{ display: block; margin: 0 auto; margin-right: 5px; width: 100%; height: auto; text-align: center; overflow: hidden; background-color: transparent; color: whitesmoke; } rating-register>.scrarea>.toolbars .float-button,[data-is="rating-register"]>.scrarea>.toolbars .float-button{ display: inline-block; margin: 0 auto; padding: 0; border: none; outline: none; border-radius: 50%; height: 40px; width: 40px; color: whitesmoke; background: silver; cursor: pointer; } rating-register>.scrarea>.toolbars .float-button:hover,[data-is="rating-register"]>.scrarea>.toolbars .float-button:hover{ color: whitesmoke; background: forestgreen; }', '', function(opts) {
         let self = this;
         let screenId = 'rating-register';
         let defaultContent = {
-            title: 'Device Registration'
+            title: 'Device Registration',
+            entry: {
+                deviceName: 'Device Name'
+            }
         };
         this.content = defaultContent;
         opts.content = this.content;
+        this.register = {
+            deviceId: '',
+            deviceName: ''
+        }
 
         let updatecontent = () => {
             let scrId = screens.current.screenId;
             if (screenId === scrId) {
+                updateDeviceList();
                 let scrContent = (contents.current && contents.current.screens) ? contents.current.screens[scrId] : null;
                 self.content = scrContent ? scrContent : defaultContent;
                 opts.content = self.content;
@@ -3971,8 +3979,98 @@ riot.tag2('rating-register', '<h2>{(content) ? content.title : \'Device Registra
             }
         }
 
-        let initCtrls = () => { }
-        let freeCtrls = () => { }
+        let deviceNames;
+
+        let initCtrls = () => {
+            deviceNames = self.refs['deviceNames']
+            getDevices();
+        }
+        let freeCtrls = () => {
+            deviceNames = null
+        }
+
+        let deviceId = '';
+        let deviceML = null;
+        let devices = null;
+
+        let getRegisterDeviceId = (callback) => {
+            let opt = {}
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/rating/device/search",
+                data: JSON.stringify(opt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    if (ret.data) {
+                        self.register.deviceId = ret.data.deviceId;
+                    }
+                    else {
+                        self.register.deviceId = '';
+                    }
+                    if (callback) callback()
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+        let getDevices = () => {
+            let opt = {}
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/device/search",
+                data: JSON.stringify(opt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    deviceML = ret.data;
+                    updatecontent();
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+        let updateDeviceList = () => {
+
+            if (deviceNames) {
+
+                let val = deviceNames.value()
+                deviceId = (val) ? val : self.register.deviceId;
+                if (deviceML && deviceML[lang.langId]) {
+                    devices = deviceML[lang.langId]
+
+                    deviceNames.setup(devices, { valueField:'deviceId', textField:'DeviceName' });
+                    if (deviceId) {
+                        deviceNames.value(deviceId);
+                    }
+
+                    getRegisterDeviceId(updateRegisterDevice)
+                }
+            }
+        }
+        let updateRegisterDevice = () => {
+
+            if (devices) {
+
+                let dm = devices.map((dv) => dv.deviceId);
+                if (self.register.deviceId) {
+                    let idx = dm.indexOf(self.register.deviceId);
+                    self.register.deviceName = (idx !== -1) ? devices[idx].DeviceName : '-';
+
+                    if (deviceNames) {
+                        let val = deviceNames.value()
+                        if (val !== self.register.deviceId) {
+                            deviceNames.value(self.register.deviceId);
+                        }
+                    }
+                }
+            }
+            self.update();
+        }
 
         let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
         let delEvt = (evtName, handle) => { document.removeEventListener(evtName, handle) }
@@ -4001,6 +4099,13 @@ riot.tag2('rating-register', '<h2>{(content) ? content.title : \'Device Registra
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
 
+        this.save = () => {
+            console.log('save..')
+        }
+        this.gohome = () => {
+            let url = '/rating';
+            secure.nav(url)
+        }
 });
 
 riot.tag2('rating-signin', '<h2>{(content) ? content.title : \'Device Staff Sign In.\'}</h2> <a href="/rating">Home</a>', 'rating-signin,[data-is="rating-signin"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
