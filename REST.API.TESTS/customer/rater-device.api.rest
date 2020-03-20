@@ -1,20 +1,35 @@
-### Checks device is registered.
+### Checks device is registered. Can only access via browser because data is from cookie.
 
-### Register device (used in device access - new SP required, add code in secure module).
-### Required:
-### 1. Add TABLE - DeviceAccess.
-### 2. Add SP - RegisterDevice @customerId, @deviceId
+POST http://localhost:3000/customer/api/rating/device/search
+content-type: application/json
+
+{
+    "customerId": "EDL-C2019100004",
+    "deviceId": "D0001"
+}
+
+### Register device
+POST http://localhost:3000/customer/api/rating/device/save
+content-type: application/json
+
+{
+    "accessId": "F6QM6U63T3",
+    "customerId": "EDL-C2019100004",
+    "deviceId": "D0002"
+}
+
+### Unregister device
+POST http://localhost:3000/customer/api/rating/device/save
+content-type: application/json
+
+{
+    "accessId": "F6QM6U63T3",
+    "customerId": "EDL-C2019100004",
+    "deviceId": null
+}
+
 ### 
-### Implements logic:
-### 1. Required EDL User for access screen selection.
-### 2. If has deviceAccessId exit process.
-### 3. 
 
-### Unregister device (used in device access - new SP required, add code in secure module).
-
-### 
-
-### 
 
 ### Checks device has org
 

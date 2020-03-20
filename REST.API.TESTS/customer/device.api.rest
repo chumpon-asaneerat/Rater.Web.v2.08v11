@@ -3,5 +3,5 @@ POST http://localhost:3000/customer/api/device/search
 content-type: application/json
 
 {
-    "customerId": "EDL-C2019100003"
+    "customerId": "EDL-C2019100004"
 }
