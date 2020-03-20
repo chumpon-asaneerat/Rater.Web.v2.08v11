@@ -101,7 +101,6 @@ api.Save = class {
     }
     static parse(db, data, callback) {
         let result = validate(db, data);
-
         callback(result);
     }
     static entry(req, res) {

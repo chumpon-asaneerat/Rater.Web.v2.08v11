@@ -86,7 +86,8 @@
         let defaultContent = {
             title: 'Device Registration',
             entry: {
-                deviceName: 'Device Name'
+                deviceName: 'Device Name',
+                currentDevice: 'Current Device'
             }
         };
         this.content = defaultContent;
@@ -183,7 +184,6 @@
         let updateRegisterDevice = () => {
             // update register device name.
             if (devices) {
-                //console.log('devices:', devices)
                 let dm = devices.map((dv) => dv.deviceId);
                 if (self.register.deviceId) {
                     let idx = dm.indexOf(self.register.deviceId);
@@ -244,7 +244,25 @@
         //#endregion
     
         this.save = () => {
-            console.log('save..')
+            let selectedId = (deviceNames) ? deviceNames.value() : null;
+            let opt = {
+                deviceId: selectedId
+            }
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/rating/device/save",
+                data: JSON.stringify(opt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+                    //console.log(ret);
+                    console.log('save success')
+                    //self.gohome()
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
         }
         this.gohome = () => {
             let url = '/rating';

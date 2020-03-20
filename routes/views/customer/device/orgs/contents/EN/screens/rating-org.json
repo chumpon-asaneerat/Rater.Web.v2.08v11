@@ -1,6 +1,7 @@
 {
     "title": "Device Organization Setup",
     "entry": {
-        "orgName": "Organization"
+        "orgName": "Organization",
+        "currentOrg": "Current Organization"
     }
 }

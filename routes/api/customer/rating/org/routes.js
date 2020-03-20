@@ -61,57 +61,19 @@ api.Get = class {
     static prepare(req, res) {
         let params = WebServer.parseReq(req).data;
 
-        // force langId to null;
-        params.langId = null;
+        // force langId to EN Only;
+        params.langId = 'EN';
         let customerId = secure.getCustomerId(req, res);
         if (customerId) params.customerId = customerId;
-        params.branchId = null;
-        params.orgId = null;
-        params.enabled = true;
-
+        let deviceId = secure.getDeviceId(req, res);
+        params.deviceId = (deviceId) ? deviceId : ''; // required data from cookie.
         return params;
     }
     static async call(db, params) { 
-        return db.GetOrgs(params);
+        return db.GetDevices(params);
     }
     static parse(db, data, callback) {
-        let dbResult = validate(db, data);
-
-        let result = {
-            data : null,
-            //src: dbResult.data,
-            errors: dbResult.errors,
-            //multiple: dbResult.multiple,
-            //datasets: dbResult.datasets,
-            out: dbResult.out
-        }
-        let records = dbResult.data;
-        let ret = {};
-
-        records.forEach(rec => {
-            if (!ret[rec.langId]) {
-                ret[rec.langId] = []
-            }
-            let map = ret[rec.langId].map(c => c.orgId);
-            let idx = map.indexOf(rec.orgId);
-            let nobj;
-            if (idx === -1) {
-                // set id
-                nobj = { orgId: rec.orgId }
-                // init lang properties list.
-                ret[rec.langId].push(nobj)
-            }
-            else {
-                nobj = ret[rec.langId][idx];
-            }
-            nobj.parentId = rec.parentId;
-            nobj.branchId = rec.branchId;
-            nobj.OrgName = rec.OrgName;
-            nobj.BranchName = rec.BranchName;
-        })
-        // set to result.
-        result.data = ret;
-
+        let result = validate(db, data);
         callback(result);
     }
     static entry(req, res) {
@@ -136,63 +98,20 @@ api.Save = class {
 
         let customerId = secure.getCustomerId(req, res);
         if (customerId) params.customerId = customerId;
+        let deviceId = secure.getDeviceId(req, res);
+        if (deviceId) params.deviceId = deviceId;
+        // check empty.
+        if (!params.orgId || params.orgId.trim() === '') params.orgId = null;
 
         return params;
     }
     static async call(db, params) { 
-        let ret;
-        let rets = [];
-        let customerId = params.customerId;
-        if (params && params.items) {
-            let items = params.items;
-            let orgId;
-            // loop to save EN item as default and 
-            // keep org id when create new.
-            for (let i = 0; i < items.length; i++) {
-                let item = items[i];
-                item.customerId = customerId;
-                if (item.langId === 'EN') {
-                    ret = await db.SaveOrg(item);
-                    orgId = ret.out.orgId;
-                    rets.push(ret);
-                }
-            }
-            // loop to save non EN items and 
-            // assign parent org id when save in child table.
-            for (let i = 0; i < items.length; i++) {
-                let item = items[i];
-                item.customerId = params.customerId;
-                if (!item.orgId || item.orgId === '') {
-                    item.orgId = orgId;
-                }                
-                if (item.langId !== 'EN') {
-                    ret = await db.SaveOrgML(item);
-                    rets.push(ret);
-                }                
-            }
-        }
-        return rets;
+        let ret = db.SetDeviceOrg(params);
+        return ret;
     }
     static parse(db, data, callback) {
-        let results = [];
-        let result;
-        let dbResult;
-
-        for (let i = 0; i < data.length; i++) {
-            dbResult = validate(db, data[i]);
-
-            result = {
-                data : dbResult.data,
-                //src: dbResult.data,
-                errors: dbResult.errors,
-                //multiple: dbResult.multiple,
-                //datasets: dbResult.datasets,
-                out: dbResult.out
-            }
-            results.push(result);
-        }
-
-        callback(results);
+        let result = validate(db, data);
+        callback(result);
     }
     static entry(req, res) {
         let db = new sqldb();

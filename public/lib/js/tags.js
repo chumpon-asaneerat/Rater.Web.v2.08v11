@@ -3804,17 +3804,22 @@ riot.tag2('rating-device-home', '<h2>{(content) ? content.title : \'Rating Devic
 
 });
 
-riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization Setup\'}</h2> <nselect ref="orgNames" title="{content.entry.orgName}"></nselect> <a href="/rating">Home</a>', 'rating-org,[data-is="rating-org"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
+riot.tag2('rating-org', '<div ref="container" class="scrarea"> <div class="title">{(content) ? content.title : \'Device Organization Setup\'}</div> <div class="current-org">{content.entry.currentOrg}: {(register) ? \'( \' + register.orgName + \' )\' : \'-\'}</div> <nselect ref="orgNames" title="{content.entry.orgName}"></nselect> <br> <div class="toolbars"> <button class="float-button" onclick="{gohome}"> <span class="fas fa-home">&nbsp;</span> </button> <button class="float-button" onclick="{save}"> <span class="fas fa-save">&nbsp;</span> </button> </div> </div>', 'rating-org,[data-is="rating-org"]{ margin: 0 auto; padding: 0; display: grid; grid-template-columns: 1fr; grid-template-rows: 20px 1fr 20px; grid-template-areas: \'.\' \'scrarea\' \'.\' } rating-org>.scrarea,[data-is="rating-org"]>.scrarea{ grid-area: scrarea; margin: 0 auto; padding: 0; height: 100%; width: 100%; max-width: 800px; } rating-org>.scrarea>.title,[data-is="rating-org"]>.scrarea>.title{ display: block; margin: 0 auto; color: cornflowerblue; text-align: center; font-size: 1.5em; width: 100%; height: auto; } rating-org>.scrarea>.current-org,[data-is="rating-org"]>.scrarea>.current-org{ display: block; margin: 0 auto; color: red; text-align: center; font-size: 0.8em; width: 100%; height: auto; } rating-org>.scrarea>.toolbars,[data-is="rating-org"]>.scrarea>.toolbars{ display: block; margin: 0 auto; margin-right: 5px; width: 100%; height: auto; text-align: center; overflow: hidden; background-color: transparent; color: whitesmoke; } rating-org>.scrarea>.toolbars .float-button,[data-is="rating-org"]>.scrarea>.toolbars .float-button{ display: inline-block; margin: 0 auto; padding: 0; border: none; outline: none; border-radius: 50%; height: 40px; width: 40px; color: whitesmoke; background: silver; cursor: pointer; } rating-org>.scrarea>.toolbars .float-button:hover,[data-is="rating-org"]>.scrarea>.toolbars .float-button:hover{ color: whitesmoke; background: forestgreen; }', '', function(opts) {
         let self = this;
         let screenId = 'rating-org';
         let defaultContent = {
             title: 'Device Organization Setup',
             entry: {
-                orgName: 'Organization'
+                orgName: 'Organization',
+                currentOrg: 'Current Organization'
             }
         };
         this.content = defaultContent;
         opts.content = this.content;
+        this.register = {
+            orgId: '',
+            orgName: ''
+        }
 
         let updatecontent = () => {
             let scrId = screens.current.screenId;
@@ -3837,8 +3842,30 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
             orgNames = null
         }
 
+        let orgId = '';
+        let orgML = null;
         let orgs = null;
 
+        let getRegisterOrgList = (callback) => {
+            let opt = {}
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/rating/org/search",
+                data: JSON.stringify(opt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    if (ret.data && ret.data.length > 0) {
+                        self.register.orgId = ret.data[0].orgId;
+                    }
+                    if (callback) callback()
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
         let getOrgs = () => {
             let opt = {}
             $.ajax({
@@ -3849,7 +3876,7 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
                 dataType: "json",
                 success: (ret) => {
 
-                    orgs = ret.data;
+                    orgML = ret.data;
                     updatecontent();
                 },
                 failure: (errMsg) => {
@@ -3857,28 +3884,46 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
                 }
             })
         }
-
-        let orgId = '';
-
         let updateOrgList = () => {
 
             if (orgNames) {
 
-                if (orgNames) {
-                    orgId = orgNames.value();
-                }
+                let val = orgNames.value();
+                orgId = (val) ? val : self.register.orgId;
+                if (orgML && orgML[lang.langId]) {
+                    orgs = orgML[lang.langId]
 
-                if (orgs && orgs[lang.langId]) {
-                    let org = orgs[lang.langId]
+                    orgNames.setup(orgs, { valueField:'orgId', textField:'OrgName' });
+                    if (orgId) {
+                        orgNames.value(orgId);
+                    }
 
-                    if (orgNames) {
-                        orgNames.setup(org, { valueField:'orgId', textField:'OrgName' });
-                        if (orgId) {
-                            orgNames.value(orgId);
-                        }
+                    if (!self.register.orgId) {
+                        getRegisterOrgList(updateRegisterOrg)
+                    }
+                    else {
+                        updateRegisterOrg()
                     }
                 }
             }
+        }
+        let updateRegisterOrg = () => {
+
+            if (orgs) {
+                if (self.register.orgId) {
+                    let om = orgs.map(org => org.orgId)
+                    let idx = om.indexOf(self.register.orgId)
+                    self.register.orgName = (idx !== -1) ? orgs[idx].OrgName  : '';
+                }
+
+                if (orgNames) {
+                    let val = orgNames.value()
+                    if (val !== self.register.orgId) {
+                        orgNames.value(self.register.orgId);
+                    }
+                }
+            }
+            self.update();
         }
 
         let addEvt = (evtName, handle) => { document.addEventListener(evtName, handle) }
@@ -3908,6 +3953,31 @@ riot.tag2('rating-org', '<h2>{(content) ? content.title : \'Device Organization 
         let onLanguageChanged = (e) => { updatecontent(); }
         let onScreenChanged = (e) => { updatecontent(); }
 
+        this.save = () => {
+            let selectedId = (orgNames) ? orgNames.value() : null;
+            let opt = {
+                orgId: selectedId
+            }
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/rating/org/save",
+                data: JSON.stringify(opt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    console.log('save success')
+
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
+        }
+        this.gohome = () => {
+            let url = '/rating';
+            secure.nav(url)
+        }
 });
 riot.tag2('rating-question', '<h2>{(content) ? content.title : \'Today Question\'}</h2> <a href="/rating">Home</a>', 'rating-question,[data-is="rating-question"]{ margin: 0 auto; padding: 0; }', '', function(opts) {
         let self = this;
@@ -3958,7 +4028,8 @@ riot.tag2('rating-register', '<div ref="container" class="scrarea"> <div class="
         let defaultContent = {
             title: 'Device Registration',
             entry: {
-                deviceName: 'Device Name'
+                deviceName: 'Device Name',
+                currentDevice: 'Current Device'
             }
         };
         this.content = defaultContent;
@@ -4055,7 +4126,6 @@ riot.tag2('rating-register', '<div ref="container" class="scrarea"> <div class="
         let updateRegisterDevice = () => {
 
             if (devices) {
-
                 let dm = devices.map((dv) => dv.deviceId);
                 if (self.register.deviceId) {
                     let idx = dm.indexOf(self.register.deviceId);
@@ -4100,7 +4170,25 @@ riot.tag2('rating-register', '<div ref="container" class="scrarea"> <div class="
         let onScreenChanged = (e) => { updatecontent(); }
 
         this.save = () => {
-            console.log('save..')
+            let selectedId = (deviceNames) ? deviceNames.value() : null;
+            let opt = {
+                deviceId: selectedId
+            }
+            $.ajax({
+                type: "POST",
+                url: "/customer/api/rating/device/save",
+                data: JSON.stringify(opt),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (ret) => {
+
+                    console.log('save success')
+
+                },
+                failure: (errMsg) => {
+                    console.log(errMsg);
+                }
+            })
         }
         this.gohome = () => {
             let url = '/rating';
