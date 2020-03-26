@@ -252,7 +252,15 @@ NCookie.api = class {
         let ret = cookie;
         if (json) {
             try {
-                ret = JSON.parse(cookie);
+                let idx = cookie.indexOf('{');
+                let val = cookie;
+                if (idx == -1) {
+                    val = JSON.stringify({ data: cookie })
+                }
+                else if (idx > 0) {
+                    val = cookie.substring(idx, cookie.length)
+                }
+                ret = JSON.parse(val);
             } 
             catch (e) { 
                 //console.error('cookie:', cookie, 'error:', e);
@@ -1316,8 +1324,6 @@ class XHR {
         XHR.setPostProgressHandler(xhr, progresssCB);
 
         xhr.send(formData);
-
-        return xhr; // used for abort.
     }
 }
 
@@ -2577,3 +2583,4 @@ NDOM.Selector = class {
 
 //#endregion
 
+console.log('nlib loaded.')
