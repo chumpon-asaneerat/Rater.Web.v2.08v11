@@ -46,16 +46,13 @@ Project:
                     Supervisor:
                         Home:
                             ✔ Prepare route. @done(20-03-11 06:23)
-                            ☐ 
                     Staff:
                         Home:
                             ✔ Prepare route. @done(20-03-11 06:23)
-                            ☐ 
                 Device:
                     Home:
                         Main Menu:
                             ✔ Prepare routes. @done(20-03-11 05:52)
-                            ☐ 
                         Select Customer:
                             ☐ Prepare routes.
                             ☐ EDL Sign In.
@@ -72,11 +69,9 @@ Project:
                             ☐ Add check redirect route.
                         Device Staff Sign In:
                             ✔ Prepare routes. @done(20-03-11 06:31)
-                            ☐ 
                             ☐ Add check redirect route.
                         Today Question Screen:
                             ✔ Prepare routes. @done(20-03-11 05:52)
-                            ☐ 
                 Question:
                     Design:
                         ✔ Prepare route. @done(20-03-11 06:23)
