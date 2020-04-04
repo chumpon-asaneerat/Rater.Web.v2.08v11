@@ -35,7 +35,6 @@ Project:
                     Admin:
                         Home:
                             ✔ Prepare route. @done(20-03-11 06:22)
-                            ☐ 
                         Customer:
                             ☐ Small screen (show notify for customer request add new device/staff).
                             ☐ Medium screen (show notify in collapse menu and on screen dashboard for customer request add new device/staff).
