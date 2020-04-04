@@ -103,6 +103,7 @@ Project:
         ☐ Add multilanguage Text control (extend properties required).
         ☐ Group/ungroup selection.
         ☐ Background image.
+        ☐ Preview Template Canvas.
     riot.js:
         Layout:
             ✔ napp tag rewrite. @done(19-12-12 09:39)
