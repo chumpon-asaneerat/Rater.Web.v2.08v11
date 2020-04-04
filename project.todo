@@ -21,8 +21,8 @@ Project:
                 ✔ Vote Summary (bar) @done(19-12-27 18:26)
                 ✔ Vote Summary (pie) @done(19-12-27 18:27)
                 ✔ Raw Vote (single org) @done(20-01-17 11:53)
-                ☐ Staff Performance (single org filter members)
                 ✔ Staff Compare (single org filter members) @done(20-01-16 13:30)
+                ☐ Staff Performance (single org filter members)
                 ☐ Get Bar graph Vote Summary -> last 7 days (auto period).
                 ☐ Get Pie chart Vote Summary -> last 7 days (auto period).
                 ☐ Get Bar graph Vote Summary -> last month (auto period).
@@ -90,11 +90,11 @@ Project:
         ☐ Call Rest API with timer.
     fabric.js:
         ✔ Full Screen canvas (auto resize to fit screen with aspect ratio). @done(20-02-08 22:14)
-        ☐ Toolbox drag drop to canvas.
         ✔ Hot spot customization. @done(20-02-08 22:14)
+        ✔ Supports auto update preview canvas list. @done(20-02-19 14:36)
+        ☐ Toolbox drag drop to canvas.
         ☐ Align to grid.
         ☐ Test for question set model (multiple slides) in fabric.js.
-        ✔ Supports auto update preview canvas list. @done(20-02-19 14:36)
         ☐ Add multilanguage Text control (extend properties required).
         ☐ Group/ungroup selection.
         ☐ Background image.
