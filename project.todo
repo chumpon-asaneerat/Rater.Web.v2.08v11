@@ -80,7 +80,6 @@ Project:
                             ☐ Home Slide (order 0).
                             ☐ Language Slide (order 1).
                             ☐ Question Slide (Required Language Slide).
-                            ☐ 
     CSS:
         ✔ nested absolute position. @done(19-12-10 10:29)
         ☐ Dock able panel.
