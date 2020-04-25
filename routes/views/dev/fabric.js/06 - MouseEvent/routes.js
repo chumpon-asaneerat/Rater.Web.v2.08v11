@@ -27,12 +27,15 @@ const routes = class {
     static getJs(req, res) {
         WebServer.sendFile(req, res, __dirname, 'script.js');
     }
+    static getFabricJs(req, res) {
+        WebServer.sendFile(req, res, __dirname, 'nlib-fabric.js');
+    }
 }
 
 router.get('/mouseevents', routes.home)
 router.get('/mouseevents/style.css', routes.getCss)
 router.get('/mouseevents/script.js', routes.getJs)
-//router.get('/dualcanvas3/nlib-fabric.js', routes.getJs)
+router.get('/mouseevents/nlib-fabric.js', routes.getFabricJs)
 
 const init_routes = (svr) => {
     svr.route('/dev/fabricjs', router);
